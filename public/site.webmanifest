@@ -1,0 +1,7 @@
+{
+  "name": "Next App Router with TRPC and Drizzle on Edge",
+  "short_name": "Next App Router with TRPC and Drizzle on Edge",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
