@@ -17,7 +17,7 @@ export function H2({ children, className }: PropsWithChildrenAndClassName) {
   return (
     <h2
       className={cn(
-        "mt-10 scroll-m-20 border-b border-b-stone-200 pb-2 text-2xl md:text-3xl font-bold tracking-tight transition-colors first:mt-0 dark:border-b-stone-700",
+        "mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-2xl md:text-3xl font-bold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700",
         className
       )}
     >
@@ -60,7 +60,7 @@ export function Lead({ children, className }: PropsWithChildrenAndClassName) {
 
 export function Large({ children, className }: PropsWithChildrenAndClassName) {
   return (
-    <div className={cn("md:text-lg font-semibold text-stone-900", className)}>
+    <div className={cn("md:text-lg font-semibold text-slate-900", className)}>
       {children}
     </div>
   );
@@ -76,7 +76,7 @@ export function Small({ children, className }: PropsWithChildrenAndClassName) {
 
 export function Subtle({ children, className }: PropsWithChildrenAndClassName) {
   return (
-    <p className={cn("text-sm text-stone-500 dark:text-stone-400", className)}>
+    <p className={cn("text-sm text-slate-500 dark:text-slate-400", className)}>
       {children}
     </p>
   );
@@ -86,7 +86,7 @@ export function Code({ children, className }: PropsWithChildrenAndClassName) {
   return (
     <code
       className={cn(
-        "relative rounded bg-rose-100 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-stone-900",
+        "relative rounded bg-rose-100 px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-slate-900",
         className
       )}
     >

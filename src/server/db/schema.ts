@@ -24,7 +24,7 @@ export const artists = mysqlTable("artists", {
   nameKr: text("name_kr").notNull(),
   debut: date("debut").notNull(),
   companyId: int("company_id").notNull(),
-  isGroup: boolean("is_group").notNull(),
+  isGroup: boolean("is_group").notNull().default(true),
   image: text("image").notNull(),
   twitter: text("twitter").notNull(),
   instagram: text("instagram").notNull(),
