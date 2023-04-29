@@ -1,6 +1,13 @@
 import { currentUser } from "@clerk/nextjs/app-beta";
 import { type User } from "@clerk/nextjs/dist/api";
-import { Lock } from "lucide-react";
+import { ArrowBigLeft, Home, Lock, Users } from "lucide-react";
+import AdminNavLink from "~/components/admin/nav-link";
+import { cn } from "~/lib/utils";
+
+const navigation = [
+  { name: 'Dashboard', href: '/admin', icon: Home, current: true },
+  { name: 'Artists', href: '/admin/artists', icon: Users, current: false },
+]
 
 export default async function Layout({ children }: PropsWithChildren) {
   const user: User | null = await currentUser();
@@ -9,5 +16,35 @@ export default async function Layout({ children }: PropsWithChildren) {
     return <div className="flex justify-center"><Lock /></div>
   }
 
-  return <div>{children}</div>
+  return (
+    <div className="flex grow flex-col lg:flex-row lg:w-1/5 gap-y-5 overflow-y-auto px-6">
+      <nav className="flex flex-1 flex-col">
+        <ul role="list" className="flex flex-1 flex-col gap-y-7">
+          <li>
+            <ul role="list" className="-mx-2 space-y-1">
+              <li key="back">
+                <AdminNavLink href="/dashboard">
+                  <ArrowBigLeft className="h-6 w-6 shrink-0" aria-hidden="true" />
+                  Back
+                </AdminNavLink>
+              </li>
+
+              {navigation.map((item) => (
+                <li key={item.name}>
+                  <AdminNavLink href={item.href}>
+                    <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
+                    {item.name}
+                  </AdminNavLink>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div className="flex flex-col lg:h-4/5 lg:ml-6">
+        {children}
+      </div>
+    </div>
+  )
 }
