@@ -10,12 +10,6 @@ import {
 } from "drizzle-orm/mysql-core/columns";
 import { mysqlTable } from "drizzle-orm/mysql-core/table";
 
-export const users = mysqlTable("users", {
-  clerkId: varchar("clerk_id", { length: 16 }).primaryKey(),
-  createdAt: timestamp("created_at").notNull().defaultNow().onUpdateNow(),
-  isAdmin: boolean("is_admin").notNull().default(false),
-});
-
 export const companies = mysqlTable("companies", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().defaultNow().onUpdateNow(),
@@ -32,6 +26,10 @@ export const artists = mysqlTable("artists", {
   companyId: int("company_id").notNull(),
   isGroup: boolean("is_group").notNull(),
   image: text("image").notNull(),
+  twitter: text("twitter").notNull(),
+  instagram: text("instagram").notNull(),
+  youtube: text("youtube").notNull(),
+  website: text("website").notNull(),
 });
 
 export const members = mysqlTable("members", {
