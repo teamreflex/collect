@@ -1,5 +1,6 @@
 import CreateCompany from "~/components/admin/companies/create-company"
 import DeleteCompany from "~/components/admin/companies/delete-company"
+import UpdateCompany from "~/components/admin/companies/update-company"
 import { H2 } from "~/components/typography"
 import { db } from "~/server/db"
 import { companies } from "~/server/db/schema"
@@ -18,7 +19,8 @@ export default async function Page() {
         {allCompanies.length === 0 && <p>No companies</p>}
         {allCompanies.map((c) => <div key={c.id}>
           {c.nameEn}
-          <DeleteCompany company={c} />
+          <UpdateCompany {...c} />
+          <DeleteCompany name={c.nameEn} id={c.id} />
         </div>)}
       </div>
     </div>

@@ -18,23 +18,16 @@ import {
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2, Trash } from "lucide-react";
-import { type Company } from "~/server/db/schema";
 
 export const deleteCompanySchema = z.object({
-  companyId: z.number().positive(),
+  id: z.number().positive(),
 });
 type DeleteCompanySchema = z.infer<typeof deleteCompanySchema>;
 
-type DeleteCompanyProps = {
-  company: Company,
-}
-
-export default function DeleteCompany({ company }: DeleteCompanyProps) {
+export default function DeleteCompany({ name, id }: { name: string, id: DeleteCompanySchema['id'] }) {
   const { handleSubmit, reset } = useForm<DeleteCompanySchema>({
     resolver: zodResolver(deleteCompanySchema),
-    defaultValues: {
-      companyId: company.id,
-    }
+    defaultValues: { id }
   });
 
   const router = useRouter();
@@ -60,7 +53,7 @@ export default function DeleteCompany({ company }: DeleteCompanyProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete <strong>{company.nameEn}</strong> and all of its data.
+            This action cannot be undone. This will permanently delete <strong>{name}</strong> and all of its data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
