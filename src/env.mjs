@@ -7,11 +7,16 @@ const server = z.object({
   DB_USERNAME: z.string().min(1),
   DB_PASSWORD: z.string().min(1),
   DB_URL: z.string().min(1),
+  R2_ACCESS_KEY_ID: z.string().min(1),
+  R2_SECRET_ACCESS_KEY: z.string().min(1),
+  R2_ACCOUNT_ID: z.string().min(1),
+  R2_BUCKET: z.string().min(1),
 });
 
 const client = z.object({
   NEXT_PUBLIC_APP_URL: z.string().min(1),
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
+  NEXT_PUBLIC_R2_URL: z.string().min(1),
 });
 
 /**
@@ -30,6 +35,11 @@ const processEnv = {
   DB_USERNAME: process.env.DB_USERNAME,
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_URL: process.env.DB_URL,
+  R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID,
+  R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
+  R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
+  R2_BUCKET: process.env.R2_BUCKET,
+  NEXT_PUBLIC_R2_URL: process.env.NEXT_PUBLIC_R2_URL,
 };
 
 // Don't touch the part below

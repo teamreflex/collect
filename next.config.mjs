@@ -12,5 +12,8 @@ const config = {
     typedRoutes: true,
     swcPlugins: [["next-superjson-plugin", {}]],
   },
+  images: {
+    domains: ["pub-6796bf577ce54658bcdde8c70188a704.r2.dev"],
+  },
 };
 export default config;

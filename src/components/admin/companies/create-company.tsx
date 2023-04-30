@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod"
 import { Button } from "~/components/ui/button"
@@ -15,11 +15,12 @@ import {
 } from "~/components/ui/dialog"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
-import { useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
+import ImageUpload from "~/components/ui/image-upload";
 
 export const createCompanySchema = z.object({
   nameEn: z.string().min(1),
@@ -32,7 +33,7 @@ export default function CreateCompany() {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateCompanySchema>({
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<CreateCompanySchema>({
     resolver: zodResolver(createCompanySchema)
   });
 
@@ -84,7 +85,13 @@ export default function CreateCompany() {
             {/* Image */}
             <div className="flex flex-col gap-1.5 col-span-2">
               <Label htmlFor="image">Image</Label>
-              <Input type="text" id="image" placeholder="Upload an image..." {...register('image')} />
+              <Controller
+                control={control}
+                name="image"
+                render={({ field: { onChange } }) => (
+                  <ImageUpload folder="companies" onImageUploaded={onChange} />
+                )} />
+
               {errors.image && <p className="text-xs text-red-500">{errors.image?.message}</p>}
             </div>
           </div>
