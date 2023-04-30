@@ -31,7 +31,7 @@ type UpdateCompanySchema = z.infer<typeof updateCompanySchema>;
 export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompanySchema) {
   const [open, setOpen] = useState(false);
 
-  const { register, handleSubmit, reset } = useForm<UpdateCompanySchema>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<UpdateCompanySchema>({
     resolver: zodResolver(updateCompanySchema),
     defaultValues: {
       id,
@@ -75,18 +75,21 @@ export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompa
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="nameEn">Name (EN)</Label>
               <Input type="text" id="nameEn" placeholder="English name..." {...register('nameEn')} />
+              {errors.nameEn && <p className="text-xs text-red-500">{errors.nameEn?.message}</p>}
             </div>
 
             {/* Korean name */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="nameKr">Name (KR)</Label>
               <Input type="text" id="nameKr" placeholder="Korean name..." {...register('nameKr')} />
+              {errors.nameKr && <p className="text-xs text-red-500">{errors.nameKr?.message}</p>}
             </div>
 
             {/* Image */}
             <div className="flex flex-col gap-1.5 col-span-2">
               <Label htmlFor="image">Image</Label>
               <Input type="text" id="image" placeholder="Upload an image..." {...register('image')} />
+              {errors.image && <p className="text-xs text-red-500">{errors.image?.message}</p>}
             </div>
           </div>
 
