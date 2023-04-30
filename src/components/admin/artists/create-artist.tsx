@@ -27,6 +27,7 @@ import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useToast } from "~/hooks/use-toast";
+import ImageUpload from "~/components/ui/image-upload";
 
 export const createArtistSchema = z.object({
   nameEn: z.string().min(1),
@@ -172,7 +173,9 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
                       <SelectValue placeholder="Select a company..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {companies.map(company => <SelectItem key={company.id} value={company.id.toString()}>{company.nameEn}</SelectItem>)}
+                      {companies.map(company => (
+                        <SelectItem key={company.id} value={company.id.toString()}>{company.nameEn}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 )}
@@ -183,7 +186,13 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
             {/* Image */}
             <div className="flex flex-col gap-1.5 col-span-2">
               <Label htmlFor="image">Image</Label>
-              <Input type="text" id="image" placeholder="Upload an image..." {...register('image')} />
+              <Controller
+                control={control}
+                name="image"
+                render={({ field: { onChange } }) => (
+                  <ImageUpload folder="companies" onImageUploaded={onChange} />
+                )} />
+
               {errors.image && <p className="text-xs text-red-500">{errors.image?.message}</p>}
             </div>
 

@@ -27,6 +27,7 @@ import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useToast } from "~/hooks/use-toast";
+import ImageUpload from "~/components/ui/image-upload";
 
 export const updateArtistSchema = z.object({
   id: z.number().positive(),
@@ -191,7 +192,13 @@ export default function UpdateArtist({ companies, artist }: UpdateArtistProps) {
             {/* Image */}
             <div className="flex flex-col gap-1.5 col-span-2">
               <Label htmlFor="image">Image</Label>
-              <Input type="text" id="image" placeholder="Upload an image..." {...register('image')} />
+              <Controller
+                control={control}
+                name="image"
+                render={({ field: { onChange } }) => (
+                  <ImageUpload folder="companies" onImageUploaded={onChange} />
+                )} />
+
               {errors.image && <p className="text-xs text-red-500">{errors.image?.message}</p>}
             </div>
 

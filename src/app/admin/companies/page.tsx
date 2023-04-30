@@ -25,7 +25,7 @@ export default async function Page() {
             <div key={company.id} className="grid grid-cols-3 items-center p-3">
               <Image className="rounded-md" alt={company.nameEn} src={company.image} width={50} height={50} />
               <div className="flex flex-col">
-                <p className="text-lg">{company.nameEn}</p>
+                <p className="text-lg font-semibold">{company.nameEn}</p>
                 <p className="text-xs text-white/80">{company.nameKr}</p>
               </div>
               <div className="flex flex-row gap-2 justify-end">
