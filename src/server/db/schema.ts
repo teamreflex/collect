@@ -18,6 +18,8 @@ export const companies = mysqlTable("companies", {
   nameKr: text("name_kr").notNull(),
   image: text("image").notNull(),
 });
+export type Company = InferModel<typeof companies>;
+export type NewCompany = InferModel<typeof companies, 'insert'>;
 
 export const artists = mysqlTable("artists", {
   id: serial("id").primaryKey(),

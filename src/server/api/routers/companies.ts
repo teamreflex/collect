@@ -1,4 +1,6 @@
-import { createCompanySchema } from "~/components/admin/artists/create-company";
+import { eq } from "drizzle-orm";
+import { createCompanySchema } from "~/components/admin/companies/create-company";
+import { deleteCompanySchema } from "~/components/admin/companies/delete-company";
 import {
   createTRPCRouter,
   adminProcedure,
@@ -10,5 +12,11 @@ export const companiesRouter = createTRPCRouter({
     .input(createCompanySchema)
     .mutation(async ({ input, ctx: { db } }) => {
       return await db.insert(companies).values(input);
+    }),
+
+  delete: adminProcedure
+    .input(deleteCompanySchema)
+    .mutation(async ({ input, ctx: { db } }) => {
+      return await db.delete(companies).where(eq(companies.id, input.companyId));
     }),
 });
