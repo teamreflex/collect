@@ -19,15 +19,16 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Edit, Loader2 } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
-import { type Company } from "~/server/db/schema";
+import { type Artist, type Company } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
-export const createArtistSchema = z.object({
+export const updateArtistSchema = z.object({
+  id: z.number().positive(),
   nameEn: z.string().min(1),
   nameKr: z.string().min(1),
   debut: z.date(),
@@ -39,42 +40,49 @@ export const createArtistSchema = z.object({
   youtube: z.string().min(1),
   website: z.string().min(1),
 });
-type CreateArtistSchema = z.infer<typeof createArtistSchema>;
+type UpdateArtistSchema = z.infer<typeof updateArtistSchema>;
 
-export default function CreateArtist({ companies }: { companies: Company[] }) {
+type UpdateArtistProps = {
+  companies: Company[];
+  artist: UpdateArtistSchema;
+}
+
+export default function UpdateArtist({ companies, artist }: UpdateArtistProps) {
   const [open, setOpen] = useState(false);
 
-  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<CreateArtistSchema>({
-    resolver: zodResolver(createArtistSchema),
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<UpdateArtistSchema>({
+    resolver: zodResolver(updateArtistSchema),
     defaultValues: {
-      isGroup: true,
+      ...artist
     },
   });
 
   const router = useRouter();
-  const { mutate: createArtist, isLoading } = api.artists.create.useMutation({
-    onSuccess() {
+  const { mutate: updateArtist, isLoading } = api.artists.update.useMutation({
+    onSuccess(_, newData) {
       setOpen(false);
-      reset();
+      reset(newData);
       router.refresh();
     },
   });
 
-  function onSubmit(data: CreateArtistSchema) {
-    createArtist(data);
+  function onSubmit(data: UpdateArtistSchema) {
+    updateArtist(data);
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Create Artist</Button>
+        <Button variant="default" size="sm">
+          <Edit />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Create Artist</DialogTitle>
+            <DialogTitle>Update Artist</DialogTitle>
             <DialogDescription>
-              Create a new artist.
+              Update an existing artist.
             </DialogDescription>
           </DialogHeader>
 
@@ -196,9 +204,8 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
           </div>
 
           <DialogFooter>
-            <Button type="reset" variant="outline" onClick={() => reset()}>Reset</Button>
             <Button type="submit">
-              Save
+              Update
               {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
             </Button>
           </DialogFooter>
