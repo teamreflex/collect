@@ -26,6 +26,7 @@ import { type Company } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { useToast } from "~/hooks/use-toast";
 
 export const createArtistSchema = z.object({
   nameEn: z.string().min(1),
@@ -42,6 +43,7 @@ export const createArtistSchema = z.object({
 type CreateArtistSchema = z.infer<typeof createArtistSchema>;
 
 export default function CreateArtist({ companies }: { companies: Company[] }) {
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
   const { control, register, handleSubmit, reset, formState: { errors } } = useForm<CreateArtistSchema>({
@@ -53,9 +55,12 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
 
   const router = useRouter();
   const { mutate: createArtist, isLoading } = api.artists.create.useMutation({
-    onSuccess() {
+    onSuccess(_, newData) {
       setOpen(false);
       reset();
+      toast({
+        description: <p>Artist <span className="font-semibold">{newData.nameEn}</span> created</p>,
+      })
       router.refresh();
     },
   });

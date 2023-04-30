@@ -18,6 +18,7 @@ import {
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2, Trash } from "lucide-react";
+import { useToast } from "~/hooks/use-toast";
 
 export const deleteCompanySchema = z.object({
   id: z.number().positive(),
@@ -25,6 +26,8 @@ export const deleteCompanySchema = z.object({
 type DeleteCompanySchema = z.infer<typeof deleteCompanySchema>;
 
 export default function DeleteCompany({ name, id }: { name: string, id: DeleteCompanySchema['id'] }) {
+  const { toast } = useToast();
+
   const { handleSubmit, reset } = useForm<DeleteCompanySchema>({
     resolver: zodResolver(deleteCompanySchema),
     defaultValues: { id }
@@ -34,6 +37,9 @@ export default function DeleteCompany({ name, id }: { name: string, id: DeleteCo
   const { mutate: deleteCompany, isLoading } = api.companies.delete.useMutation({
     onSuccess() {
       reset();
+      toast({
+        description: <p>Company <span className="font-semibold">{name}</span> deleted</p>,
+      })
       router.refresh();
     },
   });

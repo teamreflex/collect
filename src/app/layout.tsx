@@ -7,6 +7,7 @@ import { cn } from "~/lib/utils";
 import { ClientProviders } from "./client-providers";
 import Link from "next/link";
 import Auth from "~/components/auth";
+import { Toaster } from "~/components/ui/toaster";
 
 const fontSans = Inter({
   weight: ["400", "500", "600", "800", "900"],
@@ -94,6 +95,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </p>
             </div>
           </footer>
+          <Toaster />
         </ClientProviders>
       </body>
     </html>

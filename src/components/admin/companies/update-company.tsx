@@ -19,6 +19,7 @@ import { useState } from "react";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Edit, Loader2 } from "lucide-react";
+import { useToast } from "~/hooks/use-toast";
 
 export const updateCompanySchema = z.object({
   id: z.number().positive(),
@@ -29,6 +30,7 @@ export const updateCompanySchema = z.object({
 type UpdateCompanySchema = z.infer<typeof updateCompanySchema>;
 
 export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompanySchema) {
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<UpdateCompanySchema>({
@@ -46,6 +48,9 @@ export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompa
     onSuccess(_, newData) {
       setOpen(false);
       reset(newData);
+      toast({
+        description: <p>Company <span className="font-semibold">{newData.nameEn}</span> updated</p>,
+      })
       router.refresh();
     },
   });

@@ -19,6 +19,7 @@ import { useState } from "react";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useToast } from "~/hooks/use-toast";
 
 export const createCompanySchema = z.object({
   nameEn: z.string().min(1),
@@ -28,6 +29,7 @@ export const createCompanySchema = z.object({
 type CreateCompanySchema = z.infer<typeof createCompanySchema>;
 
 export default function CreateCompany() {
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateCompanySchema>({
@@ -36,9 +38,12 @@ export default function CreateCompany() {
 
   const router = useRouter();
   const { mutate: createCompany, isLoading } = api.companies.create.useMutation({
-    onSuccess() {
+    onSuccess(_, newData) {
       setOpen(false);
       reset();
+      toast({
+        description: <p>Company <span className="font-semibold">{newData.nameEn}</span> created</p>,
+      })
       router.refresh();
     },
   });

@@ -18,6 +18,7 @@ import {
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2, Trash } from "lucide-react";
+import { useToast } from "~/hooks/use-toast";
 
 export const deleteArtistSchema = z.object({
   id: z.number().positive(),
@@ -25,6 +26,8 @@ export const deleteArtistSchema = z.object({
 type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>;
 
 export default function DeleteArtist({ name, id }: { name: string, id: DeleteArtistSchema['id'] }) {
+  const { toast } = useToast();
+
   const { handleSubmit, reset } = useForm<DeleteArtistSchema>({
     resolver: zodResolver(deleteArtistSchema),
     defaultValues: { id }
@@ -34,6 +37,9 @@ export default function DeleteArtist({ name, id }: { name: string, id: DeleteArt
   const { mutate: deleteArtist, isLoading } = api.artists.delete.useMutation({
     onSuccess() {
       reset();
+      toast({
+        description: <p>Artist <span className="font-semibold">{name}</span> deleted</p>,
+      })
       router.refresh();
     },
   });

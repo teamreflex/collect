@@ -22,10 +22,11 @@ import { cn } from "~/lib/utils";
 import { CalendarIcon, Edit, Loader2 } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
-import { type Artist, type Company } from "~/server/db/schema";
+import { type Company } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { useToast } from "~/hooks/use-toast";
 
 export const updateArtistSchema = z.object({
   id: z.number().positive(),
@@ -48,6 +49,7 @@ type UpdateArtistProps = {
 }
 
 export default function UpdateArtist({ companies, artist }: UpdateArtistProps) {
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
   const { control, register, handleSubmit, reset, formState: { errors } } = useForm<UpdateArtistSchema>({
@@ -62,6 +64,9 @@ export default function UpdateArtist({ companies, artist }: UpdateArtistProps) {
     onSuccess(_, newData) {
       setOpen(false);
       reset(newData);
+      toast({
+        description: <p>Artist <span className="font-semibold">{newData.nameEn}</span> updated</p>,
+      })
       router.refresh();
     },
   });
