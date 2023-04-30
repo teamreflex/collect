@@ -1,11 +1,7 @@
 {
-  "name": "next-app-router-trpc-drizzle-planetscale-edge",
+  "name": "collect",
   "version": "0.1.0",
   "private": true,
-  "author": {
-    "name": "Oleksandr Ploskovytskyy",
-    "url": "https://twitter.com/o_ploskovytskyy"
-  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
