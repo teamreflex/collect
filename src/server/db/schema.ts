@@ -1,5 +1,6 @@
 import { type InferModel } from "drizzle-orm";
 import {
+  mysqlTable,
   boolean,
   date,
   serial,
@@ -8,8 +9,8 @@ import {
   int,
   mysqlEnum,
   varchar,
-} from "drizzle-orm/mysql-core/columns";
-import { mysqlTable } from "drizzle-orm/mysql-core/table";
+  index
+} from "drizzle-orm/mysql-core";
 
 export const companies = mysqlTable("companies", {
   id: serial("id").primaryKey(),
@@ -46,12 +47,17 @@ export const members = mysqlTable("members", {
   stageNameEn: text("stage_name_en").notNull(),
   stageNameKr: text("stage_name_kr").notNull(),
   image: text("image").notNull(),
+  instagram: text("instagram").notNull(),
 });
+export type Member = InferModel<typeof members>;
+export type NewMember = InferModel<typeof members, 'insert'>;
 
 export const artistsToMembers = mysqlTable('artistsToMembers', {
   memberId: int('member_id').notNull(),
   artistId: int('artist_id').notNull(),
-});
+}, (table) => ({
+  memberArtistIndex: index('member_artist_index').on(table.memberId, table.artistId)
+}));
 
 export const albums = mysqlTable("albums", {
   id: serial("id").primaryKey(),
@@ -87,7 +93,9 @@ export const photocards = mysqlTable("photocards", {
 export const photocardsToMembers = mysqlTable('photocardsToMembers', {
   photocardId: int('photocard_id').notNull(),
   memberId: int('member_id').notNull(),
-});
+}, (table) => ({
+  memberPhotocardIndex: index('member_photocard_index').on(table.memberId, table.photocardId)
+}));
 
 export const collectionAlbumVersions = mysqlTable('collection_album_versions', {
   clerkId: varchar('clerkId', { length: 16 }).notNull().primaryKey(),

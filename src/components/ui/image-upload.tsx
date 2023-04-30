@@ -70,11 +70,18 @@ export default function ImageUpload({ folder, onImageUploaded }: ImageUploadProp
     return res.ok;
   }
 
+  function click() {
+    if (process.env.NODE_ENV === 'development') {
+      onImageUploaded('https://i.imgur.com/ODZN7pl.jpg');
+      setUploaded(true);
+    }
+  }
+
   return (
     <div className="flex flex-row gap-2">
       <Input type="file" id="upload" placeholder="Upload an image..." onChange={startUpload} disabled={uploading} />
       <div className="flex items-center">
-        {(!uploaded && !uploading) && <CircleEllipsis />}
+        {(!uploaded && !uploading) && <CircleEllipsis onClick={click} />}
         {uploading && <Loader2 className="animate-spin" />}
         {uploaded && <CheckCircle2 />}
       </div>

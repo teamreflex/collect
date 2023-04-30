@@ -190,7 +190,7 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
                 control={control}
                 name="image"
                 render={({ field: { onChange } }) => (
-                  <ImageUpload folder="companies" onImageUploaded={onChange} />
+                  <ImageUpload folder="artists" onImageUploaded={onChange} />
                 )} />
 
               {errors.image && <p className="text-xs text-red-500">{errors.image?.message}</p>}
@@ -218,7 +218,6 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog >
-
+    </Dialog>
   )
 }

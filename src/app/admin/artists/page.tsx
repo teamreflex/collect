@@ -3,13 +3,14 @@ import Image from "next/image"
 import CreateArtist from "~/components/admin/artists/create-artist"
 import DeleteArtist from "~/components/admin/artists/delete-artist"
 import UpdateArtist from "~/components/admin/artists/update-artist"
+import CreateMember from "~/components/admin/members/create-member"
 import { H2 } from "~/components/typography"
 import { db } from "~/server/db"
 import { artists, companies } from "~/server/db/schema"
 
 export default async function Page() {
-  const allArtists = await db.select().from(artists)
-  const allCompanies = await db.select().from(companies)
+  const allArtists = await db.select().from(artists);
+  const allCompanies = await db.select().from(companies);
 
   return (
     <div className="min-w-full">
@@ -39,6 +40,7 @@ export default async function Page() {
               </div>
 
               <div className="flex flex-row gap-2 justify-end">
+                <CreateMember artist={artist} />
                 <UpdateArtist companies={allCompanies} artist={artist} data-superjson />
                 <DeleteArtist id={artist.id} name={artist.nameEn} />
               </div>
