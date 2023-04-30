@@ -57,16 +57,16 @@ type RootLayoutProps = PropsWithChildren;
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head />
-      <ClientProviders>
-        <body
-          className={cn(
-            "antialiased bg-white text-black dark:bg-slate-900 dark:text-white",
-            fontSans.className
-          )}
-        >
-          <div className="h-16 mb-3 bg-gradient-to-r from-rose-100 to-teal-100 dark:from-rose-100/80 dark:to-teal-100/80 text-slate-900 flex items-center">
+      <body
+        className={cn(
+          "antialiased bg-white text-black dark:bg-background dark:text-white",
+          fontSans.className
+        )}
+      >
+        <ClientProviders>
+          <div className="h-16 mb-3 bg-gradient-to-r from-rose-100 to-teal-100 dark:from-rose-100/80 dark:to-teal-100/80 text-background flex items-center">
             <div className="flex container items-center justify-between gap-2 md:gap-4 md:py-6 text-sm">
               <Link
                 href="/"
@@ -94,8 +94,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </p>
             </div>
           </footer>
-        </body>
-      </ClientProviders>
-    </html >
+        </ClientProviders>
+      </body>
+    </html>
   );
 }

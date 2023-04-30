@@ -1,3 +1,4 @@
+import { type InferModel } from "drizzle-orm";
 import {
   boolean,
   date,
@@ -15,6 +16,7 @@ export const companies = mysqlTable("companies", {
   createdAt: timestamp("created_at").notNull().defaultNow().onUpdateNow(),
   nameEn: text("name_en").notNull(),
   nameKr: text("name_kr").notNull(),
+  image: text("image").notNull(),
 });
 
 export const artists = mysqlTable("artists", {
@@ -31,6 +33,8 @@ export const artists = mysqlTable("artists", {
   youtube: text("youtube").notNull(),
   website: text("website").notNull(),
 });
+export type Artist = InferModel<typeof artists>;
+export type NewArtist = InferModel<typeof artists, 'insert'>;
 
 export const members = mysqlTable("members", {
   id: serial("id").primaryKey(),

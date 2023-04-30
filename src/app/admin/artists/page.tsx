@@ -1,6 +1,5 @@
 import CreateArtist from "~/components/admin/artists/create-artist"
 import { H2 } from "~/components/typography"
-import { Button } from "~/components/ui/button"
 import { db } from "~/server/db"
 import { artists } from "~/server/db/schema"
 

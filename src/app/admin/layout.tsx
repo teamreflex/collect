@@ -1,12 +1,12 @@
 import { currentUser } from "@clerk/nextjs/app-beta";
 import { type User } from "@clerk/nextjs/dist/api";
-import { ArrowBigLeft, Home, Lock, Users } from "lucide-react";
+import { ArrowBigLeft, Building2, Home, Lock, Users } from "lucide-react";
 import AdminNavLink from "~/components/admin/nav-link";
-import { cn } from "~/lib/utils";
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: Home, current: true },
-  { name: 'Artists', href: '/admin/artists', icon: Users, current: false },
+  { name: 'Dashboard', href: '/admin', icon: Home },
+  { name: 'Companies', href: '/admin/companies', icon: Building2 },
+  { name: 'Artists', href: '/admin/artists', icon: Users },
 ]
 
 export default async function Layout({ children }: PropsWithChildren) {
