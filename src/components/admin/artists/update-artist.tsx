@@ -47,9 +47,10 @@ type UpdateArtistSchema = z.infer<typeof updateArtistSchema>;
 type UpdateArtistProps = {
   companies: Company[];
   artist: UpdateArtistSchema;
+  size?: 'sm' | 'default';
 }
 
-export default function UpdateArtist({ companies, artist }: UpdateArtistProps) {
+export default function UpdateArtist({ companies, artist, size = 'default' }: UpdateArtistProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
@@ -79,8 +80,8 @@ export default function UpdateArtist({ companies, artist }: UpdateArtistProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" size="sm">
-          <Edit />
+        <Button variant="default" className="flex flex-row gap-1" size={size}>
+          <Edit /> Update
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">

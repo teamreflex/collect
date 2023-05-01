@@ -25,7 +25,7 @@ export const deleteArtistSchema = z.object({
 });
 type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>;
 
-export default function DeleteArtist({ name, id }: { name: string, id: DeleteArtistSchema['id'] }) {
+export default function DeleteArtist({ name, id, size = 'default' }: { name: string, id: DeleteArtistSchema['id'], size?: 'sm' | 'default' }) {
   const { toast } = useToast();
 
   const { handleSubmit, reset } = useForm<DeleteArtistSchema>({
@@ -51,8 +51,8 @@ export default function DeleteArtist({ name, id }: { name: string, id: DeleteArt
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm">
-          <Trash />
+        <Button variant="destructive" className="flex flex-row gap-1" size={size}>
+          <Trash /> Delete
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

@@ -64,8 +64,8 @@ export default function CreateMember({ artist }: { artist: Artist }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" size="sm">
-          <UserPlus />
+        <Button variant="default" size="sm" className="flex flex-row gap-1">
+          <UserPlus /> Create Member
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">

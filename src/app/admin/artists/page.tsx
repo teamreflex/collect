@@ -1,10 +1,11 @@
-import { Globe, Instagram, Twitter, Youtube } from "lucide-react"
+import { Eye, Globe, Instagram, Twitter, Youtube } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import CreateArtist from "~/components/admin/artists/create-artist"
 import DeleteArtist from "~/components/admin/artists/delete-artist"
 import UpdateArtist from "~/components/admin/artists/update-artist"
-import CreateMember from "~/components/admin/members/create-member"
 import { H2 } from "~/components/typography"
+import { Button } from "~/components/ui/button"
 import { db } from "~/server/db"
 import { artists, companies } from "~/server/db/schema"
 
@@ -40,9 +41,11 @@ export default async function Page() {
               </div>
 
               <div className="flex flex-row gap-2 justify-end">
-                <CreateMember artist={artist} />
-                <UpdateArtist companies={allCompanies} artist={artist} data-superjson />
-                <DeleteArtist id={artist.id} name={artist.nameEn} />
+                <Link href={`/admin/artists/${artist.id}`}>
+                  <Button size="sm"><Eye /></Button>
+                </Link>
+                <UpdateArtist companies={allCompanies} artist={artist} size="sm" data-superjson />
+                <DeleteArtist id={artist.id} name={artist.nameEn} size="sm" />
               </div>
             </div>
           ))}

@@ -19,7 +19,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
 import { type Company } from "~/server/db/schema";
@@ -73,7 +73,9 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Create Artist</Button>
+        <Button variant="default" className="flex flex-row gap-1">
+          <Plus /> Create Artist
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>

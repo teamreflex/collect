@@ -4,9 +4,9 @@ import { ArrowBigLeft, Building2, Home, Lock, Users } from "lucide-react";
 import AdminNavLink from "~/components/admin/nav-link";
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: Home },
-  { name: 'Companies', href: '/admin/companies', icon: Building2 },
-  { name: 'Artists', href: '/admin/artists', icon: Users },
+  { name: 'Dashboard', href: '/admin', segment: null, icon: Home },
+  { name: 'Companies', href: '/admin/companies', segment: 'companies', icon: Building2 },
+  { name: 'Artists', href: '/admin/artists', segment: 'artists', icon: Users },
 ]
 
 export default async function Layout({ children }: PropsWithChildren) {
@@ -23,7 +23,7 @@ export default async function Layout({ children }: PropsWithChildren) {
           <li>
             <ul role="list" className="-mx-2 space-y-1">
               <li key="back">
-                <AdminNavLink href="/dashboard">
+                <AdminNavLink href="/dashboard" segment="dashboard">
                   <ArrowBigLeft className="h-6 w-6 shrink-0" aria-hidden="true" />
                   Back
                 </AdminNavLink>
@@ -31,7 +31,7 @@ export default async function Layout({ children }: PropsWithChildren) {
 
               {navigation.map((item) => (
                 <li key={item.name}>
-                  <AdminNavLink href={item.href}>
+                  <AdminNavLink href={item.href} segment={item.segment}>
                     <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                     {item.name}
                   </AdminNavLink>
