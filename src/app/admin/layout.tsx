@@ -17,7 +17,7 @@ export default async function Layout({ children }: PropsWithChildren) {
   }
 
   return (
-    <div className="flex grow flex-col lg:flex-row w-full gap-y-5 px-6">
+    <div className="flex grow flex-col lg:flex-row w-full gap-y-5 px-6 pt-6">
       <nav className="flex flex-col lg:w-1/5">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">
           <li>
@@ -42,7 +42,7 @@ export default async function Layout({ children }: PropsWithChildren) {
         </ul>
       </nav>
 
-      <div className="flex flex-col lg:h-4/5 lg:ml-6 min-h-screen w-screen">
+      <div className="flex flex-col lg:h-4/5 lg:ml-6 w-screen">
         {children}
       </div>
     </div>

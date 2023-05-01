@@ -71,11 +71,12 @@ export default async function RootLayout({ children }: PropsWithChildren) {
       <head />
       <body
         className={cn(
-          "antialiased bg-white text-black dark:bg-background dark:text-white",
+          "antialiased bg-white text-black dark:bg-background dark:text-white flex flex-col h-screen justify-between",
           fontSans.className
         )}
       >
         <ClientProviders>
+          {/* Navbar */}
           <div className={cn("h-16 bg-gradient-to-r flex items-center", siteConfig.gradient)}>
             <div className="flex container items-center justify-between gap-2 md:gap-4 md:py-6 text-sm">
               <Link
@@ -122,7 +123,11 @@ export default async function RootLayout({ children }: PropsWithChildren) {
               <Auth />
             </div>
           </div>
-          <main className="min-h-screen min-w-screen">{children}</main>
+
+          {/* Content */}
+          <main className="min-w-screen mb-auto">{children}</main>
+
+          {/* Footer */}
           <footer className={cn("bg-gradient-to-l", siteConfig.gradient)}>
             <div className="grid md:flex container md:items-center md:justify-between gap-2 md:gap-4 py-3 md:py-6 text-sm">
               <p>
