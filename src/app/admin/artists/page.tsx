@@ -9,6 +9,10 @@ import { Button } from "~/components/ui/button"
 import { db } from "~/server/db"
 import { artists, companies } from "~/server/db/schema"
 
+export const metadata = {
+  title: 'Admin · Artists',
+}
+
 export default async function Page() {
   const allArtists = await db.select().from(artists);
   const allCompanies = await db.select().from(companies);
@@ -55,3 +59,5 @@ export default async function Page() {
     </div>
   )
 }
+
+export const runtime = "edge";

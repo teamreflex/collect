@@ -6,6 +6,10 @@ import { H2 } from "~/components/typography"
 import { db } from "~/server/db"
 import { companies } from "~/server/db/schema"
 
+export const metadata = {
+  title: 'Admin · Companies',
+}
+
 export default async function Page() {
   const allCompanies = await db.select().from(companies)
 
@@ -39,3 +43,5 @@ export default async function Page() {
     </div>
   )
 }
+
+export const runtime = "edge";

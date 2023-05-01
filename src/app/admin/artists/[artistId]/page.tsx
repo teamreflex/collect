@@ -1,5 +1,7 @@
 import { Instagram } from "lucide-react";
+import { type Metadata } from "next";
 import Image from "next/image";
+import { cache } from "react";
 import DeleteArtist from "~/components/admin/artists/delete-artist";
 import UpdateArtist from "~/components/admin/artists/update-artist";
 import CreateMember from "~/components/admin/members/create-member";
@@ -15,11 +17,21 @@ type ArtistPageProps = {
   }
 }
 
-export default async function Page({ params }: ArtistPageProps) {
-  const [artist, companies] = await Promise.all([
-    fetchArtistWithMembers(params.artistId),
+const fetchData = cache(async (artistId: string) => {
+  return await Promise.all([
+    fetchArtistWithMembers(artistId),
     fetchAllCompanies()
   ]);
+});
+
+export async function generateMetadata({ params }: ArtistPageProps): Promise<Metadata> {
+  const [artist] = await fetchData(params.artistId);
+  const name = artist?.nameEn ?? 'Artists'
+  return { title: `Admin · ${name}` }
+}
+
+export default async function Page({ params }: ArtistPageProps) {
+  const [artist, companies] = await fetchData(params.artistId);
 
   if (!artist) return <H2>Invalid artist</H2>
 
@@ -82,3 +94,5 @@ export default async function Page({ params }: ArtistPageProps) {
     </div>
   )
 }
+
+export const runtime = "edge";

@@ -17,7 +17,7 @@ const fontSans = Inter({
 export const metadata = {
   title: {
     default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
+    template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
   keywords: ['kpop', 'collection', 'photocard', 'album', 'trading'],
