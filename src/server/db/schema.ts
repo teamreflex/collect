@@ -58,6 +58,7 @@ export const artistsToMembers = mysqlTable('artistsToMembers', {
 }, (table) => ({
   memberArtistIndex: index('member_artist_index').on(table.memberId, table.artistId)
 }));
+export type ArtistToMember = InferModel<typeof artistsToMembers>;
 
 export const albums = mysqlTable("albums", {
   id: serial("id").primaryKey(),
