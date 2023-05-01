@@ -8,6 +8,9 @@ import { ClientProviders } from "./client-providers";
 import Link from "next/link";
 import Auth from "~/components/auth";
 import { Toaster } from "~/components/ui/toaster";
+import { Home, PackageOpen, Search, Wrench } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { currentUser } from "@clerk/nextjs/app-beta";
 
 const fontSans = Inter({
   weight: ["400", "500", "600", "800", "900"],
@@ -55,12 +58,14 @@ export const metadata = {
 };
 
 const links = [
-  { name: "Dashboard", href: "/dashboard" },
-  { name: "Collection", href: "/collection" },
-  { name: "Explore", href: "/explore" },
+  { name: 'Dashboard', icon: Home, href: "/dashboard" },
+  { name: 'Collection', icon: PackageOpen, href: "/collection" },
+  { name: 'Explore', icon: Search, href: "/explore" },
 ]
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default async function RootLayout({ children }: PropsWithChildren) {
+  const user = await currentUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -71,7 +76,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         )}
       >
         <ClientProviders>
-          <div className="h-16 mb-3 bg-gradient-to-r from-rose-100 to-teal-100 dark:from-rose-100/80 dark:to-teal-100/80 text-background flex items-center">
+          <div className={cn("h-16 bg-gradient-to-r flex items-center", siteConfig.gradient)}>
             <div className="flex container items-center justify-between gap-2 md:gap-4 md:py-6 text-sm">
               <Link
                 href="/"
@@ -80,23 +85,45 @@ export default function RootLayout({ children }: PropsWithChildren) {
                 K-Collect
               </Link>
 
-              <div className="flex flex-row gap-5 justify-start lg:justify-center items-center">
+              <div className="flex flex-row gap-10 justify-start lg:justify-center items-center">
                 {links.map((link, i) => (
-                  <Link
-                    key={i}
-                    href={link.href}
-                    className="font-bold underline underline-offset-4 transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-150"
-                  >
-                    {link.name}
-                  </Link>
+                  <Tooltip key={i}>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={link.href}
+                        className="hover:drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
+                      >
+                        <link.icon className="h-8 w-8 shrink-0" />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>{link.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
+
+                {!!user && user.publicMetadata.admin === true && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href="/admin"
+                        className="hover:drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
+                      >
+                        <Wrench className="h-8 w-8 shrink-0" />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>Admin</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
               </div>
 
               <Auth />
             </div>
           </div>
           <main className="min-h-screen min-w-screen">{children}</main>
-          <footer className="bg-gradient-to-l from-rose-100 to-teal-100 dark:from-rose-100/80 dark:to-teal-100/80 text-slate-900">
+          <footer className={cn("bg-gradient-to-l", siteConfig.gradient)}>
             <div className="grid md:flex container md:items-center md:justify-between gap-2 md:gap-4 py-3 md:py-6 text-sm">
               <p>
                 Source code is available on{" "}

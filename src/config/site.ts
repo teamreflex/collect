@@ -6,6 +6,7 @@ export type SiteConfig = {
     twitter: string;
     github: string;
   };
+  gradient: string;
 };
 
 export const siteConfig: SiteConfig = {
@@ -18,4 +19,5 @@ export const siteConfig: SiteConfig = {
     github:
       "https://github.com/teamreflex/collect",
   },
+  gradient: "from-rose-100 to-teal-100 dark:from-rose-100/80 dark:to-teal-100/80 text-background",
 };

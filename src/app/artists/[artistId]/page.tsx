@@ -1,6 +1,8 @@
 import { type Metadata } from "next";
 import { cache } from "react";
 import { H2 } from "~/components/typography"
+import { siteConfig } from "~/config/site";
+import { cn } from "~/lib/utils";
 import { fetchArtistWithContent } from "~/server/db/artists";
 
 type ArtistPageProps = {
@@ -26,7 +28,7 @@ export default async function Page({ params }: ArtistPageProps) {
 
   return (
     <div className="min-w-full">
-      <div className="flex flex-col mb-5">
+      <div className={cn("flex flex-col mb-5 bg-gradient-to-r", siteConfig.gradient)}>
         <H2 className="flex flex-row">
           <span className="container">{artist.nameEn}</span>
         </H2>
