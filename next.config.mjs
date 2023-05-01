@@ -13,7 +13,10 @@ const config = {
     swcPlugins: [["next-superjson-plugin", {}]],
   },
   images: {
-    domains: ["pub-6796bf577ce54658bcdde8c70188a704.r2.dev"],
+    domains: [
+      "pub-6796bf577ce54658bcdde8c70188a704.r2.dev",
+      "i.imgur.com", // remove in prod
+    ],
   },
 };
 export default config;

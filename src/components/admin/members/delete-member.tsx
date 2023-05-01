@@ -19,47 +19,40 @@ import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2, Trash } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
-import { usePathname } from "next/navigation";
 
-export const deleteArtistSchema = z.object({
+export const deleteMemberSchema = z.object({
   id: z.number().positive(),
 });
-type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>;
+type DeleteMemberSchema = z.infer<typeof deleteMemberSchema>;
 
-export default function DeleteArtist({ name, id, size = 'default' }: { name: string, id: DeleteArtistSchema['id'], size?: 'sm' | 'default' }) {
+export default function DeleteMember({ name, id, size = 'default' }: { name: string, id: DeleteMemberSchema['id'], size?: 'sm' | 'default' }) {
   const { toast } = useToast();
 
-  const { handleSubmit, reset } = useForm<DeleteArtistSchema>({
-    resolver: zodResolver(deleteArtistSchema),
+  const { handleSubmit, reset } = useForm<DeleteMemberSchema>({
+    resolver: zodResolver(deleteMemberSchema),
     defaultValues: { id }
   });
 
   const router = useRouter();
-  const pathname = usePathname();
-  const { mutate: deleteArtist, isLoading } = api.artists.delete.useMutation({
+  const { mutate: deleteMember, isLoading } = api.members.delete.useMutation({
     onSuccess() {
       reset();
       toast({
-        description: <p>Artist <span className="font-semibold">{name}</span> deleted</p>,
+        description: <p>Member <span className="font-semibold">{name}</span> deleted</p>,
       })
-      // handle different locations this button may be
-      if (pathname === `/admin/artists/${id}`) {
-        router.push('/admin/artists');
-      } else {
-        router.refresh();
-      }
+      router.refresh();
     },
   });
 
-  function onSubmit(data: DeleteArtistSchema) {
-    deleteArtist(data);
+  function onSubmit(data: DeleteMemberSchema) {
+    deleteMember(data);
   }
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="flex flex-row gap-1" size={size}>
-          <Trash /> Delete
+        <Button variant="destructive" size={size}>
+          <Trash />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

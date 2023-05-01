@@ -1,4 +1,7 @@
+import { eq } from "drizzle-orm";
 import { createMemberSchema } from "~/components/admin/members/create-member";
+import { deleteMemberSchema } from "~/components/admin/members/delete-member";
+import { updateMemberSchema } from "~/components/admin/members/update-member";
 import {
   createTRPCRouter,
   adminProcedure,
@@ -28,15 +31,23 @@ export const membersRouter = createTRPCRouter({
       return member;
     }),
 
-  // update: adminProcedure
-  //   .input(updateArtistSchema)
-  //   .mutation(async ({ input, ctx: { db } }) => {
-  //     return await db.update(artists).set(input).where(eq(artists.id, input.id));
-  //   }),
+  update: adminProcedure
+    .input(updateMemberSchema)
+    .mutation(async ({ input, ctx: { db } }) => {
+      return await db.update(members).set({
+        nameEn: input.nameEn,
+        nameKr: input.nameKr,
+        stageNameEn: input.stageNameEn,
+        stageNameKr: input.stageNameKr,
+        instagram: input.instagram,
+        image: input.image,
+      }).where(eq(members.id, input.id));
+    }),
 
-  // delete: adminProcedure
-  //   .input(deleteArtistSchema)
-  //   .mutation(async ({ input, ctx: { db } }) => {
-  //     return await db.delete(artists).where(eq(artists.id, input.id));
-  //   }),
+  delete: adminProcedure
+    .input(deleteMemberSchema)
+    .mutation(async ({ input, ctx: { db } }) => {
+      await db.delete(artistsToMembers).where(eq(artistsToMembers.memberId, input.id));
+      return await db.delete(members).where(eq(members.id, input.id));
+    }),
 });
