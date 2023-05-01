@@ -54,9 +54,13 @@ export const metadata = {
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-type RootLayoutProps = PropsWithChildren;
+const links = [
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Collection", href: "/collection" },
+  { name: "Explore", href: "/explore" },
+]
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -71,10 +75,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="flex container items-center justify-between gap-2 md:gap-4 md:py-6 text-sm">
               <Link
                 href="/"
-                className="font-semibold underline underline-offset-4"
+                className="font-semibold underline underline-offset-4 hidden lg:block"
               >
                 K-Collect
               </Link>
+
+              <div className="flex flex-row gap-5 justify-start lg:justify-center items-center">
+                {links.map((link, i) => (
+                  <Link
+                    key={i}
+                    href={link.href}
+                    className="font-bold underline underline-offset-4 transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-150"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
 
               <Auth />
             </div>
