@@ -22,7 +22,7 @@ export async function fetchArtistsWithMembers(artistId?: number | string): Promi
     .leftJoin(members, eq(artistsToMembers.memberId, members.id));
 
   if (artistId) {
-    query = query.where(eq(artists.id, Number(artistId))).limit(1);
+    query = query.where(eq(artists.id, Number(artistId)));
   }
 
   const rows = await query;
