@@ -26,13 +26,13 @@ export default async function Page({ params }: ArtistPageProps) {
   return (
     <div className="min-w-full">
       <div className="flex flex-col gap-3">
-        <div className="flex flex-row justify-between">
-          <H2>{artist.nameEn}</H2>
-          <div className="flex flex-row gap-2 justify-end">
+        <H2 className="flex flex-row justify-between">
+          {artist.nameEn}
+          <div className="flex flex-row gap-2">
             <UpdateArtist artist={artist} companies={companies} data-superjson />
             <DeleteArtist name={artist.nameEn} id={artist.id} />
           </div>
-        </div>
+        </H2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex flex-col gap-2">
