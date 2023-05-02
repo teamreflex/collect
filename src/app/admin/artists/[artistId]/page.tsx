@@ -94,5 +94,3 @@ export default async function Page({ params }: ArtistPageProps) {
     </div>
   )
 }
-
-export const runtime = "edge";
