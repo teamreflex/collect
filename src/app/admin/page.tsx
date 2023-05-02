@@ -5,5 +5,3 @@ export const metadata = {
 export default function Page() {
   return <div>Admin Index</div>
 }
-
-export const runtime = "edge";
