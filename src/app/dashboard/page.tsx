@@ -1,12 +1,14 @@
+import { PartyPopper } from "lucide-react";
+
 export const metadata = {
   title: 'Dashboard',
 }
 
 export default function Page() {
   return (
-    <>
-      dashboard
-    </>
+    <div className="flex mt-6 items-center justify-center">
+      <PartyPopper />
+    </div>
   );
 }
 

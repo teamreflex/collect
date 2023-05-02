@@ -1,5 +1,9 @@
 import { SignIn } from "@clerk/nextjs/app-beta";
 
+export const metadata = {
+  title: 'Sign In',
+}
+
 export default function Page() {
   return <SignIn afterSignInUrl="/dashboard" signUpUrl="/sign-up" />;
 }

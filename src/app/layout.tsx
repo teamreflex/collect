@@ -91,7 +91,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
                   <Tooltip key={i}>
                     <TooltipTrigger asChild>
                       <Link
-                        href={link.href}
+                        href={{ pathname: link.href }}
                         className="hover:drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
                       >
                         <link.icon className="h-8 w-8 shrink-0" />
