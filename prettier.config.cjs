@@ -27,8 +27,8 @@ const config = {
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
   plugins: [
-    "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports",
+    require.resolve("@ianvs/prettier-plugin-sort-imports"),
+    require.resolve("prettier-plugin-tailwindcss"),
   ],
 };
 
