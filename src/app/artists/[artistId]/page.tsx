@@ -1,4 +1,5 @@
 import { type Metadata } from "next";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import { H2 } from "~/components/typography"
 import { siteConfig } from "~/config/site";
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
 export default async function Page({ params }: ArtistPageProps) {
   const artist = await fetchData(params.artistId);
 
-  if (!artist) return <H2>Invalid artist</H2>
+  if (!artist) notFound();
 
   return (
     <div className="min-w-full">

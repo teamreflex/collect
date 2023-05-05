@@ -35,6 +35,7 @@ export const metadata = {
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
+  metadataBase: '/',
   openGraph: {
     type: "website",
     locale: "en_US",

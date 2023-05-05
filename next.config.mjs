@@ -8,7 +8,7 @@
 const config = {
   reactStrictMode: true,
   experimental: {
-    appDir: true,
+    serverActions: true,
     typedRoutes: true,
     swcPlugins: [["next-superjson-plugin", {}]],
   },
