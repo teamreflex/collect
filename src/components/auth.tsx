@@ -2,18 +2,22 @@
 
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { LogIn } from "lucide-react";
+import { Loader2, LogIn } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 
 type Props = {
   signedIn: boolean;
+  loaded: boolean;
 }
 
-export default function Auth({ signedIn }: Props) {
+export default function Auth({ signedIn, loaded }: Props) {
   return (
     <div className="flex flex-row gap-2">
-      {signedIn && <UserButton afterSignOutUrl="/" />}
-      {!signedIn && (
+      {!loaded && (
+        <Loader2 className="h-8 w-8 shrink-0 animate-spin" />
+      )}
+      {loaded && signedIn && <UserButton afterSignOutUrl="/" />}
+      {loaded && !signedIn && (
         <Tooltip>
           <TooltipTrigger asChild>
             <Link

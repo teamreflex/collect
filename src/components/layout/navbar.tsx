@@ -15,7 +15,7 @@ const links = [
 ]
 
 export default function Navbar() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
   return (
     <div className={cn("h-16 bg-gradient-to-r flex items-center", siteConfig.gradient)}>
@@ -61,7 +61,7 @@ export default function Navbar() {
           )}
         </div>
         
-        <Auth signedIn={!!user} />
+        <Auth signedIn={!!user} loaded={isLoaded} />
       </div>
     </div>
   );
