@@ -1,15 +1,19 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs/app-beta";
+'use client';
+
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { LogIn } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 
-export default function Auth() {
+type Props = {
+  signedIn: boolean;
+}
+
+export default function Auth({ signedIn }: Props) {
   return (
     <div className="flex flex-row gap-2">
-      <SignedIn>
-        <UserButton afterSignOutUrl="/" />
-      </SignedIn>
-      <SignedOut>
+      {signedIn && <UserButton afterSignOutUrl="/" />}
+      {!signedIn && (
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
@@ -23,7 +27,7 @@ export default function Auth() {
             <p>Sign In</p>
           </TooltipContent>
         </Tooltip>
-      </SignedOut>
+      )}
     </div>
   )
 }

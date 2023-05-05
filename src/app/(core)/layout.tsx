@@ -52,7 +52,7 @@ export const metadata = {
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-export default function AuthLayout({ children }: PropsWithChildren) {
+export default function CoreLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -63,12 +63,29 @@ export default function AuthLayout({ children }: PropsWithChildren) {
         )}
       >
         <ClientProviders>
+          {/* Navbar */}
+          <Navbar />
+
           {/* Content */}
-          <main className={cn("h-full w-full flex items-center justify-center bg-gradient-to-r", siteConfig.gradient)}>
-            <div className="flex flex-col justify-center">
-              {children}
+          <main className="m-auto flex flex-col">{children}</main>
+
+          {/* Footer */}
+          <footer className={cn("fixed inset-x-0 bottom-0 bg-gradient-to-l", siteConfig.gradient)}>
+            <div className="grid md:flex container md:items-center md:justify-between gap-2 md:gap-4 py-3 md:py-6 text-sm">
+              <p>
+                Source code is available on{" "}
+                <a
+                  href={siteConfig.links.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold underline underline-offset-4"
+                >
+                  GitHub
+                </a>
+              </p>
             </div>
-          </main>
+          </footer>
+          <Toaster />
         </ClientProviders>
       </body>
     </html>
