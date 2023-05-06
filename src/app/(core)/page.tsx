@@ -1,9 +1,10 @@
-import { PartyPopper } from "lucide-react";
+import { Wrench } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="flex mt-6 items-center justify-center">
-      <PartyPopper />
+    <div className="flex flex-col mt-6 items-center justify-center">
+      <Wrench />
+      <p className="text-sm">work in progress</p>
     </div>
   );
 }
