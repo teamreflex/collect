@@ -56,7 +56,7 @@ export default function UpdateArtist({ companies, artist, size = 'default' }: Up
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
-  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<UpdateArtistSchema>({
+  const { control, register, handleSubmit, reset, formState: { errors }, setValue } = useForm<UpdateArtistSchema>({
     resolver: zodResolver(updateArtistSchema),
     defaultValues: {
       ...artist
@@ -145,7 +145,7 @@ export default function UpdateArtist({ companies, artist, size = 'default' }: Up
                 control={control}
                 name="spotifyId"
                 render={({ field: { onChange, value } }) => (
-                  <SpotifySearch searchType="artist" onSelected={onChange} value={value} />
+                  <SpotifySearch searchType="artist" onSelected={onChange} onImageSelected={e => setValue('image', e)} value={value} />
                 )} />
               {errors.spotifyId && <p className="text-xs text-red-500">{errors.spotifyId?.message}</p>}
             </div>
@@ -238,7 +238,6 @@ export default function UpdateArtist({ companies, artist, size = 'default' }: Up
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog >
-
+    </Dialog>
   )
 }

@@ -87,12 +87,12 @@ async function generateToken() {
  * @param searchTerm string
  * @returns Promise<TResponse>
  */
-async function performSearch<TResponse>(searchTerm: string): Promise<TResponse> {
+async function performSearch<TResponse>(type: 'artist' | 'album', searchTerm: string): Promise<TResponse> {
   const token = await getToken();
 
   const params = new URLSearchParams({
     q: searchTerm,
-    type: 'artist',
+    type,
     limit: '5',
   });
 
@@ -120,7 +120,7 @@ async function performSearch<TResponse>(searchTerm: string): Promise<TResponse> 
  * @returns Promise<SpotifyOption[]>
  */
 export async function searchForArtists(searchTerm: string): Promise<SpotifyOption[]> {
-  const data = await performSearch<ArtistResponse>(searchTerm);
+  const data = await performSearch<ArtistResponse>('artist', searchTerm);
 
   try {
     return data.artists.items.map(artist => ({
@@ -139,7 +139,7 @@ export async function searchForArtists(searchTerm: string): Promise<SpotifyOptio
  * @returns Promise<SpotifyOption[]>
  */
 export async function searchForAlbums(searchTerm: string): Promise<SpotifyOption[]> {
-  const data = await performSearch<AlbumResponse>(searchTerm);
+  const data = await performSearch<AlbumResponse>('album', searchTerm);
 
   try {
     return data.albums.items.map(album => ({
@@ -180,4 +180,34 @@ export async function fetchArtist(spotifyId: string): Promise<SpotifyOption> {
   }
 
   throw new Error("Error fetching artist from Spotify");
+}
+
+/**
+ * Fetches the given album.
+ * @param spotifyId string
+ * @returns Promise<SpotifyOption>
+ */
+export async function fetchAlbum(spotifyId: string): Promise<SpotifyOption> {
+  const token = await getToken();
+
+  const res = await fetch(`https://api.spotify.com/v1/albums/${spotifyId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const data: SpotifyItem = await res.json();
+
+  if (res.ok) {
+    return {
+      id: data.id,
+      name: data.name,
+      imageUrl: data.images[0]?.url ?? '',
+    };
+  }
+
+  throw new Error("Error fetching album from Spotify");
 }

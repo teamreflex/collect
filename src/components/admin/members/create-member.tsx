@@ -138,7 +138,6 @@ export default function CreateMember({ artist }: { artist: Artist }) {
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog >
-
+    </Dialog>
   )
 }

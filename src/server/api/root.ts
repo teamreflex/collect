@@ -4,11 +4,13 @@ import { companiesRouter } from "./routers/companies";
 import { filesRouter } from "./routers/files";
 import { membersRouter } from "./routers/members";
 import { spotifyRouter } from "./routers/spotify";
+import { albumsRouter } from "./routers/albums";
 
 export const appRouter = createTRPCRouter({
   companies: companiesRouter,
   artists: artistsRouter,
   members: membersRouter,
+  albums: albumsRouter,
   files: filesRouter,
   spotify: spotifyRouter,
 });

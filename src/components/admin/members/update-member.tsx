@@ -144,7 +144,6 @@ export default function UpdateMember({ artist, member, size = 'default' }: Updat
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog >
-
+    </Dialog>
   )
 }

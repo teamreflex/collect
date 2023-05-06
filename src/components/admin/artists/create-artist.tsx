@@ -49,7 +49,7 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
-  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<CreateArtistSchema>({
+  const { control, register, handleSubmit, reset, formState: { errors }, setValue } = useForm<CreateArtistSchema>({
     resolver: zodResolver(createArtistSchema),
     defaultValues: {
       isGroup: true,
@@ -139,7 +139,7 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
                 control={control}
                 name="spotifyId"
                 render={({ field: { onChange, value } }) => (
-                  <SpotifySearch searchType="artist" onSelected={onChange} value={value} />
+                  <SpotifySearch searchType="artist" onSelected={onChange} onImageSelected={e => setValue('image', e)} value={value} />
                 )} />
               {errors.spotifyId && <p className="text-xs text-red-500">{errors.spotifyId?.message}</p>}
             </div>

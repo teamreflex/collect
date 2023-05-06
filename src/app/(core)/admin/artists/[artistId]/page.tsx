@@ -1,14 +1,17 @@
-import { Instagram } from "lucide-react";
+import { Headphones, Instagram } from "lucide-react";
 import { type Metadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
+import CreateAlbum from "~/components/admin/albums/create-album";
+import DeleteAlbum from "~/components/admin/albums/delete-album";
+import UpdateAlbum from "~/components/admin/albums/update-album";
 import DeleteArtist from "~/components/admin/artists/delete-artist";
 import UpdateArtist from "~/components/admin/artists/update-artist";
 import CreateMember from "~/components/admin/members/create-member";
 import DeleteMember from "~/components/admin/members/delete-member";
 import UpdateMember from "~/components/admin/members/update-member";
 import { H2 } from "~/components/typography"
-import { fetchArtistWithMembers } from "~/server/db/artists";
+import { fetchArtistWithContent } from "~/server/db/artists";
 import { fetchAllCompanies } from "~/server/db/companies";
 
 type ArtistPageProps = {
@@ -19,7 +22,7 @@ type ArtistPageProps = {
 
 const fetchData = cache(async (artistId: string) => {
   return await Promise.all([
-    fetchArtistWithMembers(artistId),
+    fetchArtistWithContent(artistId),
     fetchAllCompanies()
   ]);
 });
@@ -87,10 +90,46 @@ export default async function Page({ params }: ArtistPageProps) {
           </div>
 
           <div className="flex flex-col gap-2">
-            albums
+            <CreateAlbum artist={artist} />
+
+            {artist.albums.length === 0 && (
+              <p className="text-center">No albums</p>
+            )}
+            {artist.albums.length > 0 && (
+              <div className="flex flex-col rounded-lg border border-white divide-y divide-white divide-solid">
+                {artist.albums.map((album) => (
+                  <div key={album.id} className="grid grid-cols-4 justify-between items-center p-3">
+                    <Image className="justify-start rounded-md" alt={album.name} src={album.image} width={50} height={50} />
+
+                    {/* Name */}
+                    <div className="flex flex-col">
+                      <p className="text-lg font-semibold">{album.name}</p>
+                      <p className="text-xs text-white/80">
+                        {album.region === 'kr' && 'Korean release'}
+                        {album.region === 'jp' && 'Japanese release'}
+                        {album.region === 'en' && 'English release'}
+                        {album.region === 'other' && 'Other release'}
+                      </p>
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex flex-row gap-5">
+                      {album.spotifyId && <a href={`https://open.spotify.com/album/${album.spotifyId}`} target="_blank"><Headphones /></a>}
+                    </div>
+
+                    <div className="flex flex-row gap-2 justify-end">
+                      <UpdateAlbum artist={artist} album={album} size="sm" />
+                      <DeleteAlbum id={album.id} name={album.name} size="sm" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
 }
+
+export const revalidate = 60;

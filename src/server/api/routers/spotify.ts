@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fetchAlbum } from "~/lib/spotify";
 import { fetchArtist, searchForAlbums, searchForArtists, spotifyOptionSchema } from "~/lib/spotify";
 import {
   createTRPCRouter,
@@ -10,7 +11,8 @@ export const spotifySearchSchema = z.object({
   searchTerm: z.string().min(1),
 });
 
-export const spotifyFetchArtistSchema = z.object({
+export const spotifyFetchRecordSchema = z.object({
+  type: z.enum(["artist", "album"]),
   spotifyId: z.string().min(1),
 });
 
@@ -24,10 +26,12 @@ export const spotifyRouter = createTRPCRouter({
         : await searchForAlbums(input.searchTerm);
     }),
 
-  fetchArtist: adminProcedure
-    .input(spotifyFetchArtistSchema)
+  fetchRecord: adminProcedure
+    .input(spotifyFetchRecordSchema)
     .output(spotifyOptionSchema)
     .query(async ({ input }) => {
-      return await fetchArtist(input.spotifyId);
+      return input.type === "artist"
+        ? await fetchArtist(input.spotifyId)
+        : await fetchAlbum(input.spotifyId);
     }),
 });

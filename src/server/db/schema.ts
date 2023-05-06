@@ -72,6 +72,7 @@ export const albums = mysqlTable("albums", {
   name: text("name").notNull(),
   region: mysqlEnum('region', ['en', 'kr', 'jp', 'other']).notNull(),
   releaseDate: date("release_date").notNull(),
+  image: text("image").notNull(),
   spotifyId: text("spotify_id"),
 }, (table) => ({
   artistIndex: index('albums__artist_id__idx').on(table.artistId),
