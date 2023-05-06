@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
+import { SpotifySearch } from "~/components/ui/spotify-search";
 
 export const createArtistSchema = z.object({
   nameEn: z.string().min(1),
@@ -40,6 +41,7 @@ export const createArtistSchema = z.object({
   instagram: z.string().min(1),
   youtube: z.string().min(1),
   website: z.string().min(1),
+  spotifyId: z.string().min(1).optional().nullable(),
 });
 type CreateArtistSchema = z.infer<typeof createArtistSchema>;
 
@@ -51,6 +53,7 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
     resolver: zodResolver(createArtistSchema),
     defaultValues: {
       isGroup: true,
+      spotifyId: null,
     },
   });
 
@@ -127,6 +130,18 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
               <Label htmlFor="website">Website</Label>
               <Input type="text" id="website" placeholder="Website..." {...register('website')} />
               {errors.website && <p className="text-xs text-red-500">{errors.website?.message}</p>}
+            </div>
+
+            {/* Spotify */}
+            <div className="flex flex-col gap-1.5 col-span-2">
+              <Label htmlFor="spotifyId">Spotify</Label>
+               <Controller
+                control={control}
+                name="spotifyId"
+                render={({ field: { onChange, value } }) => (
+                  <SpotifySearch searchType="artist" onSelected={onChange} value={value} />
+                )} />
+              {errors.spotifyId && <p className="text-xs text-red-500">{errors.spotifyId?.message}</p>}
             </div>
 
             {/* Debut */}

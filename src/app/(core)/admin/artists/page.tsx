@@ -1,4 +1,4 @@
-import { Eye, Globe, Instagram, Twitter, Youtube } from "lucide-react"
+import { Eye, Globe, Headphones, Instagram, Twitter, Youtube } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import CreateArtist from "~/components/admin/artists/create-artist"
@@ -42,10 +42,11 @@ export default async function Page() {
                   {artist.youtube && <a href={artist.youtube} target="_blank"><Youtube /></a>}
                   {artist.instagram && <a href={artist.instagram} target="_blank"><Instagram /></a>}
                   {artist.website && <a href={artist.website} target="_blank"><Globe /></a>}
+                  {artist.spotifyId && <a href={`https://open.spotify.com/artist/${artist.spotifyId}`} target="_blank"><Headphones /></a>}
                 </div>
 
                 <div className="flex flex-row gap-2 justify-end">
-                  <Link href={`/admin/artists/${artist.id}`}>
+                  <Link prefetch={false} href={{ pathname: `/admin/artists/${artist.id}` }}>
                     <Button size="sm"><Eye /></Button>
                   </Link>
                   <UpdateArtist companies={allCompanies} artist={artist} size="sm" data-superjson />

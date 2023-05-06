@@ -37,6 +37,7 @@ export const artists = mysqlTable("artists", {
   instagram: text("instagram").notNull(),
   youtube: text("youtube").notNull(),
   website: text("website").notNull(),
+  spotifyId: text("spotify_id"),
 });
 export type Artist = InferModel<typeof artists>;
 export type NewArtist = InferModel<typeof artists, 'insert'>;
@@ -71,6 +72,7 @@ export const albums = mysqlTable("albums", {
   name: text("name").notNull(),
   region: mysqlEnum('region', ['en', 'kr', 'jp', 'other']).notNull(),
   releaseDate: date("release_date").notNull(),
+  spotifyId: text("spotify_id"),
 }, (table) => ({
   artistIndex: index('albums__artist_id__idx').on(table.artistId),
 }));

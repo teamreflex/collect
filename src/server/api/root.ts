@@ -3,12 +3,14 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { companiesRouter } from "./routers/companies";
 import { filesRouter } from "./routers/files";
 import { membersRouter } from "./routers/members";
+import { spotifyRouter } from "./routers/spotify";
 
 export const appRouter = createTRPCRouter({
   companies: companiesRouter,
   artists: artistsRouter,
   members: membersRouter,
   files: filesRouter,
+  spotify: spotifyRouter,
 });
 
 // export type definition of API

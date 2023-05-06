@@ -11,6 +11,8 @@ const server = z.object({
   R2_SECRET_ACCESS_KEY: z.string().min(1),
   R2_ACCOUNT_ID: z.string().min(1),
   R2_BUCKET: z.string().min(1),
+  SPOTIFY_CLIENT_ID: z.string().min(1),
+  SPOTIFY_CLIENT_SECRET: z.string().min(1),
 });
 
 const client = z.object({
@@ -40,6 +42,8 @@ const processEnv = {
   R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
   R2_BUCKET: process.env.R2_BUCKET,
   NEXT_PUBLIC_R2_URL: process.env.NEXT_PUBLIC_R2_URL,
+  SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
+  SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
 };
 
 // Don't touch the part below
