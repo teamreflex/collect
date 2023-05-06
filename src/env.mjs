@@ -13,6 +13,10 @@ const server = z.object({
   R2_BUCKET: z.string().min(1),
   SPOTIFY_CLIENT_ID: z.string().min(1),
   SPOTIFY_CLIENT_SECRET: z.string().min(1),
+  KV_URL: z.string().min(1),
+  KV_REST_API_URL: z.string().min(1),
+  KV_REST_API_TOKEN: z.string().min(1),
+  KV_REST_API_READ_ONLY_TOKEN: z.string().min(1),
 });
 
 const client = z.object({
@@ -44,6 +48,10 @@ const processEnv = {
   NEXT_PUBLIC_R2_URL: process.env.NEXT_PUBLIC_R2_URL,
   SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
   SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
+  KV_URL: process.env.KV_URL,
+  KV_REST_API_URL: process.env.KV_REST_API_URL,
+  KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
+  KV_REST_API_READ_ONLY_TOKEN: process.env.KV_REST_API_READ_ONLY_TOKEN,
 };
 
 // Don't touch the part below

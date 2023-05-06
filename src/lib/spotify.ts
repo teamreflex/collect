@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { env } from "~/env.mjs";
+import kv from "@vercel/kv";
 
 export const spotifyOptionSchema = z.object({
   id: z.string().min(1),
@@ -35,8 +36,34 @@ type AlbumResponse = {
   albums: SpotifyResponse;
 }
 
+type SpotifyToken = {
+  token: string;
+  timestamp: number;
+}
+
+/**
+ * Generates a Spotify token and caches it for an hour.
+ * @returns Promise<string>
+ */
+async function getToken() {
+  const now = Date.now();
+  const cachedToken = await kv.get<SpotifyToken>("spotifyToken");
+  if (!cachedToken || now - cachedToken.timestamp >= (3600 * 1000)) {
+    const newToken = await generateToken();
+    await kv.set('spotifyToken', {
+      token: newToken,
+      timestamp: now,
+    });
+    return newToken;
+  }
+  return cachedToken.token;
+}
+
+/**
+ * Generates a new Spotify access token.
+ * @returns Promise<string>
+ */
 async function generateToken() {
-  console.log('generating spotify token');
   const res = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
@@ -55,8 +82,13 @@ async function generateToken() {
   throw new Error('Failed to generate token');
 }
 
+/**
+ * Searches on either artists or albums.
+ * @param searchTerm string
+ * @returns Promise<TResponse>
+ */
 async function performSearch<TResponse>(searchTerm: string): Promise<TResponse> {
-  const token = await generateToken();
+  const token = await getToken();
 
   const params = new URLSearchParams({
     q: searchTerm,
@@ -82,6 +114,11 @@ async function performSearch<TResponse>(searchTerm: string): Promise<TResponse> 
   throw new Error("Error searching Spotify");
 }
 
+/**
+ * Searches Spotify for the given artist.
+ * @param searchTerm string
+ * @returns Promise<SpotifyOption[]>
+ */
 export async function searchForArtists(searchTerm: string): Promise<SpotifyOption[]> {
   const data = await performSearch<ArtistResponse>(searchTerm);
 
@@ -96,6 +133,11 @@ export async function searchForArtists(searchTerm: string): Promise<SpotifyOptio
   }
 }
 
+/**
+ * Searches Spotify for the given album.
+ * @param searchTerm string
+ * @returns Promise<SpotifyOption[]>
+ */
 export async function searchForAlbums(searchTerm: string): Promise<SpotifyOption[]> {
   const data = await performSearch<AlbumResponse>(searchTerm);
 
@@ -110,8 +152,13 @@ export async function searchForAlbums(searchTerm: string): Promise<SpotifyOption
   }
 }
 
+/**
+ * Fetches the given artist.
+ * @param spotifyId string
+ * @returns Promise<SpotifyOption>
+ */
 export async function fetchArtist(spotifyId: string): Promise<SpotifyOption> {
-  const token = await generateToken();
+  const token = await getToken();
 
   const res = await fetch(`https://api.spotify.com/v1/artists/${spotifyId}`, {
     method: 'GET',
