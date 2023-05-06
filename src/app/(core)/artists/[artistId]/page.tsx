@@ -1,6 +1,7 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import AlbumCard from "~/components/artist/album-card";
 import { H2 } from "~/components/typography"
 import { siteConfig } from "~/config/site";
 import { cn } from "~/lib/utils";
@@ -36,9 +37,8 @@ export default async function Page({ params }: ArtistPageProps) {
       </div>
 
       <div className="container">
-        <div className="flex flex-col gap-3">
-          <p>Members: {artist.members.length}</p>
-          <p>Albums: {artist.albums.length}</p>
+        <div className="flex flex-row flex-wrap gap-3">
+          {artist.albums.map(album => <AlbumCard key={album.id} album={album} />)}
         </div>
       </div>
     </div>
