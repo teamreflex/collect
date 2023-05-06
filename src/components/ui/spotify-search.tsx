@@ -13,7 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover"
-import { debounce } from "lodash"
+import { useDebounce } from 'usehooks-ts'
 import { type SpotifyOption } from "~/lib/spotify"
 import { api } from "~/lib/api/client"
 import Image from "next/image"
@@ -29,9 +29,10 @@ export function SpotifySearch({ onSelected, value, searchType }: Props) {
   const [options, setOptions] = useState<SpotifyOption[]>([])
   const [selected, setSelected] = useState<SpotifyOption | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearch = useDebounce<string>(searchTerm, 500)
 
-  const { isFetching } = api.spotify.search.useQuery({ type: searchType, searchTerm }, {
-    enabled: searchTerm.length >= 2,
+  const { isFetching } = api.spotify.search.useQuery({ type: searchType, searchTerm: debouncedSearch }, {
+    enabled: debouncedSearch.length >= 2,
     onSuccess(data) {
       if (selected && data.findIndex(a => a.id === selected.id) === -1) {
         setOptions([selected, ...data]);
@@ -75,7 +76,7 @@ export function SpotifySearch({ onSelected, value, searchType }: Props) {
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <Command shouldFilter={false}>
-          <CommandInput onValueChange={debounce(setSearchTerm, 500)} placeholder={`Search ${searchType}s...`} />
+          <CommandInput onValueChange={setSearchTerm} placeholder={`Search ${searchType}s...`} />
           {isFetching && (
             <div className="flex justify-center items-center py-5 text-center text-muted-foreground">
               <Loader2 className="h-6 w-6 animate-spin" />
