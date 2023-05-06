@@ -40,12 +40,12 @@ export default function CreateCompany() {
   const router = useRouter();
   const { mutate: createCompany, isLoading } = api.companies.create.useMutation({
     onSuccess(_, newData) {
+      router.refresh();
       setOpen(false);
       reset();
       toast({
         description: <p>Company <span className="font-semibold">{newData.nameEn}</span> created</p>,
-      })
-      router.refresh();
+      });
     },
   });
 

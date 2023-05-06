@@ -55,12 +55,12 @@ export default function UpdateMember({ artist, member, size = 'default' }: Updat
   const router = useRouter();
   const { mutate: updateMember, isLoading } = api.members.update.useMutation({
     onSuccess(_, newData) {
+      router.refresh();
       setOpen(false);
       reset(newData);
       toast({
         description: <p>Member <span className="font-semibold">{newData.stageNameEn}</span> updated</p>
-      })
-      router.refresh();
+      });
     },
   });
 

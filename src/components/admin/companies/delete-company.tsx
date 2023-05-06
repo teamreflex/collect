@@ -36,11 +36,11 @@ export default function DeleteCompany({ name, id }: { name: string, id: DeleteCo
   const router = useRouter();
   const { mutate: deleteCompany, isLoading } = api.companies.delete.useMutation({
     onSuccess() {
+      router.refresh();
       reset();
       toast({
         description: <p>Company <span className="font-semibold">{name}</span> deleted</p>,
-      })
-      router.refresh();
+      });
     },
   });
 

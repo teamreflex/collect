@@ -64,12 +64,12 @@ export default function UpdateArtist({ companies, artist, size = 'default' }: Up
   const router = useRouter();
   const { mutate: updateArtist, isLoading } = api.artists.update.useMutation({
     onSuccess(_, newData) {
+      router.refresh();
       setOpen(false);
       reset(newData);
       toast({
         description: <p>Artist <span className="font-semibold">{newData.nameEn}</span> updated</p>,
-      })
-      router.refresh();
+      });
     },
   });
 

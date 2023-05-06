@@ -47,12 +47,12 @@ export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompa
   const router = useRouter();
   const { mutate: updateCompany, isLoading } = api.companies.update.useMutation({
     onSuccess(_, newData) {
+      router.refresh();
       setOpen(false);
       reset(newData);
       toast({
         description: <p>Company <span className="font-semibold">{newData.nameEn}</span> updated</p>,
-      })
-      router.refresh();
+      });
     },
   });
 

@@ -36,11 +36,11 @@ export default function DeleteMember({ name, id, size = 'default' }: { name: str
   const router = useRouter();
   const { mutate: deleteMember, isLoading } = api.members.delete.useMutation({
     onSuccess() {
+      router.refresh();
       reset();
       toast({
         description: <p>Member <span className="font-semibold">{name}</span> deleted</p>,
-      })
-      router.refresh();
+      });
     },
   });
 

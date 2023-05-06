@@ -57,12 +57,12 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
   const router = useRouter();
   const { mutate: createArtist, isLoading } = api.artists.create.useMutation({
     onSuccess(_, newData) {
+      router.refresh();
       setOpen(false);
       reset();
       toast({
         description: <p>Artist <span className="font-semibold">{newData.nameEn}</span> created</p>,
-      })
-      router.refresh();
+      });
     },
   });
 

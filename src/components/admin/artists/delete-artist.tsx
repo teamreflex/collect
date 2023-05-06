@@ -38,16 +38,16 @@ export default function DeleteArtist({ name, id, size = 'default' }: { name: str
   const pathname = usePathname();
   const { mutate: deleteArtist, isLoading } = api.artists.delete.useMutation({
     onSuccess() {
-      reset();
-      toast({
-        description: <p>Artist <span className="font-semibold">{name}</span> deleted</p>,
-      })
       // handle different locations this button may be
       if (pathname === `/admin/artists/${id}`) {
         router.push('/admin/artists');
       } else {
         router.refresh();
       }
+      reset();
+      toast({
+        description: <p>Artist <span className="font-semibold">{name}</span> deleted</p>,
+      });
     },
   });
 

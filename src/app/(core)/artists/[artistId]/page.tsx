@@ -46,3 +46,4 @@ export default async function Page({ params }: ArtistPageProps) {
 }
 
 export const runtime = "edge";
+export const revalidate = 60;

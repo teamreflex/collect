@@ -48,12 +48,12 @@ export default function CreateMember({ artist }: { artist: Artist }) {
   const router = useRouter();
   const { mutate: createMember, isLoading } = api.members.create.useMutation({
     onSuccess(_, newData) {
+      router.refresh();
       setOpen(false);
       reset();
       toast({
         description: <p>Member <span className="font-semibold">{newData.stageNameEn}</span> created</p>
-      })
-      router.refresh();
+      });
     },
   });
 
