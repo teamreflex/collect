@@ -1,3 +1,5 @@
+import { env } from '~/env.mjs'
+
 export type SiteConfig = {
   name: string;
   description: string;
@@ -13,7 +15,7 @@ export const siteConfig: SiteConfig = {
   name: "Collect",
   description:
     "Track your kpop collection",
-  url: "http://localhost:3000/",
+  url: env.NEXT_PUBLIC_APP_URL,
   links: {
     twitter: "https://twitter.com/Reflexgg",
     github:
