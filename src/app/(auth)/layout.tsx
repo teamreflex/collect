@@ -3,8 +3,6 @@ import "~/styles/globals.css";
 import { siteConfig } from "~/config/site";
 import { cn } from "~/lib/utils";
 import { ClientProviders } from "../client-providers";
-import { Toaster } from "~/components/ui/toaster";
-import Navbar from "~/components/layout/navbar";
 
 const fontSans = Inter({
   weight: ["400", "500", "600", "800", "900"],
