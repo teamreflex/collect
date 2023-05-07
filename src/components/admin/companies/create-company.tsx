@@ -21,6 +21,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
 import { type CreateCompanySchema, createCompanySchema } from "~/server/db/schema";
+import { Plus } from "lucide-react";
 
 export default function CreateCompany() {
   const { toast } = useToast();
@@ -49,7 +50,9 @@ export default function CreateCompany() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Create Company</Button>
+        <Button variant="default" className="flex flex-row gap-1">
+          <Plus /> Create Company
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
