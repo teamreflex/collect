@@ -27,14 +27,14 @@ export default async function Page() {
 
         {allArtists.length === 0 && <p>No artists</p>}
         {allArtists.length > 0 && (
-          <div className="flex flex-col rounded-lg border border-white divide-y divide-white divide-solid">
+          <div className="flex flex-col rounded-lg border border-foreground divide-y divide-foreground divide-solid">
             {allArtists.map((artist) => (
               <div key={artist.id} className="grid grid-cols-4 justify-between items-center p-3">
                 <Image className="justify-start rounded-md" alt={artist.nameEn} src={artist.image} width={50} height={50} />
 
                 <div className="flex flex-col">
-                  <p className="text-lg font-semibold">{artist.nameEn}</p>
-                  <p className="text-xs text-white/80">{artist.nameKr}</p>
+                  <p className="text-lg font-semibold text-foreground">{artist.nameEn}</p>
+                  <p className="text-xs text-muted-foreground">{artist.nameKr}</p>
                 </div>
 
                 <div className="flex flex-row gap-5">

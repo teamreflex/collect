@@ -5,6 +5,7 @@ import { cn } from "~/lib/utils";
 import { ClientProviders } from "../client-providers";
 import { Toaster } from "~/components/ui/toaster";
 import Navbar from "~/components/layout/navbar";
+import ThemeToggle from "~/components/layout/theme-toggle";
 
 const fontSans = Inter({
   weight: ["400", "500", "600", "800", "900"],
@@ -67,11 +68,11 @@ export default function CoreLayout({ children }: PropsWithChildren) {
           <Navbar />
 
           {/* Content */}
-          <main className="m-auto flex flex-col">{children}</main>
+          <main className="m-auto flex flex-col text-foreground">{children}</main>
 
           {/* Footer */}
           <footer className={cn("fixed inset-x-0 bottom-0 bg-gradient-to-l", siteConfig.gradient)}>
-            <div className="grid md:flex container md:items-center md:justify-between gap-2 md:gap-4 py-3 md:py-6 text-sm">
+            <div className="h-16 grid md:flex container md:items-center md:justify-between gap-2 md:gap-4 py-3 md:py-6 text-sm text-foreground dark:text-background">
               <p>
                 Source code is available on{" "}
                 <a
@@ -83,6 +84,8 @@ export default function CoreLayout({ children }: PropsWithChildren) {
                   GitHub
                 </a>
               </p>
+
+              <ThemeToggle />
             </div>
           </footer>
           <Toaster />

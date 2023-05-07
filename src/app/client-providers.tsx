@@ -13,7 +13,7 @@ export function ClientProviders({ children }: PropsWithChildren) {
       <ClerkProvider publishableKey={env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} appearance={{
         baseTheme: dark,
         elements: {
-          card: 'bg-background/50 border-transparent',
+          card: 'bg-foreground/50 dark:bg-background/50 border-transparent',
           formFieldInput: 'bg-background/50',
           formButtonReset: 'text-reflex-400 hover:text-white hover:bg-reflex-300',
           formButtonPrimary: 'bg-reflex-400 hover:bg-reflex-300',

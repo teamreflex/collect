@@ -74,7 +74,7 @@ export function SpotifySearch({ onSelected, onImageSelected, value, searchType }
   }
 
   return (
-    <div className="flex flex-row gap-2 w-full">
+    <div className={cn("flex flex-row w-full", selected ? 'gap-2' : null)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -131,7 +131,7 @@ export function SpotifySearch({ onSelected, onImageSelected, value, searchType }
         {selected && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <ImagePlus className="hover:cursor-pointer" onClick={handleImageCopy} />
+              <ImagePlus className="hover:cursor-pointer text-foreground" onClick={handleImageCopy} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Copy image from Spotify</p>

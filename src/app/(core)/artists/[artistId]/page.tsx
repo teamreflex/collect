@@ -32,7 +32,7 @@ export default async function Page({ params }: ArtistPageProps) {
     <div className="min-w-full">
       <div className={cn("flex flex-col mb-5 bg-gradient-to-r", siteConfig.gradient)}>
         <H2 className="flex flex-row">
-          <span className="container">{artist.nameEn}</span>
+          <span className="container text-foreground dark:text-background">{artist.nameEn}</span>
         </H2>
       </div>
 

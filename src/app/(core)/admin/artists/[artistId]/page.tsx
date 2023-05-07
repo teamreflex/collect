@@ -50,6 +50,7 @@ export default async function Page({ params }: ArtistPageProps) {
         </H2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          {/* Members */}
           <div className="flex flex-col gap-2">
             <CreateMember artist={artist} />
 
@@ -57,7 +58,7 @@ export default async function Page({ params }: ArtistPageProps) {
               <p className="text-center">No members</p>
             )}
             {artist.members.length > 0 && (
-              <div className="flex flex-col rounded-lg border border-white divide-y divide-white divide-solid">
+              <div className="flex flex-col rounded-lg border border-foreground divide-y divide-foreground divide-solid">
                 {artist.members.map((member) => (
                   <div key={member.id} className="grid grid-cols-5 justify-between items-center p-3">
                     <Image className="justify-start rounded-md" alt={member.stageNameEn} src={member.image} width={50} height={50} />
@@ -65,13 +66,13 @@ export default async function Page({ params }: ArtistPageProps) {
                     {/* Stage Name */}
                     <div className="flex flex-col">
                       <p className="text-lg font-semibold">{member.stageNameEn}</p>
-                      <p className="text-xs text-white/80">{member.stageNameKr}</p>
+                      <p className="text-xs text-muted-foreground">{member.stageNameKr}</p>
                     </div>
 
                     {/* Real Name */}
                     <div className="flex flex-col">
                       <p className="text-lg font-semibold">{member.nameEn}</p>
-                      <p className="text-xs text-white/80">{member.nameKr}</p>
+                      <p className="text-xs text-muted-foreground">{member.nameKr}</p>
                     </div>
 
                     {/* Links */}
@@ -89,6 +90,7 @@ export default async function Page({ params }: ArtistPageProps) {
             )}
           </div>
 
+          {/* Albums */}
           <div className="flex flex-col gap-2">
             <CreateAlbum artist={artist} />
 
@@ -96,7 +98,7 @@ export default async function Page({ params }: ArtistPageProps) {
               <p className="text-center">No albums</p>
             )}
             {artist.albums.length > 0 && (
-              <div className="flex flex-col rounded-lg border border-white divide-y divide-white divide-solid">
+              <div className="flex flex-col rounded-lg border border-foreground divide-y divide-foreground divide-solid">
                 {artist.albums.map((album) => (
                   <div key={album.id} className="grid grid-cols-4 justify-between items-center p-3">
                     <Image className="justify-start rounded-md" alt={album.name} src={album.image} width={50} height={50} />
@@ -104,7 +106,7 @@ export default async function Page({ params }: ArtistPageProps) {
                     {/* Name */}
                     <div className="flex flex-col">
                       <p className="text-lg font-semibold">{album.name}</p>
-                      <p className="text-xs text-white/80">
+                      <p className="text-xs text-muted-foreground">
                         {album.region === 'kr' && 'Korean release'}
                         {album.region === 'jp' && 'Japanese release'}
                         {album.region === 'en' && 'English release'}
