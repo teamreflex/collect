@@ -17,6 +17,6 @@ export default function ThemeToggle() {
   }
 
   return (
-    <Switch checked={theme === "dark"} onCheckedChange={() => setTheme(theme === "dark" ? "light" : "dark")} />
+    <Switch className="drop-shadow" checked={theme === "dark"} onCheckedChange={() => setTheme(theme === "dark" ? "light" : "dark")} />
   )
 }

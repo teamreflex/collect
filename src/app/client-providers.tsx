@@ -20,6 +20,7 @@ export function ClientProviders({ children }: PropsWithChildren) {
           footerActionLink: 'text-reflex-400 hover:text-reflex-300',
           profileSectionPrimaryButton: 'text-reflex-400',
           badge: 'text-reflex-400',
+          userButtonBox: 'drop-shadow',
         }
       }}>
         <api.Provider>
