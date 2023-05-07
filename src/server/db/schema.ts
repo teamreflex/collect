@@ -11,6 +11,8 @@ import {
   varchar,
   index
 } from "drizzle-orm/mysql-core";
+import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
 export const companies = mysqlTable("companies", {
   id: serial("id").primaryKey(),
@@ -21,7 +23,15 @@ export const companies = mysqlTable("companies", {
   image: text("image").notNull(),
 });
 export type Company = InferModel<typeof companies>;
-export type NewCompany = InferModel<typeof companies, 'insert'>;
+export const selectCompanySchema = createSelectSchema(companies);
+export const createCompanySchema = createInsertSchema(companies);
+export type CreateCompanySchema = z.infer<typeof createCompanySchema>;
+export const updateCompanySchema = createCompanySchema.partial().omit({ createdAt: true }).required({
+  id: true,
+});
+export type UpdateCompanySchema = z.infer<typeof updateCompanySchema>;
+export const deleteCompanySchema = updateCompanySchema.pick({ id: true });
+export type DeleteCompanySchema = z.infer<typeof deleteCompanySchema>;
 
 export const artists = mysqlTable("artists", {
   id: serial("id").primaryKey(),
@@ -40,7 +50,15 @@ export const artists = mysqlTable("artists", {
   spotifyId: text("spotify_id"),
 });
 export type Artist = InferModel<typeof artists>;
-export type NewArtist = InferModel<typeof artists, 'insert'>;
+export const selectArtistSchema = createSelectSchema(artists);
+export const createArtistSchema = createInsertSchema(artists);
+export type CreateArtistSchema = z.infer<typeof createArtistSchema>;
+export const updateArtistSchema = createArtistSchema.partial().omit({ createdAt: true }).required({
+  id: true,
+});
+export type UpdateArtistSchema = z.infer<typeof updateArtistSchema>;
+export const deleteArtistSchema = updateArtistSchema.pick({ id: true });
+export type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>;
 
 export const members = mysqlTable("members", {
   id: serial("id").primaryKey(),
@@ -54,7 +72,18 @@ export const members = mysqlTable("members", {
   instagram: text("instagram").notNull(),
 });
 export type Member = InferModel<typeof members>;
-export type NewMember = InferModel<typeof members, 'insert'>;
+export const selectMemberSchema = createSelectSchema(members);
+export const createMemberSchema = createInsertSchema(members).extend({
+  artistId: z.number().positive(),
+});
+export type CreateMemberSchema = z.infer<typeof createMemberSchema>;
+export const updateMemberSchema = createMemberSchema.partial().omit({ createdAt: true }).required({
+  id: true,
+  artistId: true,
+});
+export type UpdateMemberSchema = z.infer<typeof updateMemberSchema>;
+export const deleteMemberSchema = updateMemberSchema.pick({ id: true });
+export type DeleteMemberSchema = z.infer<typeof deleteMemberSchema>;
 
 export const artistsToMembers = mysqlTable('artist_to_member', {
   memberId: int('member_id').notNull(),
@@ -78,6 +107,15 @@ export const albums = mysqlTable("albums", {
   artistIndex: index('albums__artist_id__idx').on(table.artistId),
 }));
 export type Album = InferModel<typeof albums>;
+export const selectAlbumSchema = createSelectSchema(albums);
+export const createAlbumSchema = createInsertSchema(albums);
+export type CreateAlbumSchema = z.infer<typeof createAlbumSchema>;
+export const updateAlbumSchema = createAlbumSchema.partial().omit({ createdAt: true }).required({
+  id: true,
+});
+export type UpdateAlbumSchema = z.infer<typeof updateAlbumSchema>;
+export const deleteAlbumSchema = updateAlbumSchema.pick({ id: true });
+export type DeleteAlbumSchema = z.infer<typeof deleteAlbumSchema>;
 
 export const albumVersions = mysqlTable("album_versions", {
   id: serial("id").primaryKey(),
@@ -139,3 +177,9 @@ export const collectionPhotocards = mysqlTable('collection_photocards', {
   photocardIndex: index('collection_album_versions__photocard_id__idx').on(table.photocardId),
   clerkphotocardIndex: index('collection_album_versions__clerk_id__album_version_id__idx').on(table.clerkId, table.photocardId),
 }));
+
+export const selectArtistWithContentSchema = selectArtistSchema.extend({
+  company: selectCompanySchema,
+  members: z.array(selectMemberSchema),
+  albums: z.array(selectAlbumSchema),
+});

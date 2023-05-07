@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   AlertDialog,
@@ -20,11 +19,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Trash } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import { usePathname } from "next/navigation";
-
-export const deleteArtistSchema = z.object({
-  id: z.number().positive(),
-});
-type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>;
+import { type DeleteArtistSchema, deleteArtistSchema } from "~/server/db/schema";
 
 export default function DeleteArtist({ name, id, size = 'default' }: { name: string, id: DeleteArtistSchema['id'], size?: 'sm' | 'default' }) {
   const { toast } = useToast();

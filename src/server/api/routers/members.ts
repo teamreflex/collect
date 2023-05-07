@@ -1,12 +1,9 @@
 import { eq } from "drizzle-orm";
-import { createMemberSchema } from "~/components/admin/members/create-member";
-import { deleteMemberSchema } from "~/components/admin/members/delete-member";
-import { updateMemberSchema } from "~/components/admin/members/update-member";
 import {
   createTRPCRouter,
   adminProcedure,
 } from "~/server/api/trpc";
-import { artistsToMembers, members } from "~/server/db/schema";
+import { artistsToMembers, createMemberSchema, deleteMemberSchema, members, updateMemberSchema } from "~/server/db/schema";
 
 export const membersRouter = createTRPCRouter({
   create: adminProcedure

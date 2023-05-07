@@ -2,7 +2,6 @@
 
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -22,28 +21,13 @@ import { cn } from "~/lib/utils";
 import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
-import { type Company } from "~/server/db/schema";
+import { createArtistSchema, type Company, type CreateArtistSchema } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
 import { SpotifySearch } from "~/components/ui/spotify-search";
-
-export const createArtistSchema = z.object({
-  nameEn: z.string().min(1),
-  nameKr: z.string().min(1),
-  debut: z.date(),
-  companyId: z.number().positive(),
-  isGroup: z.boolean(),
-  image: z.string().min(1),
-  twitter: z.string().min(1),
-  instagram: z.string().min(1),
-  youtube: z.string().min(1),
-  website: z.string().min(1),
-  spotifyId: z.string().min(1).optional().nullable(),
-});
-type CreateArtistSchema = z.infer<typeof createArtistSchema>;
 
 export default function CreateArtist({ companies }: { companies: Company[] }) {
   const { toast } = useToast();

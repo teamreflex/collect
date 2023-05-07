@@ -2,7 +2,6 @@
 
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -21,13 +20,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
-
-export const createCompanySchema = z.object({
-  nameEn: z.string().min(1),
-  nameKr: z.string().min(1),
-  image: z.string().min(1),
-});
-type CreateCompanySchema = z.infer<typeof createCompanySchema>;
+import { type CreateCompanySchema, createCompanySchema } from "~/server/db/schema";
 
 export default function CreateCompany() {
   const { toast } = useToast();

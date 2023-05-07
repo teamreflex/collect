@@ -4,8 +4,8 @@ import { cache } from "react";
 import AlbumCard from "~/components/artist/album-card";
 import { H2 } from "~/components/typography"
 import { siteConfig } from "~/config/site";
+import { api } from "~/lib/api/server";
 import { cn } from "~/lib/utils";
-import { fetchArtistWithContent } from "~/server/db/artists";
 
 type ArtistPageProps = {
   params: {
@@ -14,7 +14,7 @@ type ArtistPageProps = {
 }
 
 const fetchData = cache(async (artistId: string) => {
-  return await fetchArtistWithContent(artistId);
+  return await api.artists.fetch.fetch(artistId);
 });
 
 export async function generateMetadata({ params }: ArtistPageProps): Promise<Metadata> {
@@ -25,7 +25,6 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
 
 export default async function Page({ params }: ArtistPageProps) {
   const artist = await fetchData(params.artistId);
-
   if (!artist) notFound();
 
   return (

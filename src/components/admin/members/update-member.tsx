@@ -2,7 +2,6 @@
 
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -17,23 +16,11 @@ import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useState } from "react";
 import { Edit, Loader2 } from "lucide-react";
-import { type Artist } from "~/server/db/schema";
+import { updateMemberSchema, type Artist, type UpdateMemberSchema } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
-
-export const updateMemberSchema = z.object({
-  id: z.number().positive(),
-  artistId: z.number().positive(),
-  nameEn: z.string().min(1),
-  nameKr: z.string().min(1),
-  stageNameEn: z.string().min(1),
-  stageNameKr: z.string().min(1),
-  image: z.string().min(1),
-  instagram: z.string().min(1),
-});
-export type UpdateMemberSchema = z.infer<typeof updateMemberSchema>;
 
 type UpdateMemberProps = {
   artist: Artist;

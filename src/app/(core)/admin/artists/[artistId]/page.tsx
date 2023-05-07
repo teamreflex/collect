@@ -11,8 +11,7 @@ import CreateMember from "~/components/admin/members/create-member";
 import DeleteMember from "~/components/admin/members/delete-member";
 import UpdateMember from "~/components/admin/members/update-member";
 import { H2 } from "~/components/typography"
-import { fetchArtistWithContent } from "~/server/db/artists";
-import { fetchAllCompanies } from "~/server/db/companies";
+import { api } from "~/lib/api/server";
 
 type ArtistPageProps = {
   params: {
@@ -22,8 +21,8 @@ type ArtistPageProps = {
 
 const fetchData = cache(async (artistId: string) => {
   return await Promise.all([
-    fetchArtistWithContent(artistId),
-    fetchAllCompanies()
+    api.artists.fetch.fetch(artistId),
+    api.companies.fetchAll.fetch(),
   ]);
 });
 

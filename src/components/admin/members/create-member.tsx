@@ -2,7 +2,6 @@
 
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -17,22 +16,11 @@ import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useState } from "react";
 import { Loader2, UserPlus } from "lucide-react";
-import { type Artist } from "~/server/db/schema";
+import { type CreateMemberSchema, type Artist, createMemberSchema } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
-
-export const createMemberSchema = z.object({
-  artistId: z.number().positive(),
-  nameEn: z.string().min(1),
-  nameKr: z.string().min(1),
-  stageNameEn: z.string().min(1),
-  stageNameKr: z.string().min(1),
-  image: z.string().min(1),
-  instagram: z.string().min(1),
-});
-export type CreateMemberSchema = z.infer<typeof createMemberSchema>;
 
 export default function CreateMember({ artist }: { artist: Artist }) {
   const { toast } = useToast();

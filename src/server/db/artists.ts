@@ -6,7 +6,8 @@ export type ArtistWithMembers = Prettify<Artist & {
   members: Member[];
 }>;
 
-export type ArtistWithMembersAndAlbums = Prettify<Artist & {
+export type ArtistWithContent = Prettify<Artist & {
+  company: Company;
   members: Member[];
   albums: Album[];
 }>;
@@ -56,7 +57,7 @@ export async function fetchArtistWithMembers(artistId: number | string): Promise
   return result[0];
 }
 
-export async function fetchArtistsWithContent(artistId?: number | string): Promise<ArtistWithMembersAndAlbums[]> {
+export async function fetchArtistsWithContent(artistId?: number | string): Promise<ArtistWithContent[]> {
   if (Number.isNaN(Number(artistId))) {
     return [];
   }
@@ -84,11 +85,13 @@ export async function fetchArtistsWithContent(artistId?: number | string): Promi
         acc[artist.id] = { artist, members: [], company, albums: [] };
       }
 
-      if (member) {
+      const memberExists = acc[artist.id]?.members && acc[artist.id]?.members.findIndex(a => a.id === member?.id) !== -1;
+      if (member && !memberExists) {
         acc[artist.id]?.members.push(member);
       }
 
-      if (album) {
+      const albumExists = acc[artist.id]?.albums && acc[artist.id]?.albums.findIndex(a => a.id === album?.id) !== -1;
+      if (album && !albumExists) {
         acc[artist.id]?.albums.push(album);
       }
 
@@ -105,7 +108,7 @@ export async function fetchArtistsWithContent(artistId?: number | string): Promi
   }));
 }
 
-export async function fetchArtistWithContent(artistId: number | string): Promise<ArtistWithMembersAndAlbums | undefined> {
+export async function fetchArtistWithContent(artistId: number | string): Promise<ArtistWithContent | undefined> {
   const result = await fetchArtistsWithContent(artistId);
   return result[0];
 }

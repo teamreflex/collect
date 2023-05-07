@@ -6,29 +6,30 @@ import DeleteArtist from "~/components/admin/artists/delete-artist"
 import UpdateArtist from "~/components/admin/artists/update-artist"
 import { H2 } from "~/components/typography"
 import { Button } from "~/components/ui/button"
-import { db } from "~/server/db"
-import { artists, companies } from "~/server/db/schema"
+import { api } from "~/lib/api/server"
 
 export const metadata = {
   title: 'Admin · Artists',
 }
 
 export default async function Page() {
-  const allArtists = await db.select().from(artists);
-  const allCompanies = await db.select().from(companies);
+  const [artists, companies] = await Promise.all([
+    api.artists.fetchAll.fetch(),
+    api.companies.fetchAll.fetch(),
+  ])
 
   return (
     <div className="min-w-full">
       <div className="flex flex-col gap-3">
         <H2 className="flex flex-row justify-between">
           Artists
-          <CreateArtist companies={allCompanies} />
+          <CreateArtist companies={companies} />
         </H2>
 
-        {allArtists.length === 0 && <p>No artists</p>}
-        {allArtists.length > 0 && (
+        {artists.length === 0 && <p>No artists</p>}
+        {artists.length > 0 && (
           <div className="flex flex-col rounded-lg border border-foreground divide-y divide-foreground divide-solid">
-            {allArtists.map((artist) => (
+            {artists.map((artist) => (
               <div key={artist.id} className="grid grid-cols-4 justify-between items-center p-3">
                 <Image className="justify-start rounded-md" alt={artist.nameEn} src={artist.image} width={50} height={50} />
 
@@ -49,7 +50,7 @@ export default async function Page() {
                   <Link prefetch={false} href={{ pathname: `/admin/artists/${artist.id}` }}>
                     <Button size="sm"><Eye /></Button>
                   </Link>
-                  <UpdateArtist companies={allCompanies} artist={artist} size="sm" data-superjson />
+                  <UpdateArtist companies={companies} artist={artist} size="sm" data-superjson />
                   <DeleteArtist id={artist.id} name={artist.nameEn} size="sm" />
                 </div>
               </div>

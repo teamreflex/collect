@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   AlertDialog,
@@ -19,11 +18,7 @@ import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Loader2, Trash } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
-
-export const deleteMemberSchema = z.object({
-  id: z.number().positive(),
-});
-type DeleteMemberSchema = z.infer<typeof deleteMemberSchema>;
+import { type DeleteMemberSchema, deleteMemberSchema } from "~/server/db/schema";
 
 export default function DeleteMember({ name, id, size = 'default' }: { name: string, id: DeleteMemberSchema['id'], size?: 'sm' | 'default' }) {
   const { toast } = useToast();

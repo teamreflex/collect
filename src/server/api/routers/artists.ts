@@ -1,14 +1,35 @@
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
-import { createArtistSchema } from "~/components/admin/artists/create-artist";
-import { deleteArtistSchema } from "~/components/admin/artists/delete-artist";
-import { updateArtistSchema } from "~/components/admin/artists/update-artist";
+import { z } from "zod";
 import {
   createTRPCRouter,
   adminProcedure,
+  publicProcedure,
 } from "~/server/api/trpc";
-import { artists } from "~/server/db/schema";
+import { fetchArtistWithContent } from "~/server/db/artists";
+import {
+  artists,
+  selectArtistSchema,
+  createArtistSchema,
+  updateArtistSchema,
+  deleteArtistSchema,
+  selectArtistWithContentSchema,
+} from "~/server/db/schema";
 
 export const artistsRouter = createTRPCRouter({
+  fetchAll: publicProcedure
+    .output(z.array(selectArtistSchema))
+    .query(async ({ ctx: { db } }) => {
+      return await db.select().from(artists);
+    }),
+
+  fetch: publicProcedure
+    .input(z.number().positive().or(z.string()))
+    .output(selectArtistWithContentSchema.optional())
+    .query(async ({ input }) => {
+      return await fetchArtistWithContent(input);
+    }),
+
   create: adminProcedure
     .input(createArtistSchema)
     .mutation(async ({ input, ctx: { db } }) => {

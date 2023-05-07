@@ -2,7 +2,6 @@
 
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -15,31 +14,19 @@ import {
 } from "~/components/ui/dialog"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
-import { Checkbox } from "~/components/ui/checkbox";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
-import { CalendarIcon, Edit, FileAudio, Loader2 } from "lucide-react";
+import { CalendarIcon, Edit, Loader2 } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
-import { type Artist } from "~/server/db/schema";
+import { type UpdateAlbumSchema, type Artist, updateAlbumSchema } from "~/server/db/schema";
 import { api } from "~/lib/api/client";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useToast } from "~/hooks/use-toast";
 import ImageUpload from "~/components/ui/image-upload";
 import { SpotifySearch } from "~/components/ui/spotify-search";
-
-export const updateAlbumSchema = z.object({
-  id: z.number().positive(),
-  artistId: z.number().positive(),
-  name: z.string().min(1),
-  region: z.enum(['en', 'kr', 'jp', 'other']),
-  releaseDate: z.date(),
-  image: z.string().min(1),
-  spotifyId: z.string().min(1).optional().nullable(),
-});
-type UpdateAlbumSchema = z.infer<typeof updateAlbumSchema>;
 
 type UpdateAlbumProps = {
   artist: Artist;
