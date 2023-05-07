@@ -12,6 +12,7 @@ const config = {
     swcPlugins: [["next-superjson-plugin", {}]],
   },
   images: {
+    unoptimized: true, // disable in prod maybe
     domains: [
       "pub-6796bf577ce54658bcdde8c70188a704.r2.dev",
       "i.scdn.co", // spotify
