@@ -17,7 +17,7 @@ export default function ExploreSearch() {
 
   const [artists, setArtists] = useState<Artist[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
-  const { isFetching } = api.explore.search.useQuery(input, {
+  const { isFetching } = api.explore.search.useQuery(debouncedInput, {
     enabled: debouncedInput.length >= 2,
     onSuccess(data) {
       setArtists(data.artists ?? []);

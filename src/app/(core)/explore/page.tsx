@@ -16,7 +16,7 @@ export default async function Page() {
   return (
     <div className="min-w-full">
       <div className={cn("flex flex-col mb-5 bg-gradient-to-r", siteConfig.gradient)}>
-        <H2 className="flex flex-row">
+        <H2 className="flex flex-row dark:border-background">
           <span className="container text-foreground dark:text-background">Explore</span>
         </H2>
       </div>

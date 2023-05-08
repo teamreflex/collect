@@ -71,7 +71,7 @@ export default function CoreLayout({ children }: PropsWithChildren) {
           <main className="m-auto flex flex-col text-foreground min-h-[calc(100vh-9.25rem)] mb-5">{children}</main>
 
           {/* Footer */}
-          <footer className={cn("z-50 relative inset-x-0 bottom-0 bg-gradient-to-l", siteConfig.gradient)}>
+          <footer className={cn("z-50 relative inset-x-0 bottom-0 border-t border-foreground dark:border-background bg-gradient-to-l", siteConfig.gradient)}>
             <div className="h-16 flex flex-row container md:items-center justify-between py-5 text-sm text-foreground dark:text-background">
               <p>
                 Source code is available on{" "}
