@@ -14,9 +14,9 @@ export default async function Page() {
   const { albums, artists } = await api.explore.latest.fetch();
 
   return (
-    <div className="min-w-full">
-      <div className={cn("flex flex-col mb-5 bg-gradient-to-r", siteConfig.gradient)}>
-        <H2 className="flex flex-row dark:border-background">
+    <>
+      <div className={cn("flex flex-col mb-5 -mt-px border-b border-foreground dark:border-background bg-gradient-to-r", siteConfig.gradient)}>
+        <H2 className="flex flex-row border-none dark:border-none">
           <span className="container text-foreground dark:text-background">Explore</span>
         </H2>
       </div>
@@ -41,7 +41,7 @@ export default async function Page() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

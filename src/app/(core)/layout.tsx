@@ -68,7 +68,7 @@ export default function CoreLayout({ children }: PropsWithChildren) {
           <Navbar />
 
           {/* Content */}
-          <main className="m-auto flex flex-col text-foreground min-h-[calc(100vh-9.25rem)] mb-5">{children}</main>
+          <main className="m-auto flex flex-col text-foreground min-w-full min-h-[calc(100vh-9.25rem)] mb-5">{children}</main>
 
           {/* Footer */}
           <footer className={cn("z-50 relative inset-x-0 bottom-0 border-t border-foreground dark:border-background bg-gradient-to-l", siteConfig.gradient)}>
