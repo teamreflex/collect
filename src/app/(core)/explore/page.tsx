@@ -1,5 +1,6 @@
 import AlbumIcon from "~/components/explore/album-icon";
 import ArtistIcon from "~/components/explore/artist-icon";
+import ExploreSearch from "~/components/explore/search";
 import { H2 } from "~/components/typography";
 import { siteConfig } from "~/config/site";
 import { api } from "~/lib/api/server";
@@ -21,6 +22,9 @@ export default async function Page() {
       </div>
 
       <div className="container flex flex-col gap-10">
+        {/* search */}
+        <ExploreSearch />
+
         {/* latest artists */}
         <div className="flex flex-col gap-3">
           <H2>Latest Artists</H2>

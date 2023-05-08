@@ -1,4 +1,4 @@
-import { desc } from "drizzle-orm";
+import { desc, like } from "drizzle-orm";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -21,6 +21,24 @@ export const exploreRouter = createTRPCRouter({
       return {
         albums: latestAlbums,
         artists: latestArtists,
+      }
+    }),
+
+  search: publicProcedure
+    .input(z.string().min(2))
+    .output(z.object({
+      albums: z.array(selectAlbumSchema),
+      artists: z.array(selectArtistSchema),
+    }))
+    .query(async ({ input, ctx: { db } }) => {
+      const [albumResult, artistResult] = await Promise.all([
+        db.select().from(albums).where(like(albums.name, `%${input}%`)).limit(15),
+        db.select().from(artists).where(like(artists.nameEn, `%${input}%`)).limit(15),
+      ]);
+
+      return {
+        albums: albumResult,
+        artists: artistResult,
       }
     }),
 });
