@@ -1,7 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
+import { authMiddleware } from "@clerk/nextjs";
 
-const publicPaths = ["/", "/sign-in*", "/sign-up*", "/api/trpc*"];
+const publicPaths = ["/", "/sign-in(.*)", "/sign-up(.*)", "/api/trpc(.*)"];
 
 const isPublic = (reqPath: string) => {
   return publicPaths.find((publicPath) =>
@@ -9,20 +8,10 @@ const isPublic = (reqPath: string) => {
   );
 };
 
-export default withClerkMiddleware((request: NextRequest) => {
-  if (isPublic(request.nextUrl.pathname)) {
-    return NextResponse.next();
-  }
-
-  const { userId } = getAuth(request);
-
-  if (!userId) {
-    const signInUrl = new URL("/sign-in", request.url);
-    signInUrl.searchParams.set("redirect_url", request.url);
-    return NextResponse.redirect(signInUrl);
-  }
-
-  return NextResponse.next();
+export default authMiddleware({
+  publicRoutes(req) {
+    return isPublic(req.nextUrl.pathname) !== undefined;
+  },
 });
 
 // Stop Middleware running on static files and public folder
