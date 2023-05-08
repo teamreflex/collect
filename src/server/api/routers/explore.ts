@@ -32,8 +32,8 @@ export const exploreRouter = createTRPCRouter({
     }))
     .query(async ({ input, ctx: { db } }) => {
       const [albumResult, artistResult] = await Promise.all([
-        db.select().from(albums).where(like(albums.name, `%${input}%`)).limit(15),
-        db.select().from(artists).where(like(artists.nameEn, `%${input}%`)).limit(15),
+        db.select().from(albums).where(like(albums.name, `${input}%`)).limit(15),
+        db.select().from(artists).where(like(artists.nameEn, `${input}%`)).limit(15),
       ]);
 
       return {

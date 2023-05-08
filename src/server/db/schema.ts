@@ -18,9 +18,9 @@ export const companies = mysqlTable("companies", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  nameEn: text("name_en").notNull(),
-  nameKr: text("name_kr").notNull(),
-  image: text("image").notNull(),
+  nameEn: varchar("name_en", { length: 50 }).notNull(),
+  nameKr: varchar("name_kr", { length: 50 }).notNull(),
+  image: varchar("image", { length: 255 }).notNull(),
 });
 export type Company = InferModel<typeof companies>;
 export const selectCompanySchema = createSelectSchema(companies);
@@ -37,18 +37,20 @@ export const artists = mysqlTable("artists", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  nameEn: text("name_en").notNull(),
-  nameKr: text("name_kr").notNull(),
+  nameEn: varchar("name_en", { length: 50 }).notNull(),
+  nameKr: varchar("name_kr", { length: 50 }).notNull(),
   debut: date("debut").notNull(),
   companyId: int("company_id").notNull(),
   isGroup: boolean("is_group").notNull().default(true),
-  image: text("image").notNull(),
-  twitter: text("twitter").notNull(),
-  instagram: text("instagram").notNull(),
-  youtube: text("youtube").notNull(),
-  website: text("website").notNull(),
-  spotifyId: text("spotify_id"),
-});
+  image: varchar("image", { length: 255 }).notNull(),
+  twitter: varchar("twitter", { length: 255 }).notNull(),
+  instagram: varchar("instagram", { length: 255 }).notNull(),
+  youtube: varchar("youtube", { length: 255 }).notNull(),
+  website: varchar("website", { length: 255 }).notNull(),
+  spotifyId: varchar("spotify_id", { length: 32 }),
+}, (table) => ({
+  nameEnIndex: index("artists__name_en__idx").on(table.nameEn),
+}));
 export type Artist = InferModel<typeof artists>;
 export const selectArtistSchema = createSelectSchema(artists);
 export const createArtistSchema = createInsertSchema(artists);
@@ -64,12 +66,12 @@ export const members = mysqlTable("members", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  nameEn: text("name_en").notNull(),
-  nameKr: text("name_kr").notNull(),
-  stageNameEn: text("stage_name_en").notNull(),
-  stageNameKr: text("stage_name_kr").notNull(),
-  image: text("image").notNull(),
-  instagram: text("instagram").notNull(),
+  nameEn: varchar("name_en", { length: 50 }).notNull(),
+  nameKr: varchar("name_kr", { length: 50 }).notNull(),
+  stageNameEn: varchar("stage_name_en", { length: 50 }).notNull(),
+  stageNameKr: varchar("stage_name_kr", { length: 50 }).notNull(),
+  image: varchar("image", { length: 255 }).notNull(),
+  instagram: varchar("instagram", { length: 255 }).notNull(),
 });
 export type Member = InferModel<typeof members>;
 export const selectMemberSchema = createSelectSchema(members);
@@ -98,13 +100,14 @@ export const albums = mysqlTable("albums", {
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   artistId: int("artist_id").notNull(),
-  name: text("name").notNull(),
+  name: varchar("name", { length: 50 }).notNull(),
   region: mysqlEnum('region', ['en', 'kr', 'jp', 'other']).notNull(),
   releaseDate: date("release_date").notNull(),
-  image: text("image").notNull(),
-  spotifyId: text("spotify_id"),
+  image: varchar("image", { length: 255 }).notNull(),
+  spotifyId: varchar("spotify_id", { length: 32 }),
 }, (table) => ({
   artistIndex: index('albums__artist_id__idx').on(table.artistId),
+  nameIndex: index('albums__name__idx').on(table.name),
 }));
 export type Album = InferModel<typeof albums>;
 export const selectAlbumSchema = createSelectSchema(albums);
@@ -121,7 +124,7 @@ export const albumVersions = mysqlTable("album_versions", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  name: text("name").notNull(),
+  name: varchar("name", { length: 50 }).notNull(),
   albumId: int("album_id").notNull(),
 }, (table) => ({
   albumIndex: index('album_versions__album_id__idx').on(table.albumId),
@@ -131,7 +134,7 @@ export const photocardSets = mysqlTable("photocard_sets", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  name: text("name").notNull(),
+  name: varchar("name", { length: 50 }).notNull(),
   artistId: int("artist_id").notNull(),
   albumVersionId: int("album_version_id").notNull(),
   type: mysqlEnum('type', ['album', 'pob']).notNull(),
@@ -144,11 +147,11 @@ export const photocards = mysqlTable("photocards", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  name: text("name").notNull(),
+  name: varchar("name", { length: 50 }).notNull(),
   photocardSetId: int("photocard_set_id").notNull(),
   artistId: int("artist_id").notNull(),
   memberId: int("member_id").notNull(),
-  image: text("image").notNull(),
+  image: varchar("image", { length: 255 }).notNull(),
 });
 
 export const photocardsToMembers = mysqlTable('photocard_to_member', {
