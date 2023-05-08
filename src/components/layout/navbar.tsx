@@ -21,7 +21,7 @@ export default function Navbar() {
     <div className={cn("h-16 bg-gradient-to-r flex items-center", siteConfig.gradient)}>
     <div className="container flex items-center justify-between gap-2 md:gap-4 md:py-6 text-sm text-foreground dark:text-background">
         <Link
-          href="/"
+          href={{ pathname: "/" }}
           className="font-semibold underline underline-offset-4 hidden lg:block"
         >
           K-Collect
