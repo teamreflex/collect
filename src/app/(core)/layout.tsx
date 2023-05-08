@@ -59,7 +59,7 @@ export default function CoreLayout({ children }: PropsWithChildren) {
       <head />
       <body
         className={cn(
-          "antialiased bg-white dark:bg-background text-black dark:text-white h-screen w-screen",
+          "antialiased bg-white dark:bg-background text-black dark:text-white h-screen max-w-screen",
           fontSans.className, siteConfig.gradient
         )}
       >
@@ -68,11 +68,11 @@ export default function CoreLayout({ children }: PropsWithChildren) {
           <Navbar />
 
           {/* Content */}
-          <main className="m-auto flex flex-col text-foreground">{children}</main>
+          <main className="m-auto flex flex-col text-foreground min-h-[calc(100vh-9.25rem)] mb-5">{children}</main>
 
           {/* Footer */}
-          <footer className={cn("z-50 fixed inset-x-0 bottom-0 bg-gradient-to-l", siteConfig.gradient)}>
-            <div className="h-16 grid md:flex container md:items-center md:justify-between gap-2 md:gap-4 py-3 md:py-6 text-sm text-foreground dark:text-background">
+          <footer className={cn("z-50 relative inset-x-0 bottom-0 bg-gradient-to-l", siteConfig.gradient)}>
+            <div className="h-16 flex flex-row container md:items-center justify-between py-5 text-sm text-foreground dark:text-background">
               <p>
                 Source code is available on{" "}
                 <a

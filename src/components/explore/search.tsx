@@ -31,8 +31,8 @@ export default function ExploreSearch() {
 
   return (
     <div className="relative flex flex-col gap-10 w-full">
+      {/* search input */}
       <div>
-        {/* searchbox */}
         <input
           spellCheck={false}
           value={input}
@@ -44,7 +44,12 @@ export default function ExploreSearch() {
         <span className={cn("block max-w-0 peer-focus:max-w-full duration-300 h-[1px] bg-gradient-to-r", siteConfig.gradient)}></span>
       </div>
 
-      {/* searched artists */}
+      {/* no results */}
+      {artists.length === 0 &&albums.length === 0 && !isFetching && debouncedInput.length >= 2 && (
+         <H2 className="flex justify-end mt-0">No results</H2>
+      )}
+
+      {/* results - artists */}
       {artists.length > 0 && (
         <div className={cn("flex flex-col gap-3", isFetching && 'opacity-50')}>
           <H2 className="flex justify-end">{pluralize(artists.length, "Artist")}</H2>
@@ -54,7 +59,7 @@ export default function ExploreSearch() {
         </div>
       )}
 
-      {/* searched albums */}
+      {/* results - albums */}
       {albums.length > 0 && (
         <div className={cn("flex flex-col gap-3", isFetching && 'opacity-50')}>
           <H2 className="flex justify-end">{pluralize(albums.length, "Album")}</H2>
