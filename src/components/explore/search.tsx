@@ -9,20 +9,14 @@ import { cn } from "~/lib/utils";
 import { H2 } from "../typography";
 import ArtistIcon from "./artist-icon";
 import AlbumIcon from "./album-icon";
-import { type Artist, type Album } from "~/server/db/schema";
 
 export default function ExploreSearch() {
   const [input, setInput] = useState('');
   const debouncedInput = useDebounce(input, 500);
 
-  const [artists, setArtists] = useState<Artist[]>([]);
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const { isFetching } = api.explore.search.useQuery(debouncedInput, {
+  const { data, isFetching } = api.explore.search.useQuery(debouncedInput, {
+    keepPreviousData: true,
     enabled: debouncedInput.length >= 2,
-    onSuccess(data) {
-      setArtists(data.artists ?? []);
-      setAlbums(data.albums ?? []);
-    },
   });
 
   function pluralize(count: number, noun: string, suffix = 's') {
@@ -45,26 +39,26 @@ export default function ExploreSearch() {
       </div>
 
       {/* no results */}
-      {artists.length === 0 &&albums.length === 0 && !isFetching && debouncedInput.length >= 2 && (
+      {data?.artists.length === 0 && data.albums.length === 0 && !isFetching && debouncedInput.length >= 2 && (
          <H2 className="flex justify-end mt-0">No results</H2>
       )}
 
       {/* results - artists */}
-      {artists.length > 0 && (
+      {data?.artists && data.artists.length > 0 && (
         <div className={cn("flex flex-col gap-3", isFetching && 'opacity-50')}>
-          <H2 className="flex justify-end">{pluralize(artists.length, "Artist")}</H2>
+          <H2 className="flex justify-end">{pluralize(data.artists.length, "Artist")}</H2>
           <div className="flex flex-row flex-wrap justify-center gap-3">
-            {artists.map(artist => <ArtistIcon key={artist.id} artist={artist} size="sm" />)}
+            {data.artists.map(artist => <ArtistIcon key={artist.id} artist={artist} size="sm" />)}
           </div>
         </div>
       )}
 
       {/* results - albums */}
-      {albums.length > 0 && (
+      {data?.albums && data.albums.length > 0 && (
         <div className={cn("flex flex-col gap-3", isFetching && 'opacity-50')}>
-          <H2 className="flex justify-end">{pluralize(albums.length, "Album")}</H2>
+          <H2 className="flex justify-end">{pluralize(data.albums.length, "Album")}</H2>
           <div className="flex flex-row flex-wrap justify-center gap-3">
-            {albums.map(album => <AlbumIcon key={album.id} album={album} size="sm" />)}
+            {data.albums.map(album => <AlbumIcon key={album.id} album={album} size="sm" />)}
           </div>
         </div>
       )}
