@@ -17,6 +17,6 @@ export default function ThemeToggle() {
   }
 
   return (
-    <Switch className="drop-shadow" checked={theme === "dark"} onCheckedChange={() => setTheme(theme === "dark" ? "light" : "dark")} />
+    <Switch className="drop-shadow" checked={theme === "dark"} onCheckedChange={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle Dark Mode" />
   )
 }

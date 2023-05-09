@@ -23,6 +23,7 @@ export default function Navbar() {
         <Link
           href={{ pathname: "/" }}
           className="font-semibold underline underline-offset-4 hidden lg:block"
+          aria-label="Home"
         >
           K-Collect
         </Link>
@@ -34,6 +35,7 @@ export default function Navbar() {
                 <Link
                   href={{ pathname: link.href }}
                   className="drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
+                  aria-label={link.name}
                 >
                   <link.icon className="h-8 w-8 shrink-0" />
                 </Link>
@@ -50,6 +52,7 @@ export default function Navbar() {
                 <Link
                   href="/admin"
                   className="drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
+                  aria-label="Admin"
                 >
                   <Wrench className="h-8 w-8 shrink-0" />
                 </Link>
