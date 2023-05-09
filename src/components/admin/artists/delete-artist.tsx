@@ -1,8 +1,9 @@
-'use client'
+"use client"
 
+import { usePathname, useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2, Trash } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "~/components/ui/button"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,40 +15,50 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
-import { api } from "~/lib/api/client";
-import { useRouter } from "next/navigation";
-import { Loader2, Trash } from "lucide-react";
-import { useToast } from "~/hooks/use-toast";
-import { usePathname } from "next/navigation";
-import { type DeleteArtistSchema, deleteArtistSchema } from "~/server/db/schema";
+import { Button } from "~/components/ui/button"
+import { useToast } from "~/hooks/use-toast"
+import { api } from "~/lib/api/client"
+import { deleteArtistSchema, type DeleteArtistSchema } from "~/server/db/schema"
 
-export default function DeleteArtist({ name, id, size = 'default' }: { name: string, id: DeleteArtistSchema['id'], size?: 'sm' | 'default' }) {
-  const { toast } = useToast();
+export default function DeleteArtist({
+  name,
+  id,
+  size = "default",
+}: {
+  name: string
+  id: DeleteArtistSchema["id"]
+  size?: "sm" | "default"
+}) {
+  const { toast } = useToast()
 
   const { handleSubmit, reset } = useForm<DeleteArtistSchema>({
     resolver: zodResolver(deleteArtistSchema),
-    defaultValues: { id }
-  });
+    defaultValues: { id },
+  })
 
-  const router = useRouter();
-  const pathname = usePathname();
+  const router = useRouter()
+  const pathname = usePathname()
   const { mutate: deleteArtist, isLoading } = api.artists.delete.useMutation({
     onSuccess() {
       // handle different locations this button may be
       if (pathname === `/admin/artists/${id}`) {
-        router.push('/admin/artists');
+        router.push("/admin/artists")
       } else {
-        router.refresh();
+        router.refresh()
       }
-      reset();
+      reset()
       toast({
-        description: <p>Artist <span className="font-semibold">{name}</span> deleted</p>,
-      });
+        description: (
+          <p>
+            Artist <span className="font-semibold">{name}</span> deleted
+          </p>
+        ),
+      })
     },
-  });
+  })
 
   function onSubmit(data: DeleteArtistSchema) {
-    deleteArtist(data);
+    deleteArtist(data)
   }
 
   return (
@@ -61,7 +72,8 @@ export default function DeleteArtist({ name, id, size = 'default' }: { name: str
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete <strong>{name}</strong> and all of its data.
+            This action cannot be undone. This will permanently delete <strong>{name}</strong> and
+            all of its data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -69,7 +81,7 @@ export default function DeleteArtist({ name, id, size = 'default' }: { name: str
           <AlertDialogAction asChild>
             <Button variant="destructive" onClick={handleSubmit(onSubmit)}>
               Delete
-              {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
+              {isLoading && <Loader2 className="ml-2 w-4 animate-spin" />}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

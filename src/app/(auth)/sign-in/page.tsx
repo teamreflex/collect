@@ -1,12 +1,12 @@
-import { SignIn } from "@clerk/nextjs/app-beta";
+import { SignIn } from "@clerk/nextjs/app-beta"
 
 export const metadata = {
-  title: 'Sign In',
+  title: "Sign In",
 }
 
 export default function Page() {
-  return <SignIn afterSignInUrl="/dashboard" signUpUrl="/sign-up" />;
+  return <SignIn afterSignInUrl="/dashboard" signUpUrl="/sign-up" />
 }
 
-export const runtime = "edge";
-export const revalidate = 0;
+export const runtime = "edge"
+export const revalidate = 0

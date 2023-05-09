@@ -1,40 +1,46 @@
-'use client';
+"use client"
 
-import { useUser } from "@clerk/nextjs";
-import { Home, PackageOpen, Search, Wrench } from "lucide-react";
-import Link from "next/link";
-import { siteConfig } from "~/config/site";
-import { cn } from "~/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import Auth from "../auth";
+import Link from "next/link"
+import { useUser } from "@clerk/nextjs"
+import { Home, PackageOpen, Search, Wrench } from "lucide-react"
+import { siteConfig } from "~/config/site"
+import { cn } from "~/lib/utils"
+
+import Auth from "../auth"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 const links = [
-  { name: 'Dashboard', icon: Home, href: "/dashboard" },
-  { name: 'Collection', icon: PackageOpen, href: "/collection" },
-  { name: 'Explore', icon: Search, href: "/explore" },
+  { name: "Dashboard", icon: Home, href: "/dashboard" },
+  { name: "Collection", icon: PackageOpen, href: "/collection" },
+  { name: "Explore", icon: Search, href: "/explore" },
 ]
 
 export default function Navbar() {
-  const { user, isLoaded } = useUser();
+  const { user, isLoaded } = useUser()
 
   return (
-    <div className={cn("h-16 bg-gradient-to-r flex items-center border-b border-foreground dark:border-none", siteConfig.gradient)}>
-      <div className="container flex items-center justify-between gap-2 md:gap-4 md:py-6 text-sm text-foreground dark:text-background">
+    <div
+      className={cn(
+        "flex h-16 items-center border-b border-foreground bg-gradient-to-r dark:border-none",
+        siteConfig.gradient,
+      )}
+    >
+      <div className="container flex items-center justify-between gap-2 text-sm text-foreground dark:text-background md:gap-4 md:py-6">
         <Link
           href={{ pathname: "/" }}
-          className="font-semibold underline underline-offset-4 hidden lg:block"
+          className="hidden font-semibold underline underline-offset-4 lg:block"
           aria-label="Home"
         >
           K-Collect
         </Link>
 
-        <div className="flex flex-row gap-10 justify-start lg:justify-center items-center">
+        <div className="flex flex-row items-center justify-start gap-10 lg:justify-center">
           {links.map((link, i) => (
             <Tooltip key={i}>
               <TooltipTrigger asChild>
                 <Link
                   href={{ pathname: link.href }}
-                  className="drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
+                  className="border-reflex-400 pb-1 drop-shadow-lg hover:border-b-2"
                   aria-label={link.name}
                 >
                   <link.icon className="h-8 w-8 shrink-0" />
@@ -51,7 +57,7 @@ export default function Navbar() {
               <TooltipTrigger asChild>
                 <Link
                   href="/admin"
-                  className="drop-shadow-lg hover:border-b-2 border-reflex-400 pb-1"
+                  className="border-reflex-400 pb-1 drop-shadow-lg hover:border-b-2"
                   aria-label="Admin"
                 >
                   <Wrench className="h-8 w-8 shrink-0" />
@@ -63,9 +69,9 @@ export default function Navbar() {
             </Tooltip>
           )}
         </div>
-        
+
         <Auth signedIn={!!user} loaded={isLoaded} />
       </div>
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Admin · Dashboard',
+  title: "Admin · Dashboard",
 }
 
 export default function Page() {

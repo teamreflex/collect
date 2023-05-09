@@ -1,8 +1,13 @@
-'use client'
+"use client"
 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { format } from "date-fns"
+import { CalendarIcon, Edit, Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "~/components/ui/button"
+import { Calendar } from "~/components/ui/calendar"
 import {
   Dialog,
   DialogContent,
@@ -12,53 +17,65 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog"
+import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
-import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { cn } from "~/lib/utils";
-import { CalendarIcon, Edit, Loader2 } from "lucide-react";
-import { Calendar } from "~/components/ui/calendar";
-import { format } from "date-fns";
-import { type UpdateAlbumSchema, type Artist, updateAlbumSchema } from "~/server/db/schema";
-import { api } from "~/lib/api/client";
-import { useRouter } from "next/navigation";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { useToast } from "~/hooks/use-toast";
-import ImageUpload from "~/components/ui/image-upload";
-import { SpotifySearch } from "~/components/ui/spotify-search";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select"
+import { SpotifySearch } from "~/components/ui/spotify-search"
+import { useToast } from "~/hooks/use-toast"
+import { api } from "~/lib/api/client"
+import { cn } from "~/lib/utils"
+import { updateAlbumSchema, type Artist, type UpdateAlbumSchema } from "~/server/db/schema"
 
 type UpdateAlbumProps = {
-  artist: Artist;
-  album: UpdateAlbumSchema;
-  size?: 'sm' | 'default';
+  artist: Artist
+  album: UpdateAlbumSchema
+  size?: "sm" | "default"
 }
 
-export default function UpdateAlbum({ artist, album, size = 'default' }: UpdateAlbumProps) {
-  const { toast } = useToast();
-  const [open, setOpen] = useState(false);
+export default function UpdateAlbum({ artist, album, size = "default" }: UpdateAlbumProps) {
+  const { toast } = useToast()
+  const [open, setOpen] = useState(false)
 
-  const { control, register, handleSubmit, reset, formState: { errors }, setValue } = useForm<UpdateAlbumSchema>({
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    setValue,
+  } = useForm<UpdateAlbumSchema>({
     resolver: zodResolver(updateAlbumSchema),
     defaultValues: {
       ...album,
     },
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
   const { mutate: updateAlbum, isLoading } = api.albums.update.useMutation({
     onSuccess(_, newData) {
-      router.refresh();
-      setOpen(false);
-      reset();
+      router.refresh()
+      setOpen(false)
+      reset()
       toast({
-        description: <p>Album <span className="font-semibold">{newData.name}</span> updated</p>,
-      });
+        description: (
+          <p>
+            Album <span className="font-semibold">{newData.name}</span> updated
+          </p>
+        ),
+      })
     },
-  });
+  })
 
   function onSubmit(data: UpdateAlbumSchema) {
-    updateAlbum(data);
+    updateAlbum(data)
   }
 
   return (
@@ -72,18 +89,16 @@ export default function UpdateAlbum({ artist, album, size = 'default' }: UpdateA
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle>Update Album</DialogTitle>
-            <DialogDescription>
-              Update an existing album.
-            </DialogDescription>
+            <DialogDescription>Update an existing album.</DialogDescription>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
-            <Input className="hidden" type="text" value={artist.id} {...register('artistId')} />
+          <div className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
+            <Input className="hidden" type="text" value={artist.id} {...register("artistId")} />
 
             {/* Name */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="name">Name</Label>
-              <Input type="text" id="name" placeholder="Name..." {...register('name')} />
+              <Input type="text" id="name" placeholder="Name..." {...register("name")} />
               {errors.name && <p className="text-xs text-red-500">{errors.name?.message}</p>}
             </div>
 
@@ -105,12 +120,13 @@ export default function UpdateAlbum({ artist, album, size = 'default' }: UpdateA
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
-                )} />
+                )}
+              />
               {errors.region && <p className="text-xs text-red-500">{errors.region?.message}</p>}
             </div>
 
             {/* Release Date */}
-            <div className="flex flex-col gap-1.5 col-span-2">
+            <div className="col-span-2 flex flex-col gap-1.5">
               <Label htmlFor="releaseDate">Release Date</Label>
               <Controller
                 control={control}
@@ -122,7 +138,7 @@ export default function UpdateAlbum({ artist, album, size = 'default' }: UpdateA
                         variant={"outline"}
                         className={cn(
                           "justify-start text-left font-normal",
-                          !value && "text-muted-foreground"
+                          !value && "text-muted-foreground",
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
@@ -130,40 +146,46 @@ export default function UpdateAlbum({ artist, album, size = 'default' }: UpdateA
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={value}
-                        onSelect={onChange}
-                        initialFocus
-                      />
+                      <Calendar mode="single" selected={value} onSelect={onChange} initialFocus />
                     </PopoverContent>
                   </Popover>
                 )}
               />
-              {errors.releaseDate && <p className="text-xs text-red-500">{errors.releaseDate?.message}</p>}
+              {errors.releaseDate && (
+                <p className="text-xs text-red-500">{errors.releaseDate?.message}</p>
+              )}
             </div>
 
             {/* Spotify */}
-            <div className="flex flex-col gap-1.5 col-span-2">
+            <div className="col-span-2 flex flex-col gap-1.5">
               <Label htmlFor="spotifyId">Spotify</Label>
-               <Controller
+              <Controller
                 control={control}
                 name="spotifyId"
                 render={({ field: { onChange, value } }) => (
-                  <SpotifySearch searchType="album" onSelected={onChange} onImageSelected={e => setValue('image', e)} value={value} />
-                )} />
-              {errors.spotifyId && <p className="text-xs text-red-500">{errors.spotifyId?.message}</p>}
+                  <SpotifySearch
+                    searchType="album"
+                    onSelected={onChange}
+                    onImageSelected={(e) => setValue("image", e)}
+                    value={value}
+                  />
+                )}
+              />
+              {errors.spotifyId && (
+                <p className="text-xs text-red-500">{errors.spotifyId?.message}</p>
+              )}
             </div>
 
             {/* Image */}
-            <div className="flex flex-col gap-1.5 col-span-2">
+            <div className="col-span-2 flex flex-col gap-1.5">
               <Label htmlFor="image">Image</Label>
               <Controller
                 control={control}
                 name="image"
                 render={({ field: { onChange } }) => (
                   <ImageUpload folder="artists" onImageUploaded={onChange} />
-                )} />
+                )}
+              />
 
               {errors.image && <p className="text-xs text-red-500">{errors.image?.message}</p>}
             </div>
@@ -172,7 +194,7 @@ export default function UpdateAlbum({ artist, album, size = 'default' }: UpdateA
           <DialogFooter>
             <Button type="submit">
               Update
-              {isLoading && <Loader2 className="animate-spin ml-2 w-4" />}
+              {isLoading && <Loader2 className="ml-2 w-4 animate-spin" />}
             </Button>
           </DialogFooter>
         </form>

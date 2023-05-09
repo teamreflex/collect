@@ -2,11 +2,12 @@
 /** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
 
 const config = {
+  printWidth: 100,
   endOfLine: "lf",
-  semi: true,
+  semi: false,
   singleQuote: false,
   tabWidth: 2,
-  trailingComma: "es5",
+  trailingComma: "all",
   importOrder: [
     "^(react/(.*)$)|^(react$)",
     "^(next/(.*)$)|^(next$)",
@@ -30,6 +31,6 @@ const config = {
     require.resolve("@ianvs/prettier-plugin-sort-imports"),
     require.resolve("prettier-plugin-tailwindcss"),
   ],
-};
+}
 
-module.exports = config;
+module.exports = config

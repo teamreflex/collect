@@ -1,16 +1,18 @@
-import { Inter } from "next/font/google";
-import "~/styles/globals.css";
-import { siteConfig } from "~/config/site";
-import { cn } from "~/lib/utils";
-import { ClientProviders } from "../client-providers";
-import { Toaster } from "~/components/ui/toaster";
-import Navbar from "~/components/layout/navbar";
-import ThemeToggle from "~/components/layout/theme-toggle";
+import { Inter } from "next/font/google"
+
+import "~/styles/globals.css"
+import Navbar from "~/components/layout/navbar"
+import ThemeToggle from "~/components/layout/theme-toggle"
+import { Toaster } from "~/components/ui/toaster"
+import { siteConfig } from "~/config/site"
+import { cn } from "~/lib/utils"
+
+import { ClientProviders } from "../client-providers"
 
 const fontSans = Inter({
   weight: ["400", "500", "600", "800", "900"],
   subsets: ["latin"],
-});
+})
 
 export const metadata = {
   title: {
@@ -18,7 +20,7 @@ export const metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['kpop', 'collection', 'photocard', 'album', 'trading'],
+  keywords: ["kpop", "collection", "photocard", "album", "trading"],
   authors: [
     {
       name: "Reflex",
@@ -51,7 +53,7 @@ export const metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-};
+}
 
 export default function CoreLayout({ children }: PropsWithChildren) {
   return (
@@ -59,8 +61,9 @@ export default function CoreLayout({ children }: PropsWithChildren) {
       <head />
       <body
         className={cn(
-          "antialiased bg-white dark:bg-background text-black dark:text-white h-screen max-w-screen",
-          fontSans.className, siteConfig.gradient
+          "max-w-screen h-screen bg-white text-black antialiased dark:bg-background dark:text-white",
+          fontSans.className,
+          siteConfig.gradient,
         )}
       >
         <ClientProviders>
@@ -68,11 +71,18 @@ export default function CoreLayout({ children }: PropsWithChildren) {
           <Navbar />
 
           {/* Content */}
-          <main className="m-auto flex flex-col text-foreground min-w-full min-h-[calc(100vh-9.25rem)] mb-5">{children}</main>
+          <main className="m-auto mb-5 flex min-h-[calc(100vh-9.25rem)] min-w-full flex-col text-foreground">
+            {children}
+          </main>
 
           {/* Footer */}
-          <footer className={cn("z-50 relative inset-x-0 bottom-0 border-t border-foreground dark:border-background bg-gradient-to-l", siteConfig.gradient)}>
-            <div className="h-16 flex flex-row container md:items-center justify-between py-5 text-sm text-foreground dark:text-background">
+          <footer
+            className={cn(
+              "relative inset-x-0 bottom-0 z-50 border-t border-foreground bg-gradient-to-l dark:border-background",
+              siteConfig.gradient,
+            )}
+          >
+            <div className="container flex h-16 flex-row justify-between py-5 text-sm text-foreground dark:text-background md:items-center">
               <p>
                 Source code is available on{" "}
                 <a
@@ -92,5 +102,5 @@ export default function CoreLayout({ children }: PropsWithChildren) {
         </ClientProviders>
       </body>
     </html>
-  );
+  )
 }

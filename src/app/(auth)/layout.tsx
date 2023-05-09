@@ -1,13 +1,15 @@
-import { Inter } from "next/font/google";
-import "~/styles/globals.css";
-import { siteConfig } from "~/config/site";
-import { cn } from "~/lib/utils";
-import { ClientProviders } from "../client-providers";
+import { Inter } from "next/font/google"
+
+import "~/styles/globals.css"
+import { siteConfig } from "~/config/site"
+import { cn } from "~/lib/utils"
+
+import { ClientProviders } from "../client-providers"
 
 const fontSans = Inter({
   weight: ["400", "500", "600", "800", "900"],
   subsets: ["latin"],
-});
+})
 
 export const metadata = {
   title: {
@@ -15,7 +17,7 @@ export const metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['kpop', 'collection', 'photocard', 'album', 'trading'],
+  keywords: ["kpop", "collection", "photocard", "album", "trading"],
   authors: [
     {
       name: "Reflex",
@@ -48,7 +50,7 @@ export const metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-};
+}
 
 export default function AuthLayout({ children }: PropsWithChildren) {
   return (
@@ -56,19 +58,23 @@ export default function AuthLayout({ children }: PropsWithChildren) {
       <head />
       <body
         className={cn(
-          "antialiased bg-white dark:bg-background text-black dark:text-white h-screen w-screen",
-          fontSans.className, siteConfig.gradient
+          "h-screen w-screen bg-white text-black antialiased dark:bg-background dark:text-white",
+          fontSans.className,
+          siteConfig.gradient,
         )}
       >
         <ClientProviders>
           {/* Content */}
-          <main className={cn("h-full w-full flex items-center justify-center bg-gradient-to-r", siteConfig.gradient)}>
-            <div className="flex flex-col justify-center">
-              {children}
-            </div>
+          <main
+            className={cn(
+              "flex h-full w-full items-center justify-center bg-gradient-to-r",
+              siteConfig.gradient,
+            )}
+          >
+            <div className="flex flex-col justify-center">{children}</div>
           </main>
         </ClientProviders>
       </body>
     </html>
-  );
+  )
 }

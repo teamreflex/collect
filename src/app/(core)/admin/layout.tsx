@@ -1,23 +1,27 @@
-import { currentUser } from "@clerk/nextjs/app-beta";
-import { type User } from "@clerk/nextjs/dist/api";
-import { ArrowBigLeft, Building2, Home, Lock, Users } from "lucide-react";
-import AdminNavLink from "~/components/admin/nav-link";
+import { currentUser } from "@clerk/nextjs/app-beta"
+import { type User } from "@clerk/nextjs/dist/api"
+import { ArrowBigLeft, Building2, Home, Lock, Users } from "lucide-react"
+import AdminNavLink from "~/components/admin/nav-link"
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', segment: null, icon: Home },
-  { name: 'Companies', href: '/admin/companies', segment: 'companies', icon: Building2 },
-  { name: 'Artists', href: '/admin/artists', segment: 'artists', icon: Users },
+  { name: "Dashboard", href: "/admin", segment: null, icon: Home },
+  { name: "Companies", href: "/admin/companies", segment: "companies", icon: Building2 },
+  { name: "Artists", href: "/admin/artists", segment: "artists", icon: Users },
 ]
 
 export default async function Layout({ children }: PropsWithChildren) {
-  const user: User | null = await currentUser();
+  const user: User | null = await currentUser()
 
   if (!user || !user.publicMetadata.admin) {
-    return <div className="flex justify-center"><Lock /></div>
+    return (
+      <div className="flex justify-center">
+        <Lock />
+      </div>
+    )
   }
 
   return (
-    <div className="flex grow flex-col lg:flex-row w-full gap-y-5 px-6 pt-6">
+    <div className="flex w-full grow flex-col gap-y-5 px-6 pt-6 lg:flex-row">
       {/* nav */}
       <nav className="flex flex-col lg:w-1/5">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -44,9 +48,7 @@ export default async function Layout({ children }: PropsWithChildren) {
       </nav>
 
       {/* content */}
-      <div className="flex flex-col lg:h-4/5 lg:ml-6 w-full">
-        {children}
-      </div>
+      <div className="flex w-full flex-col lg:ml-6 lg:h-4/5">{children}</div>
     </div>
   )
 }
