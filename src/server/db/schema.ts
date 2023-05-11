@@ -108,6 +108,7 @@ export type DeleteMemberSchema = z.infer<typeof deleteMemberSchema>
 export const artistsToMembers = mysqlTable(
   "artist_to_member",
   {
+    id: serial("id").primaryKey(),
     memberId: int("member_id").notNull(),
     artistId: int("artist_id").notNull(),
   },
@@ -210,6 +211,7 @@ export const photocards = mysqlTable("photocards", {
 export const photocardsToMembers = mysqlTable(
   "photocard_to_member",
   {
+    id: serial("id").primaryKey(),
     photocardId: int("photocard_id").notNull(),
     memberId: int("member_id").notNull(),
   },
