@@ -1,10 +1,7 @@
-"use client"
-
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
-import { CalendarIcon, Edit, Loader2 } from "lucide-react"
+import { CalendarIcon, Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { Button } from "~/components/ui/button"
 import { Calendar } from "~/components/ui/calendar"
@@ -15,7 +12,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "~/components/ui/dialog"
 import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
@@ -32,17 +28,22 @@ import { SpotifySearch } from "~/components/ui/spotify-search"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
 import { cn } from "~/lib/utils"
-import { updateAlbumSchema, type Artist, type UpdateAlbumSchema } from "~/server/db/schema"
+import {
+  updateAlbumSchema,
+  type Album,
+  type Artist,
+  type UpdateAlbumSchema,
+} from "~/server/db/schema"
 
 type UpdateAlbumProps = {
   artist: Artist
-  album: UpdateAlbumSchema
-  size?: "sm" | "default"
+  album: Album
+  open: boolean
+  setOpen: (open: boolean) => void
 }
 
-export default function UpdateAlbum({ artist, album, size = "default" }: UpdateAlbumProps) {
+export default function UpdateAlbum({ artist, album, open, setOpen }: UpdateAlbumProps) {
   const { toast } = useToast()
-  const [open, setOpen] = useState(false)
 
   const {
     control,
@@ -80,11 +81,6 @@ export default function UpdateAlbum({ artist, album, size = "default" }: UpdateA
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" size={size}>
-          <Edit />
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>

@@ -1,8 +1,6 @@
-"use client"
-
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2, Trash } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import {
   AlertDialog,
@@ -13,20 +11,20 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
 import { Button } from "~/components/ui/button"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
 import { deleteCompanySchema, type DeleteCompanySchema } from "~/server/db/schema"
 
-export default function DeleteCompany({
-  name,
-  id,
-}: {
+type Props = {
   name: string
   id: DeleteCompanySchema["id"]
-}) {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+export default function DeleteCompany({ name, id, open, setOpen }: Props) {
   const { toast } = useToast()
 
   const { handleSubmit, reset } = useForm<DeleteCompanySchema>({
@@ -54,15 +52,10 @@ export default function DeleteCompany({
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm">
-          <Trash />
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete <strong>{name}</strong> and
             all of its data.

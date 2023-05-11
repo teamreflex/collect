@@ -1,9 +1,6 @@
-"use client"
-
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Edit, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { Button } from "~/components/ui/button"
 import {
@@ -13,18 +10,22 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "~/components/ui/dialog"
 import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { updateCompanySchema, type UpdateCompanySchema } from "~/server/db/schema"
+import { updateCompanySchema, type Company, type UpdateCompanySchema } from "~/server/db/schema"
 
-export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompanySchema) {
+type UpdateArtistProps = {
+  company: Company
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+export default function UpdateCompany({ company, open, setOpen }: UpdateArtistProps) {
   const { toast } = useToast()
-  const [open, setOpen] = useState(false)
 
   const {
     control,
@@ -35,10 +36,7 @@ export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompa
   } = useForm<UpdateCompanySchema>({
     resolver: zodResolver(updateCompanySchema),
     defaultValues: {
-      id,
-      nameEn,
-      nameKr,
-      image,
+      ...company,
     },
   })
 
@@ -64,11 +62,6 @@ export default function UpdateCompany({ id, nameEn, nameKr, image }: UpdateCompa
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" size="sm">
-          <Edit />
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>

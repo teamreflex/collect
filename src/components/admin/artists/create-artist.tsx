@@ -77,8 +77,8 @@ export default function CreateArtist({ companies }: { companies: Company[] }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" className="flex flex-row gap-1">
-          <Plus /> Create Artist
+        <Button size="sm" variant="default" className="flex flex-row gap-1">
+          <Plus /> Create
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">

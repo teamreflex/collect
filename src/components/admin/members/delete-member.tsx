@@ -1,8 +1,6 @@
-"use client"
-
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2, Trash } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import {
   AlertDialog,
@@ -13,27 +11,24 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
 import { Button } from "~/components/ui/button"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { deleteMemberSchema, type DeleteMemberSchema } from "~/server/db/schema"
+import { deleteMemberSchema, type DeleteMemberSchema, type Member } from "~/server/db/schema"
 
-export default function DeleteMember({
-  name,
-  id,
-  size = "default",
-}: {
-  name: string
-  id: DeleteMemberSchema["id"]
-  size?: "sm" | "default"
-}) {
+type Props = {
+  member: Member
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+export default function DeleteMember({ member, open, setOpen }: Props) {
   const { toast } = useToast()
 
   const { handleSubmit, reset } = useForm<DeleteMemberSchema>({
     resolver: zodResolver(deleteMemberSchema),
-    defaultValues: { id },
+    defaultValues: { id: member.id },
   })
 
   const router = useRouter()
@@ -44,7 +39,7 @@ export default function DeleteMember({
       toast({
         description: (
           <p>
-            Member <span className="font-semibold">{name}</span> deleted
+            Member <span className="font-semibold">{member.stageNameEn}</span> deleted
           </p>
         ),
       })
@@ -56,18 +51,13 @@ export default function DeleteMember({
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" size={size}>
-          <Trash />
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete <strong>{name}</strong> and
-            all of its data.
+            This action cannot be undone. This will permanently delete{" "}
+            <strong>{member.stageNameEn}</strong> and all of its data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

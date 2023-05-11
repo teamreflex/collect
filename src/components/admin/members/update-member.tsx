@@ -1,9 +1,6 @@
-"use client"
-
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Edit, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { Button } from "~/components/ui/button"
 import {
@@ -13,24 +10,28 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "~/components/ui/dialog"
 import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { updateMemberSchema, type Artist, type UpdateMemberSchema } from "~/server/db/schema"
+import {
+  updateMemberSchema,
+  type Artist,
+  type Member,
+  type UpdateMemberSchema,
+} from "~/server/db/schema"
 
 type UpdateMemberProps = {
   artist: Artist
-  member: UpdateMemberSchema
-  size?: "sm" | "default"
+  member: Member
+  open: boolean
+  setOpen: (open: boolean) => void
 }
 
-export default function UpdateMember({ artist, member, size = "default" }: UpdateMemberProps) {
+export default function UpdateMember({ artist, member, open, setOpen }: UpdateMemberProps) {
   const { toast } = useToast()
-  const [open, setOpen] = useState(false)
 
   const {
     control,
@@ -41,6 +42,7 @@ export default function UpdateMember({ artist, member, size = "default" }: Updat
   } = useForm<UpdateMemberSchema>({
     resolver: zodResolver(updateMemberSchema),
     defaultValues: {
+      artistId: artist.id,
       ...member,
     },
   })
@@ -67,11 +69,6 @@ export default function UpdateMember({ artist, member, size = "default" }: Updat
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" size={size}>
-          <Edit />
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>

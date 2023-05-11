@@ -1,10 +1,7 @@
-"use client"
-
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
-import { CalendarIcon, Edit, Loader2 } from "lucide-react"
+import { CalendarIcon, Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { Button } from "~/components/ui/button"
 import { Calendar } from "~/components/ui/calendar"
@@ -16,7 +13,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "~/components/ui/dialog"
 import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
@@ -38,12 +34,12 @@ import { updateArtistSchema, type Company, type UpdateArtistSchema } from "~/ser
 type UpdateArtistProps = {
   companies: Company[]
   artist: UpdateArtistSchema
-  size?: "sm" | "default"
+  open: boolean
+  setOpen: (open: boolean) => void
 }
 
-export default function UpdateArtist({ companies, artist, size = "default" }: UpdateArtistProps) {
+export default function UpdateArtist({ companies, artist, open, setOpen }: UpdateArtistProps) {
   const { toast } = useToast()
-  const [open, setOpen] = useState(false)
 
   const {
     control,
@@ -81,11 +77,6 @@ export default function UpdateArtist({ companies, artist, size = "default" }: Up
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" className="flex flex-row gap-1" size={size}>
-          <Edit /> Update
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>

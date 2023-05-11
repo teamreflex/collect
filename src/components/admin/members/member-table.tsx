@@ -12,12 +12,12 @@ import {
 } from "@tanstack/react-table"
 import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
-import { type Artist, type Company } from "~/server/db/schema"
+import { type Artist, type Member } from "~/server/db/schema"
 
-import ArtistTableActions from "./artist-table-actions"
-import CreateArtist from "./create-artist"
+import CreateMember from "./create-member"
+import MemberTableActions from "./member-table-actions"
 
-function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
+function buildColumns(artist: Artist): ColumnDef<Member>[] {
   return [
     {
       accessorKey: "image",
@@ -39,23 +39,23 @@ function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
       header: "Name (EN)",
     },
     {
-      accessorKey: "nameKr",
-      header: "Name (KR)",
+      accessorKey: "stageNameEn",
+      header: "Stage Name (EN)",
     },
     {
       id: "actions",
-      cell: ({ row }) => <ArtistTableActions row={row} companies={companies} />,
+      cell: ({ row }) => <MemberTableActions row={row} artist={artist} />,
     },
   ]
 }
 
-type ArtistTableProps = {
-  data: Artist[]
-  companies: Company[]
+type MemberTableProps = {
+  data: Member[]
+  artist: Artist
 }
 
-export default function ArtistTable({ data, companies }: ArtistTableProps) {
-  const columns = buildColumns(companies)
+export default function MemberTable({ data, artist }: MemberTableProps) {
+  const columns = buildColumns(artist)
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
@@ -75,13 +75,13 @@ export default function ArtistTable({ data, companies }: ArtistTableProps) {
       {/* filter */}
       <div className="flex items-center justify-between gap-2">
         <Input
-          placeholder="Filter artists..."
-          value={table.getColumn("nameEn")?.getFilterValue() as string}
-          onChange={(event) => table.getColumn("nameEn")?.setFilterValue(event.target.value)}
+          placeholder="Filter members..."
+          value={table.getColumn("stageNameEn")?.getFilterValue() as string}
+          onChange={(event) => table.getColumn("stageNameEn")?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
 
-        <CreateArtist companies={companies} />
+        <CreateMember artist={artist} />
       </div>
 
       {/* table */}

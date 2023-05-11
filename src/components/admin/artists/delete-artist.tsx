@@ -1,8 +1,6 @@
-"use client"
-
 import { usePathname, useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2, Trash } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import {
   AlertDialog,
@@ -13,27 +11,24 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
 import { Button } from "~/components/ui/button"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { deleteArtistSchema, type DeleteArtistSchema } from "~/server/db/schema"
+import { deleteArtistSchema, type Artist, type DeleteArtistSchema } from "~/server/db/schema"
 
-export default function DeleteArtist({
-  name,
-  id,
-  size = "default",
-}: {
-  name: string
-  id: DeleteArtistSchema["id"]
-  size?: "sm" | "default"
-}) {
+type Props = {
+  artist: Artist
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+export default function DeleteArtist({ artist, open, setOpen }: Props) {
   const { toast } = useToast()
 
   const { handleSubmit, reset } = useForm<DeleteArtistSchema>({
     resolver: zodResolver(deleteArtistSchema),
-    defaultValues: { id },
+    defaultValues: { id: artist.id },
   })
 
   const router = useRouter()
@@ -41,7 +36,7 @@ export default function DeleteArtist({
   const { mutate: deleteArtist, isLoading } = api.artists.delete.useMutation({
     onSuccess() {
       // handle different locations this button may be
-      if (pathname === `/admin/artists/${id}`) {
+      if (pathname === `/admin/artists/${artist.id}`) {
         router.push("/admin/artists")
       } else {
         router.refresh()
@@ -50,7 +45,7 @@ export default function DeleteArtist({
       toast({
         description: (
           <p>
-            Artist <span className="font-semibold">{name}</span> deleted
+            Artist <span className="font-semibold">{artist.nameEn}</span> deleted
           </p>
         ),
       })
@@ -62,18 +57,13 @@ export default function DeleteArtist({
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="flex flex-row gap-1" size={size}>
-          <Trash /> Delete
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete <strong>{name}</strong> and
-            all of its data.
+            This action cannot be undone. This will permanently delete{" "}
+            <strong>{artist.nameEn}</strong> and all of its data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

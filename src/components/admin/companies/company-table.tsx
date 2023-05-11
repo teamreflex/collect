@@ -12,12 +12,12 @@ import {
 } from "@tanstack/react-table"
 import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
-import { type Artist, type Company } from "~/server/db/schema"
+import { type Company } from "~/server/db/schema"
 
-import ArtistTableActions from "./artist-table-actions"
-import CreateArtist from "./create-artist"
+import CompanyTableActions from "./company-table-actions"
+import CreateCompany from "./create-company"
 
-function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
+function buildColumns(): ColumnDef<Company>[] {
   return [
     {
       accessorKey: "image",
@@ -44,18 +44,17 @@ function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
     },
     {
       id: "actions",
-      cell: ({ row }) => <ArtistTableActions row={row} companies={companies} />,
+      cell: ({ row }) => <CompanyTableActions row={row} />,
     },
   ]
 }
 
-type ArtistTableProps = {
-  data: Artist[]
-  companies: Company[]
+type CompanyTableProps = {
+  data: Company[]
 }
 
-export default function ArtistTable({ data, companies }: ArtistTableProps) {
-  const columns = buildColumns(companies)
+export default function CompanyTable({ data }: CompanyTableProps) {
+  const columns = buildColumns()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
@@ -75,13 +74,13 @@ export default function ArtistTable({ data, companies }: ArtistTableProps) {
       {/* filter */}
       <div className="flex items-center justify-between gap-2">
         <Input
-          placeholder="Filter artists..."
+          placeholder="Filter companies..."
           value={table.getColumn("nameEn")?.getFilterValue() as string}
           onChange={(event) => table.getColumn("nameEn")?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
 
-        <CreateArtist companies={companies} />
+        <CreateCompany />
       </div>
 
       {/* table */}

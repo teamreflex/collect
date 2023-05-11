@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import Image from "next/image"
 import { Check, ChevronsUpDown, ImagePlus, Loader2 } from "lucide-react"

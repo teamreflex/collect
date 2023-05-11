@@ -12,12 +12,12 @@ import {
 } from "@tanstack/react-table"
 import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
-import { type Artist, type Company } from "~/server/db/schema"
+import { type Album, type Artist, type Member } from "~/server/db/schema"
 
-import ArtistTableActions from "./artist-table-actions"
-import CreateArtist from "./create-artist"
+import AlbumTableActions from "./album-table-actions"
+import CreateAlbum from "./create-album"
 
-function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
+function buildColumns(artist: Artist): ColumnDef<Album>[] {
   return [
     {
       accessorKey: "image",
@@ -26,7 +26,7 @@ function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
         return (
           <Image
             className="rounded-md"
-            alt={row.getValue("nameEn")}
+            alt={row.getValue("name")}
             src={row.getValue("image")}
             width={50}
             height={50}
@@ -35,27 +35,27 @@ function buildColumns(companies: Company[]): ColumnDef<Artist>[] {
       },
     },
     {
-      accessorKey: "nameEn",
-      header: "Name (EN)",
+      accessorKey: "name",
+      header: "Name",
     },
     {
-      accessorKey: "nameKr",
-      header: "Name (KR)",
+      accessorKey: "region",
+      header: "Region",
     },
     {
       id: "actions",
-      cell: ({ row }) => <ArtistTableActions row={row} companies={companies} />,
+      cell: ({ row }) => <AlbumTableActions row={row} artist={artist} />,
     },
   ]
 }
 
-type ArtistTableProps = {
-  data: Artist[]
-  companies: Company[]
+type AlbumTableProps = {
+  data: Album[]
+  artist: Artist
 }
 
-export default function ArtistTable({ data, companies }: ArtistTableProps) {
-  const columns = buildColumns(companies)
+export default function AlbumTable({ data, artist }: AlbumTableProps) {
+  const columns = buildColumns(artist)
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
@@ -75,13 +75,13 @@ export default function ArtistTable({ data, companies }: ArtistTableProps) {
       {/* filter */}
       <div className="flex items-center justify-between gap-2">
         <Input
-          placeholder="Filter artists..."
-          value={table.getColumn("nameEn")?.getFilterValue() as string}
-          onChange={(event) => table.getColumn("nameEn")?.setFilterValue(event.target.value)}
+          placeholder="Filter albums..."
+          value={table.getColumn("name")?.getFilterValue() as string}
+          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
 
-        <CreateArtist companies={companies} />
+        <CreateAlbum artist={artist} />
       </div>
 
       {/* table */}
