@@ -1,8 +1,8 @@
 import { cache } from "react"
 import { type Metadata } from "next"
-import AlbumTable from "~/components/admin/albums/album-table"
-import MemberTable from "~/components/admin/members/member-table"
-import { H2 } from "~/components/typography"
+import AlbumPhotocardSetList from "~/components/admin/albums/photocard-set-list"
+import AlbumVersionsList from "~/components/admin/albums/versions-list"
+import { H2, H3, H4 } from "~/components/typography"
 import { api } from "~/lib/api/server"
 
 type AlbumPageProps = {
@@ -30,11 +30,22 @@ export default async function AdminAlbumPage({ params }: AlbumPageProps) {
     <div className="min-w-full">
       <div className="flex flex-col gap-3">
         <H2 className="flex flex-row justify-between">
-          {album.name}
+          <div className="flex items-baseline gap-2">
+            {album.name}
+            <H4>{album.artist.nameEn}</H4>
+          </div>
           <div className="flex flex-row gap-2"></div>
         </H2>
 
-        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2"></div>
+        <div className="flex flex-col gap-2">
+          <H3>Album Versions</H3>
+          <AlbumVersionsList album={album} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <H3>Photocard Sets</H3>
+          <AlbumPhotocardSetList album={album} />
+        </div>
       </div>
     </div>
   )

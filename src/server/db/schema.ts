@@ -194,6 +194,8 @@ export const photocardSets = mysqlTable(
     albumVersionIndex: index("photocard_sets__album_version_id__idx").on(table.albumVersionId),
   }),
 )
+export type PhotocardSet = InferModel<typeof photocardSets>
+export const selectPhotocardSetSchema = createSelectSchema(photocardSets)
 
 export const photocards = mysqlTable("photocards", {
   id: serial("id").primaryKey(),
@@ -209,6 +211,7 @@ export const photocards = mysqlTable("photocards", {
   memberId: int("member_id").notNull(),
   image: varchar("image", { length: 255 }).notNull(),
 })
+export type Photocard = InferModel<typeof photocards>
 
 export const photocardsToMembers = mysqlTable(
   "photocard_to_member",
@@ -267,7 +270,12 @@ export const selectArtistWithContentSchema = selectArtistSchema.extend({
   albums: z.array(selectAlbumSchema),
 })
 
+export const selectAlbumVersionWithPhotocardSetsSchema = selectAlbumVersionSchema.extend({
+  photocardSets: z.array(selectPhotocardSetSchema),
+})
+
 export const selectAlbumWithContentSchema = selectAlbumSchema.extend({
   artist: selectArtistSchema,
-  versions: z.array(selectAlbumVersionSchema),
+  versions: z.array(selectAlbumVersionWithPhotocardSetsSchema),
+  photocardSets: z.array(selectPhotocardSetSchema),
 })
