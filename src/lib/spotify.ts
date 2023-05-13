@@ -1,4 +1,6 @@
 import kv from "@vercel/kv"
+import wretch from "wretch"
+import QueryStringAddon from "wretch/addons/queryString"
 import { z } from "zod"
 import { env } from "~/env.mjs"
 
@@ -9,6 +11,14 @@ export const spotifyOptionSchema = z.object({
 })
 
 export type SpotifyOption = z.infer<typeof spotifyOptionSchema>
+
+const api = (token: string) =>
+  wretch("https://api.spotify.com/v1")
+    .addon(QueryStringAddon)
+    .errorType("json")
+    .resolve((res) => res.json())
+    .auth(`Bearer ${token}`)
+    .content("application/x-www-form-urlencoded")
 
 type AccessTokenResponse = {
   access_token: string
@@ -64,24 +74,27 @@ async function getToken() {
  * @returns Promise<string>
  */
 async function generateToken() {
-  const res = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(
-        `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`,
-      ).toString("base64")}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: "grant_type=client_credentials",
-  })
+  const authorization = `Basic ${Buffer.from(
+    `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`,
+  ).toString("base64")}`
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const data: AccessTokenResponse = await res.json()
-  if (res.ok && data.access_token) {
-    return data.access_token
+  try {
+    const response = (await wretch()
+      .url("https://accounts.spotify.com/api/token")
+      .addon(QueryStringAddon)
+      .errorType("json")
+      .resolve((res) => res.json())
+      .auth(authorization)
+      .content("application/x-www-form-urlencoded")
+      .query({
+        grant_type: "client_credentials",
+      })
+      .post()) as AccessTokenResponse
+
+    return response.access_token
+  } catch (e) {
+    throw new Error(`Failed to generate token`)
   }
-
-  throw new Error("Failed to generate token")
 }
 
 /**
@@ -95,28 +108,19 @@ async function performSearch<TResponse>(
 ): Promise<TResponse> {
   const token = await getToken()
 
-  const params = new URLSearchParams({
-    q: searchTerm,
-    type,
-    limit: "5",
-  })
-
-  const res = await fetch(`https://api.spotify.com/v1/search?${params.toString()}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const data: TResponse = await res.json()
-
-  if (res.ok) {
-    return data
+  try {
+    return (await api(token)
+      .url("/search")
+      .query({
+        q: searchTerm,
+        type,
+        limit: "5",
+      })
+      .get()) as TResponse
+  } catch (e) {
+    console.log(e)
+    throw new Error("Error searching Spotify")
   }
-
-  throw new Error("Error searching Spotify")
 }
 
 /**
@@ -165,26 +169,17 @@ export async function searchForAlbums(searchTerm: string): Promise<SpotifyOption
 export async function fetchArtist(spotifyId: string): Promise<SpotifyOption> {
   const token = await getToken()
 
-  const res = await fetch(`https://api.spotify.com/v1/artists/${spotifyId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  try {
+    const data = (await api(token).url(`/artists/${spotifyId}`).get()) as SpotifyItem
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const data: SpotifyItem = await res.json()
-
-  if (res.ok) {
     return {
       id: data.id,
       name: data.name,
       imageUrl: data.images[0]?.url ?? "",
     }
+  } catch (e) {
+    throw new Error("Error fetching artist from Spotify")
   }
-
-  throw new Error("Error fetching artist from Spotify")
 }
 
 /**
@@ -195,24 +190,15 @@ export async function fetchArtist(spotifyId: string): Promise<SpotifyOption> {
 export async function fetchAlbum(spotifyId: string): Promise<SpotifyOption> {
   const token = await getToken()
 
-  const res = await fetch(`https://api.spotify.com/v1/albums/${spotifyId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  try {
+    const data = (await api(token).url(`/albums/${spotifyId}`).get()) as SpotifyItem
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const data: SpotifyItem = await res.json()
-
-  if (res.ok) {
     return {
       id: data.id,
       name: data.name,
       imageUrl: data.images[0]?.url ?? "",
     }
+  } catch (e) {
+    throw new Error("Error fetching album from Spotify")
   }
-
-  throw new Error("Error fetching album from Spotify")
 }
