@@ -124,7 +124,7 @@ export default function CreateAlbumVersion({ album, children }: Props) {
             <Button type="reset" variant="outline" onClick={() => reset()}>
               Reset
             </Button>
-            <Button type="submit">
+            <Button type="submit" disabled={isLoading}>
               Save
               {isLoading && <Loader2 className="ml-2 w-4 animate-spin" />}
             </Button>

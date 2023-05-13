@@ -105,7 +105,7 @@ export default function UpdateAlbumVersion({ version }: Props) {
           </div>
 
           <DialogFooter>
-            <Button type="submit">
+            <Button type="submit" disabled={isLoading}>
               Save
               {isLoading && <Loader2 className="ml-2 w-4 animate-spin" />}
             </Button>

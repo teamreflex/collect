@@ -71,7 +71,7 @@ export default function DeleteAlbumVersion({ version }: Props) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant="destructive" onClick={handleSubmit(onSubmit)}>
+            <Button variant="destructive" onClick={handleSubmit(onSubmit)} disabled={isLoading}>
               Delete
               {isLoading && <Loader2 className="ml-2 w-4 animate-spin" />}
             </Button>

@@ -158,7 +158,7 @@ export default function UpdateMember({ artist, member, open, setOpen }: UpdateMe
           </div>
 
           <DialogFooter>
-            <Button type="submit">
+            <Button type="submit" disabled={isLoading}>
               Update
               {isLoading && <Loader2 className="ml-2 w-4 animate-spin" />}
             </Button>
