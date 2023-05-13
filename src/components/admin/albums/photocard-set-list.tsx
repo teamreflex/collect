@@ -29,7 +29,7 @@ export default function AlbumPhotocardSetList({ album }: Props) {
           <CardContent>
             <div className="flex w-full items-center justify-center">
               <Image
-                alt="A ver."
+                alt={set.name}
                 src="https://i.scdn.co/image/ab67616d0000b2735fe0013ebb4022adc0f042be"
                 width={100}
                 height={100}

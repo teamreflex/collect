@@ -13,6 +13,9 @@ import {
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 
+/*
+ * Company
+ */
 export const companies = mysqlTable("companies", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at")
@@ -39,6 +42,9 @@ export type UpdateCompanySchema = z.infer<typeof updateCompanySchema>
 export const deleteCompanySchema = updateCompanySchema.pick({ id: true })
 export type DeleteCompanySchema = z.infer<typeof deleteCompanySchema>
 
+/*
+ * Artist
+ */
 export const artists = mysqlTable(
   "artists",
   {
@@ -76,6 +82,9 @@ export type UpdateArtistSchema = z.infer<typeof updateArtistSchema>
 export const deleteArtistSchema = updateArtistSchema.pick({ id: true })
 export type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>
 
+/*
+ * Member
+ */
 export const members = mysqlTable("members", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at")
@@ -105,6 +114,9 @@ export type UpdateMemberSchema = z.infer<typeof updateMemberSchema>
 export const deleteMemberSchema = updateMemberSchema.pick({ id: true })
 export type DeleteMemberSchema = z.infer<typeof deleteMemberSchema>
 
+/*
+ * Artist to Member pivot table
+ */
 export const artistsToMembers = mysqlTable(
   "artist_to_member",
   {
@@ -121,6 +133,9 @@ export const artistsToMembers = mysqlTable(
 )
 export type ArtistToMember = InferModel<typeof artistsToMembers>
 
+/*
+ * Album
+ */
 export const albums = mysqlTable(
   "albums",
   {
@@ -154,6 +169,9 @@ export type UpdateAlbumSchema = z.infer<typeof updateAlbumSchema>
 export const deleteAlbumSchema = updateAlbumSchema.pick({ id: true })
 export type DeleteAlbumSchema = z.infer<typeof deleteAlbumSchema>
 
+/*
+ * Album Version
+ */
 export const albumVersions = mysqlTable(
   "album_versions",
   {
@@ -166,6 +184,7 @@ export const albumVersions = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`),
     name: varchar("name", { length: 50 }).notNull(),
     albumId: int("album_id").notNull(),
+    image: varchar("image", { length: 255 }).notNull(),
   },
   (table) => ({
     albumIndex: index("album_versions__album_id__idx").on(table.albumId),
@@ -173,7 +192,21 @@ export const albumVersions = mysqlTable(
 )
 export type AlbumVersion = InferModel<typeof albumVersions>
 export const selectAlbumVersionSchema = createSelectSchema(albumVersions)
+export const createAlbumVersionSchema = createInsertSchema(albumVersions)
+export type CreateAlbumVersionSchema = z.infer<typeof createAlbumVersionSchema>
+export const updateAlbumVersionSchema = createAlbumVersionSchema
+  .partial()
+  .omit({ createdAt: true })
+  .required({
+    id: true,
+  })
+export type UpdateAlbumVersionSchema = z.infer<typeof updateAlbumVersionSchema>
+export const deleteAlbumVersionSchema = updateAlbumVersionSchema.pick({ id: true })
+export type DeleteAlbumVersionSchema = z.infer<typeof deleteAlbumVersionSchema>
 
+/*
+ * Photocard Set
+ */
 export const photocardSets = mysqlTable(
   "photocard_sets",
   {
@@ -185,18 +218,40 @@ export const photocardSets = mysqlTable(
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
     name: varchar("name", { length: 50 }).notNull(),
-    artistId: int("artist_id").notNull(),
-    albumVersionId: int("album_version_id").notNull(),
     type: mysqlEnum("type", ["album", "pob"]).notNull(),
+    image: varchar("image", { length: 255 }).notNull(),
+    artistId: int("artist_id").notNull(),
+    albumId: int("album_id").notNull(),
   },
   (table) => ({
     artistIndex: index("photocard_sets__artist_id__idx").on(table.artistId),
-    albumVersionIndex: index("photocard_sets__album_version_id__idx").on(table.albumVersionId),
+    albumIndex: index("photocard_sets__album_id__idx").on(table.albumId),
   }),
 )
 export type PhotocardSet = InferModel<typeof photocardSets>
 export const selectPhotocardSetSchema = createSelectSchema(photocardSets)
 
+/*
+ * Photocard Set to Album Version pivot table
+ */
+export const photocardSetToAlbumVersions = mysqlTable(
+  "photocard_set_to_album_version",
+  {
+    id: serial("id").primaryKey(),
+    photocardSetId: int("photocard_set_id").notNull(),
+    albumVersionId: int("album_version_id").notNull(),
+  },
+  (table) => ({
+    photocardSetAlbumVersionIndex: index("album_version_id__photocard_set_id__idx").on(
+      table.photocardSetId,
+      table.albumVersionId,
+    ),
+  }),
+)
+
+/*
+ * Photocard
+ */
 export const photocards = mysqlTable("photocards", {
   id: serial("id").primaryKey(),
   createdAt: timestamp("created_at")
@@ -213,6 +268,9 @@ export const photocards = mysqlTable("photocards", {
 })
 export type Photocard = InferModel<typeof photocards>
 
+/*
+ * Photocard to Member pivot table
+ */
 export const photocardsToMembers = mysqlTable(
   "photocard_to_member",
   {
@@ -230,6 +288,9 @@ export const photocardsToMembers = mysqlTable(
   }),
 )
 
+/*
+ * User album version collection
+ */
 export const collectionAlbumVersions = mysqlTable(
   "collection_album_versions",
   {
@@ -248,6 +309,9 @@ export const collectionAlbumVersions = mysqlTable(
   }),
 )
 
+/*
+ * User photocard collection
+ */
 export const collectionPhotocards = mysqlTable(
   "collection_photocards",
   {
@@ -264,6 +328,9 @@ export const collectionPhotocards = mysqlTable(
   }),
 )
 
+/*
+ * Merged schemas
+ */
 export const selectArtistWithContentSchema = selectArtistSchema.extend({
   company: selectCompanySchema,
   members: z.array(selectMemberSchema),

@@ -1,6 +1,7 @@
 import { artistsRouter } from "~/server/api/routers/artists"
 import { createTRPCRouter } from "~/server/api/trpc"
 
+import { albumVersionsRouter } from "./routers/album-versions"
 import { albumsRouter } from "./routers/albums"
 import { companiesRouter } from "./routers/companies"
 import { exploreRouter } from "./routers/explore"
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   artists: artistsRouter,
   members: membersRouter,
   albums: albumsRouter,
+  albumVersions: albumVersionsRouter,
   files: filesRouter,
   spotify: spotifyRouter,
   explore: exploreRouter,

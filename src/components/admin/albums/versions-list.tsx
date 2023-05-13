@@ -1,8 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Edit, PlusCircle, Trash } from "lucide-react"
-import { Button } from "~/components/ui/button"
+import { Edit, PlusCircle } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -13,53 +12,56 @@ import {
 } from "~/components/ui/card"
 import { type AlbumWithContent } from "~/server/db/albums"
 
+import CreateAlbumVersion from "./create-version"
+import DeleteAlbumVersion from "./delete-version"
+import UpdateAlbumVersion from "./update-version"
+
 type Props = {
   album: AlbumWithContent
 }
 
 export default function AlbumVersionsList({ album }: Props) {
-  console.log(album.versions)
   return (
-    <div className="flex flex-wrap gap-2">
-      {album.versions.map((version) => (
-        <Card key={version.id} className="w-[200px] transition duration-200 hover:bg-secondary">
+    <>
+      <div className="flex flex-wrap gap-2">
+        {album.versions.map((version) => (
+          <Card key={version.id} className="w-[200px] transition duration-200 hover:bg-secondary">
+            <CardHeader>
+              <CardTitle>{version.name}</CardTitle>
+              <CardDescription>Photocard sets: {version.photocardSets.length}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex w-full items-center justify-center">
+                <Image
+                  alt={version.name}
+                  src="https://i.scdn.co/image/ab67616d0000b2735fe0013ebb4022adc0f042be"
+                  width={100}
+                  height={100}
+                  className="rounded-lg shadow-md"
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <DeleteAlbumVersion version={version} />
+              <UpdateAlbumVersion version={version} />
+            </CardFooter>
+          </Card>
+        ))}
+
+        {/* add new */}
+        <Card className="w-[200px] transition duration-200 hover:cursor-pointer hover:bg-secondary">
           <CardHeader>
-            <CardTitle>{version.name}</CardTitle>
-            <CardDescription>Photocard sets: {version.photocardSets.length}</CardDescription>
+            <CardTitle>Create Version</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex w-full items-center justify-center">
-              <Image
-                alt="A ver."
-                src="https://i.scdn.co/image/ab67616d0000b2735fe0013ebb4022adc0f042be"
-                width={100}
-                height={100}
-                className="rounded-lg shadow-md"
-              />
-            </div>
+            <CreateAlbumVersion album={album}>
+              <div className="flex w-full items-center justify-center">
+                <PlusCircle className="h-48 w-48" />
+              </div>
+            </CreateAlbumVersion>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="destructive-ghost">
-              <Trash />
-            </Button>
-            <Button>
-              <Edit />
-            </Button>
-          </CardFooter>
         </Card>
-      ))}
-
-      {/* add new */}
-      <Card className="w-[200px] transition duration-200 hover:cursor-pointer hover:bg-secondary">
-        <CardHeader>
-          <CardTitle>Create Version</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex w-full items-center justify-center">
-            <PlusCircle className="h-48 w-48" />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+      </div>
+    </>
   )
 }
