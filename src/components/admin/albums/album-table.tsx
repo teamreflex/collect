@@ -36,10 +36,12 @@ function buildColumns(): ColumnDef<AlbumWithContent>[] {
     {
       accessorKey: "artist.nameEn",
       header: "Artist",
+      enableColumnFilter: true,
     },
     {
       accessorKey: "name",
       header: "Name",
+      enableColumnFilter: true,
     },
     {
       accessorKey: "region",
@@ -58,17 +60,17 @@ type AlbumTableProps = {
 
 export default function AlbumTable({ data }: AlbumTableProps) {
   const columns = buildColumns()
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [filter, setFilter] = useState("")
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setFilter,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
-      columnFilters,
+      globalFilter: filter,
     },
   })
 
@@ -77,9 +79,9 @@ export default function AlbumTable({ data }: AlbumTableProps) {
       {/* filter */}
       <div className="flex items-center justify-between gap-2">
         <Input
-          placeholder="Filter albums..."
-          value={table.getColumn("name")?.getFilterValue() as string}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
+          placeholder="Filter artist or albums..."
+          value={filter}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
 
