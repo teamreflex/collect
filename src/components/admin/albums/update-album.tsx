@@ -58,7 +58,7 @@ export default function UpdateAlbum({ album, open, setOpen }: UpdateAlbumProps) 
     onSuccess(_, newData) {
       router.refresh()
       setOpen(false)
-      reset()
+      reset(newData)
       toast({
         description: (
           <p>

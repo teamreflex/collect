@@ -52,7 +52,7 @@ export default function UpdateAlbumVersion({ version }: Props) {
     onSuccess(_, newData) {
       router.refresh()
       setOpen(false)
-      reset()
+      reset(newData)
       toast({
         description: (
           <p>
