@@ -14,7 +14,7 @@ import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
 import { type Artist, type Member } from "~/server/db/schema"
 
-import CreateMember from "./create-member"
+import CreateMember from "../members/create-member"
 import MemberTableActions from "./member-table-actions"
 
 function buildColumns(artist: Artist): ColumnDef<Member>[] {

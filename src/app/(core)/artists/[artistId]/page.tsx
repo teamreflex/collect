@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
   return { title: `${name}` }
 }
 
-export default async function Page({ params }: ArtistPageProps) {
+export default async function ArtistPage({ params }: ArtistPageProps) {
   const artist = await fetchData(params.artistId)
   if (!artist) notFound()
 

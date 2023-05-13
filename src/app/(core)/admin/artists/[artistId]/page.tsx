@@ -1,12 +1,7 @@
 import { cache } from "react"
 import { type Metadata } from "next"
-import Image from "next/image"
-import { Headphones } from "lucide-react"
-import AlbumTable from "~/components/admin/albums/album-table"
-import CreateAlbum from "~/components/admin/albums/create-album"
-import DeleteAlbum from "~/components/admin/albums/delete-album"
-import UpdateAlbum from "~/components/admin/albums/update-album"
-import MemberTable from "~/components/admin/members/member-table"
+import AlbumTable from "~/components/admin/artists/album-table"
+import MemberTable from "~/components/admin/artists/member-table"
 import { H2 } from "~/components/typography"
 import { api } from "~/lib/api/server"
 
@@ -26,7 +21,7 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
   return { title: `Admin · ${name}` }
 }
 
-export default async function Page({ params }: ArtistPageProps) {
+export default async function AdminArtistPage({ params }: ArtistPageProps) {
   const artist = await fetchData(params.artistId)
 
   if (!artist) return <H2>Invalid artist</H2>

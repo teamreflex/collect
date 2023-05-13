@@ -171,6 +171,8 @@ export const albumVersions = mysqlTable(
     albumIndex: index("album_versions__album_id__idx").on(table.albumId),
   }),
 )
+export type AlbumVersion = InferModel<typeof albumVersions>
+export const selectAlbumVersionSchema = createSelectSchema(albumVersions)
 
 export const photocardSets = mysqlTable(
   "photocard_sets",
@@ -263,4 +265,9 @@ export const selectArtistWithContentSchema = selectArtistSchema.extend({
   company: selectCompanySchema,
   members: z.array(selectMemberSchema),
   albums: z.array(selectAlbumSchema),
+})
+
+export const selectAlbumWithContentSchema = selectAlbumSchema.extend({
+  artist: selectArtistSchema,
+  versions: z.array(selectAlbumVersionSchema),
 })

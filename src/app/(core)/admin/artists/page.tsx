@@ -6,7 +6,7 @@ export const metadata = {
   title: "Admin · Artists",
 }
 
-export default async function Page() {
+export default async function AdminArtistsPage() {
   const [artists, companies] = await Promise.all([
     api.artists.fetchAll.fetch(),
     api.companies.fetchAll.fetch(),

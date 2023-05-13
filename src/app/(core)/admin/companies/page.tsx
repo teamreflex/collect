@@ -6,7 +6,7 @@ export const metadata = {
   title: "Admin · Companies",
 }
 
-export default async function Page() {
+export default async function AdminCompaniesPage() {
   const companies = await api.companies.fetchAll.fetch()
 
   return (

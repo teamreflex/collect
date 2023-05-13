@@ -12,11 +12,12 @@ import {
 } from "@tanstack/react-table"
 import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
-import { type AlbumWithContent } from "~/server/db/albums"
+import { type Album, type Artist } from "~/server/db/schema"
 
-import AlbumTableActions from "../artists/album-table-actions"
+import CreateAlbum from "../albums/create-album"
+import AlbumTableActions from "./album-table-actions"
 
-function buildColumns(): ColumnDef<AlbumWithContent>[] {
+function buildColumns(): ColumnDef<Album>[] {
   return [
     {
       accessorKey: "image",
@@ -34,10 +35,6 @@ function buildColumns(): ColumnDef<AlbumWithContent>[] {
       },
     },
     {
-      accessorKey: "artist.nameEn",
-      header: "Artist",
-    },
-    {
       accessorKey: "name",
       header: "Name",
     },
@@ -53,10 +50,11 @@ function buildColumns(): ColumnDef<AlbumWithContent>[] {
 }
 
 type AlbumTableProps = {
-  data: AlbumWithContent[]
+  data: Album[]
+  artist: Artist
 }
 
-export default function AlbumTable({ data }: AlbumTableProps) {
+export default function AlbumTable({ data, artist }: AlbumTableProps) {
   const columns = buildColumns()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -83,7 +81,7 @@ export default function AlbumTable({ data }: AlbumTableProps) {
           className="max-w-sm"
         />
 
-        {/* <CreateAlbum artist={artist} /> */}
+        <CreateAlbum artist={artist} />
       </div>
 
       {/* table */}

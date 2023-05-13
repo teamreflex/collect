@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { type Row } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "~/components/ui/button"
@@ -9,19 +10,19 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
-import { type Album, type Artist } from "~/server/db/schema"
+import { type Album } from "~/server/db/schema"
 
-import DeleteAlbum from "./delete-album"
-import UpdateAlbum from "./update-album"
+import DeleteAlbum from "../albums/delete-album"
+import UpdateAlbum from "../albums/update-album"
 
 type Props = {
   row: Row<Album>
-  artist: Artist
 }
 
-export default function AlbumTableActions({ row, artist }: Props) {
+export default function AlbumTableActions({ row }: Props) {
   const [openEditForm, setOpenEditForm] = useState(false)
   const [openDeleteForm, setOpenDeleteForm] = useState(false)
 
@@ -36,6 +37,10 @@ export default function AlbumTableActions({ row, artist }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <Link href={{ pathname: `/admin/albums/${row.original.id}` }}>View</Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenEditForm(true)}>Edit</DropdownMenuItem>
           <DropdownMenuItem
             className="focus:bg-destructive"
@@ -48,7 +53,6 @@ export default function AlbumTableActions({ row, artist }: Props) {
 
       <UpdateAlbum
         album={row.original}
-        artist={artist}
         open={openEditForm}
         setOpen={setOpenEditForm}
         data-superjson

@@ -1,15 +1,16 @@
 import { currentUser } from "@clerk/nextjs/app-beta"
 import { type User } from "@clerk/nextjs/dist/api"
-import { ArrowBigLeft, Building2, Home, Lock, Users } from "lucide-react"
+import { ArrowBigLeft, Building2, Disc, Home, Lock, Users } from "lucide-react"
 import AdminNavLink from "~/components/admin/nav-link"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", segment: null, icon: Home },
   { name: "Companies", href: "/admin/companies", segment: "companies", icon: Building2 },
   { name: "Artists", href: "/admin/artists", segment: "artists", icon: Users },
+  { name: "Albums", href: "/admin/albums", segment: "albums", icon: Disc },
 ]
 
-export default async function Layout({ children }: PropsWithChildren) {
+export default async function AdminLayout({ children }: PropsWithChildren) {
   const user: User | null = await currentUser()
 
   if (!user || !user.publicMetadata.admin) {

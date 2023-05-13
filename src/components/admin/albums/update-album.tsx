@@ -28,21 +28,15 @@ import { SpotifySearch } from "~/components/ui/spotify-search"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
 import { cn } from "~/lib/utils"
-import {
-  updateAlbumSchema,
-  type Album,
-  type Artist,
-  type UpdateAlbumSchema,
-} from "~/server/db/schema"
+import { updateAlbumSchema, type Album, type UpdateAlbumSchema } from "~/server/db/schema"
 
 type UpdateAlbumProps = {
-  artist: Artist
   album: Album
   open: boolean
   setOpen: (open: boolean) => void
 }
 
-export default function UpdateAlbum({ artist, album, open, setOpen }: UpdateAlbumProps) {
+export default function UpdateAlbum({ album, open, setOpen }: UpdateAlbumProps) {
   const { toast } = useToast()
 
   const {
@@ -89,7 +83,12 @@ export default function UpdateAlbum({ artist, album, open, setOpen }: UpdateAlbu
           </DialogHeader>
 
           <div className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
-            <Input className="hidden" type="text" value={artist.id} {...register("artistId")} />
+            <Input
+              className="hidden"
+              type="text"
+              value={album.artistId}
+              {...register("artistId")}
+            />
 
             {/* Name */}
             <div className="flex flex-col gap-1.5">

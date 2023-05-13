@@ -13,8 +13,8 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { type Artist, type Member } from "~/server/db/schema"
 
-import DeleteMember from "./delete-member"
-import UpdateMember from "./update-member"
+import DeleteMember from "../members/delete-member"
+import UpdateMember from "../members/update-member"
 
 type Props = {
   row: Row<Member>

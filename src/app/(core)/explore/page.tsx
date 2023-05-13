@@ -10,7 +10,7 @@ export const metadata = {
   title: "Explore",
 }
 
-export default async function Page() {
+export default async function ExplorePage() {
   const { albums, artists } = await api.explore.latest.fetch()
 
   return (

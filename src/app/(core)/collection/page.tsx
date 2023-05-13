@@ -4,7 +4,7 @@ export const metadata = {
   title: "Collection",
 }
 
-export default function Page() {
+export default function CollectionPage() {
   return (
     <div className="mt-6 flex items-center justify-center">
       <PartyPopper />
