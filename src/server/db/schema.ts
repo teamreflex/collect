@@ -228,8 +228,25 @@ export const photocardSets = mysqlTable(
     albumIndex: index("photocard_sets__album_id__idx").on(table.albumId),
   }),
 )
-export type PhotocardSet = InferModel<typeof photocardSets>
+export type PhotocardSet = Prettify<
+  InferModel<typeof photocardSets> & {
+    albumVersionIds: number[]
+  }
+>
 export const selectPhotocardSetSchema = createSelectSchema(photocardSets)
+export const createPhotocardSetSchema = createInsertSchema(photocardSets).extend({
+  albumVersionIds: z.array(z.number().positive()),
+})
+export type CreatePhotocardSetSchema = z.infer<typeof createPhotocardSetSchema>
+export const updatePhotocardSetSchema = createPhotocardSetSchema
+  .partial()
+  .omit({ createdAt: true })
+  .required({
+    id: true,
+  })
+export type UpdatePhotocardSetSchema = z.infer<typeof updatePhotocardSetSchema>
+export const deletePhotocardSetSchema = updatePhotocardSetSchema.pick({ id: true })
+export type DeletePhotocardSetSchema = z.infer<typeof deletePhotocardSetSchema>
 
 /*
  * Photocard Set to Album Version pivot table
@@ -248,6 +265,7 @@ export const photocardSetToAlbumVersions = mysqlTable(
     ),
   }),
 )
+export type PhotocardSetToAlbumVersions = InferModel<typeof photocardSetToAlbumVersions>
 
 /*
  * Photocard

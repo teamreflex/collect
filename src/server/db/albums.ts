@@ -1,11 +1,12 @@
-import { version } from "os"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 
 import { db } from "."
 import {
+  PhotocardSetToAlbumVersions,
   albumVersions,
   albums,
   artists,
+  photocardSetToAlbumVersions,
   photocardSets,
   type Album,
   type AlbumVersion,
@@ -40,11 +41,16 @@ export async function fetchAlbumsWithContent(
       artist: artists,
       albumVersion: albumVersions,
       photocardSet: photocardSets,
+      pivot: photocardSetToAlbumVersions,
     })
     .from(albums)
     .innerJoin(artists, eq(albums.artistId, artists.id))
     .leftJoin(albumVersions, eq(albums.id, albumVersions.albumId))
-    .leftJoin(photocardSets, eq(albumVersions.id, photocardSets.albumVersionId))
+    .leftJoin(
+      photocardSetToAlbumVersions,
+      eq(albumVersions.id, photocardSetToAlbumVersions.albumVersionId),
+    )
+    .leftJoin(photocardSets, eq(photocardSetToAlbumVersions.photocardSetId, photocardSets.id))
 
   if (albumId) {
     query = query.where(eq(artists.id, Number(albumId)))
@@ -60,7 +66,7 @@ export async function fetchAlbumsWithContent(
       photocardSets: PhotocardSet[]
     }[]
   >((acc, row) => {
-    const { album, artist, albumVersion, photocardSet } = row
+    const { album, artist, albumVersion, photocardSet, pivot } = row
 
     // initialize row
     if (acc[album.id] === undefined) {
@@ -81,7 +87,10 @@ export async function fetchAlbumsWithContent(
       acc[artist.id]?.photocardSets &&
       acc[artist.id]?.photocardSets.findIndex((a) => a.id === photocardSet?.id) !== -1
     if (photocardSet && !photocardSetExists) {
-      acc[artist.id]?.photocardSets.push(photocardSet)
+      acc[artist.id]?.photocardSets.push({
+        ...photocardSet,
+        albumVersionIds: [],
+      })
     }
 
     return acc
@@ -92,7 +101,7 @@ export async function fetchAlbumsWithContent(
     artist: r.artist,
     versions: r.albumVersions.map((ver) => ({
       ...ver,
-      photocardSets: r.photocardSets.filter((set) => set.albumVersionId === ver.id),
+      photocardSets: r.photocardSets.filter((set) => set.albumVersionIds.includes(ver.id)),
     })),
     photocardSets: r.photocardSets,
   }))

@@ -1,8 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Edit, PlusCircle, Trash } from "lucide-react"
-import { Button } from "~/components/ui/button"
+import { PlusCircle } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -13,11 +12,16 @@ import {
 } from "~/components/ui/card"
 import { type AlbumWithContent } from "~/server/db/albums"
 
+import CreatePhotocardSet from "./create-photocard-set"
+import DeletePhotocardSet from "./delete-photocard-set"
+import UpdatePhotocardSet from "./update-photocard-set"
+
 type Props = {
   album: AlbumWithContent
 }
 
 export default function AlbumPhotocardSetList({ album }: Props) {
+  console.log(album)
   return (
     <div className="flex flex-wrap gap-2">
       {album.photocardSets.map((set) => (
@@ -38,12 +42,8 @@ export default function AlbumPhotocardSetList({ album }: Props) {
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant="destructive-ghost">
-              <Trash />
-            </Button>
-            <Button>
-              <Edit />
-            </Button>
+            <DeletePhotocardSet photocardSet={set} />
+            <UpdatePhotocardSet album={album} photocardSet={set} />
           </CardFooter>
         </Card>
       ))}
@@ -54,9 +54,11 @@ export default function AlbumPhotocardSetList({ album }: Props) {
           <CardTitle>Create Set</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex w-full items-center justify-center">
-            <PlusCircle className="h-48 w-48" />
-          </div>
+          <CreatePhotocardSet album={album}>
+            <div className="flex w-full items-center justify-center">
+              <PlusCircle className="h-48 w-48" />
+            </div>
+          </CreatePhotocardSet>
         </CardContent>
       </Card>
     </div>

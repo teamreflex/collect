@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Edit, PlusCircle } from "lucide-react"
+import { PlusCircle } from "lucide-react"
 import {
   Card,
   CardContent,

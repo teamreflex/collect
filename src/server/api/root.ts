@@ -7,6 +7,7 @@ import { companiesRouter } from "./routers/companies"
 import { exploreRouter } from "./routers/explore"
 import { filesRouter } from "./routers/files"
 import { membersRouter } from "./routers/members"
+import { photocardSetsRouter } from "./routers/photocard-sets"
 import { spotifyRouter } from "./routers/spotify"
 
 export const appRouter = createTRPCRouter({
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   members: membersRouter,
   albums: albumsRouter,
   albumVersions: albumVersionsRouter,
+  photocardSets: photocardSetsRouter,
   files: filesRouter,
   spotify: spotifyRouter,
   explore: exploreRouter,
