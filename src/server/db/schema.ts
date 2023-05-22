@@ -227,11 +227,7 @@ export const photocardSets = mysqlTable(
     albumIndex: index("photocard_sets__album_id__idx").on(table.albumId),
   }),
 )
-export type PhotocardSet = Prettify<
-  InferModel<typeof photocardSets> & {
-    albumVersionIds: number[]
-  }
->
+export type PhotocardSet = InferModel<typeof photocardSets>
 export const selectPhotocardSetSchema = createSelectSchema(photocardSets)
 export const createPhotocardSetSchema = createInsertSchema(photocardSets).extend({
   albumVersionIds: z.array(z.number().positive()),

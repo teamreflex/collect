@@ -3,7 +3,7 @@ import { placeholder } from "drizzle-orm"
 import { db } from "."
 
 export const fetchCompanyWithArtists = db.query.companies
-  .findMany({
+  .findFirst({
     where: (companies, { eq }) => eq(companies.id, placeholder("id")),
     with: {
       artists: true,

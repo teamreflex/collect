@@ -11,11 +11,11 @@ import {
 } from "@tanstack/react-table"
 import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
-import { type AlbumWithArtist } from "~/server/db/types"
+import { type Album } from "~/server/db/schema"
 
 import AlbumTableActions from "../artists/album-table-actions"
 
-function buildColumns(): ColumnDef<AlbumWithArtist>[] {
+function buildColumns(): ColumnDef<Album>[] {
   return [
     {
       accessorKey: "image",
@@ -54,7 +54,7 @@ function buildColumns(): ColumnDef<AlbumWithArtist>[] {
 }
 
 type AlbumTableProps = {
-  data: AlbumWithArtist[]
+  data: Album[]
 }
 
 export default function AlbumTable({ data }: AlbumTableProps) {

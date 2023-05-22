@@ -48,7 +48,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
             {/* company */}
             <div className="flex justify-end gap-3 text-lg font-semibold">
               <Link
-                href={`/companies/${artist.companyId}`}
+                href={{ pathname: `/companies/${artist.companyId}` }}
                 className="hidden gap-2 underline underline-offset-4 lg:flex"
               >
                 <Building2 /> {artist.company.nameEn}
