@@ -38,7 +38,7 @@ export default function ArtistTableActions({ row, companies }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href={{ pathname: `/admin/artists/${row.original.id}` }}>View</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

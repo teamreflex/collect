@@ -37,7 +37,7 @@ export default function AlbumTableActions({ row }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href={{ pathname: `/admin/albums/${row.original.id}` }}>View</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
