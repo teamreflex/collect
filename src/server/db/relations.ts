@@ -1,0 +1,84 @@
+import { relations } from "drizzle-orm"
+
+import {
+  albumVersions,
+  albums,
+  artists,
+  artistsToMembers,
+  companies,
+  members,
+  photocardSetToAlbumVersions,
+  photocardSets,
+} from "./schema"
+
+export const companyRelations = relations(companies, ({ many }) => ({
+  artists: many(artists),
+}))
+
+export const artistRelations = relations(artists, ({ one, many }) => ({
+  company: one(companies, {
+    fields: [artists.companyId],
+    references: [companies.id],
+  }),
+  albums: many(albums),
+  members: many(artistsToMembers),
+  photocardSets: many(photocardSets),
+}))
+
+export const albumRelations = relations(albums, ({ one, many }) => ({
+  artist: one(artists, {
+    fields: [albums.artistId],
+    references: [artists.id],
+  }),
+  versions: many(albumVersions),
+  photocardSets: many(photocardSets),
+}))
+
+export const memberRelations = relations(members, ({ many }) => ({
+  artists: many(artistsToMembers),
+}))
+
+export const artistsToMembersRelations = relations(artistsToMembers, ({ one }) => ({
+  artist: one(artists, {
+    fields: [artistsToMembers.artistId],
+    references: [artists.id],
+  }),
+  member: one(members, {
+    fields: [artistsToMembers.memberId],
+    references: [members.id],
+  }),
+}))
+
+export const albumVersionRelations = relations(albumVersions, ({ one, many }) => ({
+  album: one(albums, {
+    fields: [albumVersions.albumId],
+    references: [albums.id],
+  }),
+  photocardSets: many(photocardSetToAlbumVersions),
+}))
+
+export const photocardSetRelations = relations(photocardSets, ({ one, many }) => ({
+  artist: one(artists, {
+    fields: [photocardSets.artistId],
+    references: [artists.id],
+  }),
+  album: one(albums, {
+    fields: [photocardSets.albumId],
+    references: [albums.id],
+  }),
+  versions: many(photocardSetToAlbumVersions),
+}))
+
+export const photocardSetToAlbumVersionsRelations = relations(
+  photocardSetToAlbumVersions,
+  ({ one }) => ({
+    photocardSet: one(photocardSets, {
+      fields: [photocardSetToAlbumVersions.photocardSetId],
+      references: [photocardSets.id],
+    }),
+    albumVersion: one(albumVersions, {
+      fields: [photocardSetToAlbumVersions.albumVersionId],
+      references: [albumVersions.id],
+    }),
+  }),
+)

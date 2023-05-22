@@ -29,7 +29,6 @@ export const companies = mysqlTable("companies", {
   image: varchar("image", { length: 255 }).notNull(),
 })
 export type Company = InferModel<typeof companies>
-export const selectCompanySchema = createSelectSchema(companies)
 export const createCompanySchema = createInsertSchema(companies)
 export type CreateCompanySchema = z.infer<typeof createCompanySchema>
 export const updateCompanySchema = createCompanySchema
@@ -345,22 +344,3 @@ export const collectionPhotocards = mysqlTable(
     ),
   }),
 )
-
-/*
- * Merged schemas
- */
-export const selectArtistWithContentSchema = selectArtistSchema.extend({
-  company: selectCompanySchema,
-  members: z.array(selectMemberSchema),
-  albums: z.array(selectAlbumSchema),
-})
-
-export const selectAlbumVersionWithPhotocardSetsSchema = selectAlbumVersionSchema.extend({
-  photocardSets: z.array(selectPhotocardSetSchema),
-})
-
-export const selectAlbumWithContentSchema = selectAlbumSchema.extend({
-  artist: selectArtistSchema,
-  versions: z.array(selectAlbumVersionWithPhotocardSetsSchema),
-  photocardSets: z.array(selectPhotocardSetSchema),
-})

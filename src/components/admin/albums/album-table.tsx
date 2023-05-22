@@ -8,15 +8,14 @@ import {
   getPaginationRowModel,
   useReactTable,
   type ColumnDef,
-  type ColumnFiltersState,
 } from "@tanstack/react-table"
 import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
-import { type AlbumWithContent } from "~/server/db/albums"
+import { type AlbumWithArtist } from "~/server/db/types"
 
 import AlbumTableActions from "../artists/album-table-actions"
 
-function buildColumns(): ColumnDef<AlbumWithContent>[] {
+function buildColumns(): ColumnDef<AlbumWithArtist>[] {
   return [
     {
       accessorKey: "image",
@@ -55,7 +54,7 @@ function buildColumns(): ColumnDef<AlbumWithContent>[] {
 }
 
 type AlbumTableProps = {
-  data: AlbumWithContent[]
+  data: AlbumWithArtist[]
 }
 
 export default function AlbumTable({ data }: AlbumTableProps) {

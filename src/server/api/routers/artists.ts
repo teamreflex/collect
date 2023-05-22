@@ -1,27 +1,23 @@
 import { eq } from "drizzle-orm"
 import { z } from "zod"
 import { adminProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc"
-import { fetchArtistWithContent } from "~/server/db/artists"
 import {
   artists,
   createArtistSchema,
   deleteArtistSchema,
   selectArtistSchema,
-  selectArtistWithContentSchema,
   updateArtistSchema,
 } from "~/server/db/schema"
+import { fetchArtistWithContent } from "~/server/db/statements"
 
 export const artistsRouter = createTRPCRouter({
   fetchAll: publicProcedure.output(z.array(selectArtistSchema)).query(async ({ ctx: { db } }) => {
     return await db.select().from(artists)
   }),
 
-  fetch: publicProcedure
-    .input(z.number().positive().or(z.string()))
-    .output(selectArtistWithContentSchema.optional())
-    .query(async ({ input }) => {
-      return await fetchArtistWithContent(input)
-    }),
+  fetch: publicProcedure.input(z.number().positive().or(z.string())).query(async ({ input }) => {
+    return await fetchArtistWithContent.execute({ id: input })
+  }),
 
   create: adminProcedure.input(createArtistSchema).mutation(async ({ input, ctx: { db } }) => {
     return await db.insert(artists).values(input)

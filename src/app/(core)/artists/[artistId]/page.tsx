@@ -28,7 +28,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   if (!artist) notFound()
 
   return (
-    <div className="min-w-full">
+    <div className="-mt-px min-w-full">
       <div className={cn("mb-5 flex flex-col bg-gradient-to-r", siteConfig.gradient)}>
         <H2 className="flex flex-row">
           <span className="container text-foreground dark:text-background">{artist.nameEn}</span>

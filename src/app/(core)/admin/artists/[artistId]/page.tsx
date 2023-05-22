@@ -35,7 +35,7 @@ export default async function AdminArtistPage({ params }: ArtistPageProps) {
         </H2>
 
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-          <MemberTable data={artist.members} artist={artist} />
+          <MemberTable data={artist.members.flatMap((m) => m.member)} artist={artist} />
           <AlbumTable data={artist.albums} artist={artist} />
         </div>
       </div>

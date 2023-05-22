@@ -5,13 +5,21 @@ import {
   companies,
   createCompanySchema,
   deleteCompanySchema,
-  selectCompanySchema,
   updateCompanySchema,
 } from "~/server/db/schema"
+import { fetchCompanyWithArtists } from "~/server/db/statements"
 
 export const companiesRouter = createTRPCRouter({
-  fetchAll: publicProcedure.output(z.array(selectCompanySchema)).query(async ({ ctx: { db } }) => {
-    return await db.select().from(companies)
+  fetchAll: publicProcedure.query(async ({ ctx: { db } }) => {
+    return await db.query.companies.findMany({
+      with: {
+        artists: true,
+      },
+    })
+  }),
+
+  fetch: publicProcedure.input(z.number().positive().or(z.string())).query(async ({ input }) => {
+    return await fetchCompanyWithArtists.execute({ id: input })
   }),
 
   create: adminProcedure.input(createCompanySchema).mutation(async ({ input, ctx: { db } }) => {

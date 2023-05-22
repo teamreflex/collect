@@ -112,11 +112,11 @@ dependencies:
     specifier: ^2.29.3
     version: 2.29.3
   drizzle-orm:
-    specifier: ^0.25.4
-    version: 0.25.4(@planetscale/database@1.7.0)
+    specifier: 0.26.0-5f2b067
+    version: 0.26.0-5f2b067(@planetscale/database@1.7.0)
   drizzle-zod:
     specifier: ^0.4.1
-    version: 0.4.1(drizzle-orm@0.25.4)(zod@3.21.4)
+    version: 0.4.1(drizzle-orm@0.26.0-5f2b067)(zod@3.21.4)
   lucide-react:
     specifier: ^0.145.0
     version: 0.145.0(react@18.2.0)
@@ -198,8 +198,8 @@ devDependencies:
     specifier: ^16.0.3
     version: 16.0.3
   drizzle-kit:
-    specifier: 0.17.6-76e73f3
-    version: 0.17.6-76e73f3
+    specifier: 0.18.0
+    version: 0.18.0
   eslint:
     specifier: ^8.40.0
     version: 8.40.0
@@ -3678,8 +3678,8 @@ packages:
       wordwrap: 1.0.0
     dev: true
 
-  /drizzle-kit@0.17.6-76e73f3:
-    resolution: {integrity: sha512-HmsTYbm4Y3gfv2jlzRQ04mbepnP9eKHWWFPnzEInrVEJJ85k0hxldGpbql03flZPII4W0z5FwuGUC9ROOLhVNw==}
+  /drizzle-kit@0.18.0:
+    resolution: {integrity: sha512-43oH0XNWJDfMmVtDVnW8OV+tIs3xXDb1MjdsDiv0a7unQAylr0hpGG0HD5uEPWSbt7oxBots+hnYWxo98D0KAg==}
     hasBin: true
     dependencies:
       camelcase: 7.0.1
@@ -3696,8 +3696,8 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.25.4(@planetscale/database@1.7.0):
-    resolution: {integrity: sha512-vURs2SqDh5pk81WWE4hR8gFKDTRmCK4FbaUGsZoljKnjKvMrjlA5xFPGiCih4/1XKqnOgSuh+I6T9KGBjYcPAA==}
+  /drizzle-orm@0.26.0-5f2b067(@planetscale/database@1.7.0):
+    resolution: {integrity: sha512-8DHjqBSrDjVS+msFijhgZQPHj/RoBVYELNAwLAqCJPUD4DCkcD1kIf7aLXzFX6UGd24nnbFBFsVJ8ZIjrhkkYw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -3758,13 +3758,13 @@ packages:
       '@planetscale/database': 1.7.0
     dev: false
 
-  /drizzle-zod@0.4.1(drizzle-orm@0.25.4)(zod@3.21.4):
+  /drizzle-zod@0.4.1(drizzle-orm@0.26.0-5f2b067)(zod@3.21.4):
     resolution: {integrity: sha512-0SoW2YwQwh+9QUNezzPAg179qO6OinbmLJFLjCjxfBpNDD39YH2hlSRK/rrkzskyBSORKraSrim/abynQ4k79w==}
     peerDependencies:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.25.4(@planetscale/database@1.7.0)
+      drizzle-orm: 0.26.0-5f2b067(@planetscale/database@1.7.0)
       zod: 3.21.4
     dev: false
 

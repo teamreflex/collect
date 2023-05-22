@@ -1,26 +1,21 @@
 import { eq } from "drizzle-orm"
 import { z } from "zod"
 import { adminProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc"
-import { fetchAlbumWithContent, fetchAlbumsWithContent } from "~/server/db/albums"
-import {
-  albums,
-  createAlbumSchema,
-  deleteAlbumSchema,
-  selectAlbumWithContentSchema,
-  updateAlbumSchema,
-} from "~/server/db/schema"
+import { albums, createAlbumSchema, deleteAlbumSchema, updateAlbumSchema } from "~/server/db/schema"
+import { fetchAlbumWithContent } from "~/server/db/statements"
 
 export const albumsRouter = createTRPCRouter({
-  fetchAll: adminProcedure.output(z.array(selectAlbumWithContentSchema)).query(async () => {
-    return await fetchAlbumsWithContent()
+  fetchAll: adminProcedure.query(async ({ ctx: { db } }) => {
+    return await db.query.albums.findMany({
+      with: {
+        artist: true,
+      },
+    })
   }),
 
-  fetch: publicProcedure
-    .input(z.number().positive().or(z.string()))
-    .output(selectAlbumWithContentSchema.optional())
-    .query(async ({ input }) => {
-      return await fetchAlbumWithContent(input)
-    }),
+  fetch: publicProcedure.input(z.number().positive().or(z.string())).query(async ({ input }) => {
+    return await fetchAlbumWithContent.execute({ id: input })
+  }),
 
   create: adminProcedure.input(createAlbumSchema).mutation(async ({ input, ctx: { db } }) => {
     return await db.insert(albums).values(input)

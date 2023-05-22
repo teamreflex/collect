@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card"
-import { type AlbumWithContent } from "~/server/db/albums"
+import { type AlbumWithContent } from "~/server/db/types"
 
 import CreatePhotocardSet from "./create-photocard-set"
 import DeletePhotocardSet from "./delete-photocard-set"
@@ -21,7 +21,6 @@ type Props = {
 }
 
 export default function AlbumPhotocardSetList({ album }: Props) {
-  console.log(album)
   return (
     <div className="flex flex-wrap gap-2">
       {album.photocardSets.map((set) => (

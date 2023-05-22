@@ -13,13 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
-import { type Album } from "~/server/db/schema"
+import { type AlbumWithArtist } from "~/server/db/types"
 
 import DeleteAlbum from "../albums/delete-album"
 import UpdateAlbum from "../albums/update-album"
 
 type Props = {
-  row: Row<Album>
+  row: Row<AlbumWithArtist>
 }
 
 export default function AlbumTableActions({ row }: Props) {

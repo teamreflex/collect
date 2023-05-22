@@ -9,13 +9,18 @@ import {
 
 type Option = { label: string; value: number }
 type Props = {
-  value: number[]
+  value: number[] | undefined
   onChange: (value: number[]) => void
   options: Option[]
 }
 
 export function AlbumVersionSelector({ value, onChange, options }: Props) {
   function select(option: Option) {
+    if (!value) {
+      onChange([option.value])
+      return
+    }
+
     if (value.includes(option.value)) {
       onChange(value.filter((v) => v !== option.value))
     } else {
@@ -27,10 +32,10 @@ export function AlbumVersionSelector({ value, onChange, options }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
-          {value.length === 0
+          {value && value.length === 0
             ? "Select versions..."
             : options
-                .filter((o) => value.includes(o.value))
+                .filter((o) => value && value.includes(o.value))
                 .map((o) => o.label)
                 .join(", ")}
         </Button>
@@ -39,7 +44,7 @@ export function AlbumVersionSelector({ value, onChange, options }: Props) {
         {options.map((option) => (
           <DropdownMenuCheckboxItem
             key={option.value}
-            checked={value.includes(option.value)}
+            checked={value && value.includes(option.value)}
             onCheckedChange={() => select(option)}
           >
             {option.label}

@@ -28,8 +28,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { type AlbumWithContent } from "~/server/db/albums"
 import { createPhotocardSetSchema, type CreatePhotocardSetSchema } from "~/server/db/schema"
+import { type AlbumWithContent } from "~/server/db/types"
 
 import { AlbumVersionSelector } from "./album-version-selector"
 

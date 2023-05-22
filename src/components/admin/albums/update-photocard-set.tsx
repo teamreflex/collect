@@ -28,21 +28,24 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { type AlbumWithContent } from "~/server/db/albums"
 import {
   updatePhotocardSetSchema,
   type PhotocardSet,
+  type PhotocardSetToAlbumVersions,
   type UpdatePhotocardSetSchema,
 } from "~/server/db/schema"
+import { type AlbumWithContent } from "~/server/db/types"
 
 import { AlbumVersionSelector } from "./album-version-selector"
 
 type Props = PropsWithChildren & {
   album: AlbumWithContent
-  photocardSet: PhotocardSet
+  photocardSet: PhotocardSet & {
+    versions: PhotocardSetToAlbumVersions[]
+  }
 }
 
-export default function UpdatePhotocardSet({ album, photocardSet, children }: Props) {
+export default function UpdatePhotocardSet({ album, photocardSet }: Props) {
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
 
@@ -59,7 +62,7 @@ export default function UpdatePhotocardSet({ album, photocardSet, children }: Pr
       ...photocardSet,
       artistId: album.artistId,
       albumId: album.id,
-      albumVersionIds: [],
+      albumVersionIds: photocardSet.versions.map((v) => v.albumVersionId),
     },
   })
 
@@ -68,7 +71,7 @@ export default function UpdatePhotocardSet({ album, photocardSet, children }: Pr
     onSuccess(_, newData) {
       router.refresh()
       setOpen(false)
-      reset()
+      reset(newData)
       toast({
         description: (
           <p>

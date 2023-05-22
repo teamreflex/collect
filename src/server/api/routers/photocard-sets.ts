@@ -77,7 +77,16 @@ export const photocardSetsRouter = createTRPCRouter({
       }
 
       // update set
-      return await db.update(photocardSets).set(input).where(eq(photocardSets.id, input.id))
+      return await db
+        .update(photocardSets)
+        .set({
+          name: input.name,
+          type: input.type,
+          image: input.image,
+          artistId: input.artistId,
+          albumId: input.albumId,
+        })
+        .where(eq(photocardSets.id, input.id))
     }),
 
   delete: adminProcedure

@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card"
-import { type AlbumWithContent } from "~/server/db/albums"
+import { type AlbumWithContent } from "~/server/db/types"
 
 import CreateAlbumVersion from "./create-version"
 import DeleteAlbumVersion from "./delete-version"
