@@ -47,56 +47,61 @@ export const photocardSetsRouter = createTRPCRouter({
   update: adminProcedure
     .input(updatePhotocardSetSchema)
     .mutation(async ({ input, ctx: { db } }) => {
-      // unlink any that are not in the input
-      await db
-        .delete(photocardSetToAlbumVersions)
-        .where(
-          and(
-            eq(photocardSetToAlbumVersions.photocardSetId, input.id),
-            notInArray(photocardSetToAlbumVersions.albumVersionId, input.albumVersionIds ?? []),
-          ),
-        )
+      return await db.transaction(async (tx) => {
+        // unlink any that are not in the input
+        await tx
+          .delete(photocardSetToAlbumVersions)
+          .where(
+            and(
+              eq(photocardSetToAlbumVersions.photocardSetId, input.id),
+              notInArray(photocardSetToAlbumVersions.albumVersionId, input.albumVersionIds ?? []),
+            ),
+          )
 
-      // select the currently linked versions
-      const current = await db
-        .select()
-        .from(photocardSetToAlbumVersions)
-        .where(eq(photocardSetToAlbumVersions.photocardSetId, input.id))
+        // select the currently linked versions
+        const current = await tx
+          .select()
+          .from(photocardSetToAlbumVersions)
+          .where(eq(photocardSetToAlbumVersions.photocardSetId, input.id))
 
-      // link any that are not currently linked
-      const newLinks =
-        input.albumVersionIds
-          ?.filter((version) => current.findIndex((v) => v.albumVersionId === version) === -1)
-          .map((version) => ({
-            photocardSetId: input.id,
-            albumVersionId: version,
-          })) ?? []
+        // link any that are not currently linked
+        const newLinks =
+          input.albumVersionIds
+            ?.filter((version) => current.findIndex((v) => v.albumVersionId === version) === -1)
+            .map((version) => ({
+              photocardSetId: input.id,
+              albumVersionId: version,
+            })) ?? []
 
-      if (newLinks.length) {
-        await db.insert(photocardSetToAlbumVersions).values(newLinks)
-      }
+        if (newLinks.length) {
+          await tx.insert(photocardSetToAlbumVersions).values(newLinks)
+        }
 
-      // update set
-      return await db
-        .update(photocardSets)
-        .set({
-          name: input.name,
-          type: input.type,
-          image: input.image,
-          artistId: input.artistId,
-          albumId: input.albumId,
-        })
-        .where(eq(photocardSets.id, input.id))
+        // update set
+        return await tx
+          .update(photocardSets)
+          .set({
+            name: input.name,
+            type: input.type,
+            image: input.image,
+            artistId: input.artistId,
+            albumId: input.albumId,
+          })
+          .where(eq(photocardSets.id, input.id))
+      })
     }),
 
   delete: adminProcedure
     .input(deletePhotocardSetSchema)
     .mutation(async ({ input, ctx: { db } }) => {
-      // unlink set from album version
-      await db
-        .delete(photocardSetToAlbumVersions)
-        .where(eq(photocardSetToAlbumVersions.photocardSetId, input.id))
-      // delete set
-      return await db.delete(photocardSets).where(eq(photocardSets.id, input.id))
+      return await db.transaction(async (tx) => {
+        // unlink set from album version
+        await tx
+          .delete(photocardSetToAlbumVersions)
+          .where(eq(photocardSetToAlbumVersions.photocardSetId, input.id))
+
+        // delete set
+        return await tx.delete(photocardSets).where(eq(photocardSets.id, input.id))
+      })
     }),
 })

@@ -10,23 +10,25 @@ import {
 
 export const membersRouter = createTRPCRouter({
   create: adminProcedure.input(createMemberSchema).mutation(async ({ input, ctx: { db } }) => {
-    // create member
-    const member = await db.insert(members).values({
-      nameEn: input.nameEn,
-      nameKr: input.nameKr,
-      stageNameEn: input.stageNameEn,
-      stageNameKr: input.stageNameKr,
-      instagram: input.instagram,
-      image: input.image,
-    })
+    return await db.transaction(async (tx) => {
+      // create member
+      const member = await tx.insert(members).values({
+        nameEn: input.nameEn,
+        nameKr: input.nameKr,
+        stageNameEn: input.stageNameEn,
+        stageNameKr: input.stageNameKr,
+        instagram: input.instagram,
+        image: input.image,
+      })
 
-    // link member to artist
-    await db.insert(artistsToMembers).values({
-      artistId: input.artistId,
-      memberId: Number(member.insertId),
-    })
+      // link member to artist
+      await tx.insert(artistsToMembers).values({
+        artistId: input.artistId,
+        memberId: Number(member.insertId),
+      })
 
-    return member
+      return member
+    })
   }),
 
   update: adminProcedure.input(updateMemberSchema).mutation(async ({ input, ctx: { db } }) => {
@@ -44,7 +46,9 @@ export const membersRouter = createTRPCRouter({
   }),
 
   delete: adminProcedure.input(deleteMemberSchema).mutation(async ({ input, ctx: { db } }) => {
-    await db.delete(artistsToMembers).where(eq(artistsToMembers.memberId, input.id))
-    return await db.delete(members).where(eq(members.id, input.id))
+    return await db.transaction(async (tx) => {
+      await tx.delete(artistsToMembers).where(eq(artistsToMembers.memberId, input.id))
+      return await tx.delete(members).where(eq(members.id, input.id))
+    })
   }),
 })
