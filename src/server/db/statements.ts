@@ -15,6 +15,7 @@ export const fetchArtistWithContent = db.query.artists
   .findFirst({
     where: (artists, { eq }) => eq(artists.id, placeholder("id")),
     with: {
+      company: true,
       albums: true,
       members: {
         with: {
