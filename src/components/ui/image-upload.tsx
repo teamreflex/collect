@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, type ChangeEvent } from "react"
 import { CheckCircle2, CircleEllipsis, Loader2 } from "lucide-react"
 import { v4 } from "uuid"
@@ -17,9 +15,9 @@ export default function ImageUpload({ folder, onImageUploaded }: ImageUploadProp
   const { toast } = useToast()
   const [uploading, setUploading] = useState(false)
   const [uploaded, setUploaded] = useState(false)
+  const [file, setFile] = useState<File | null | undefined>()
 
   const rootUrl = process.env.NEXT_PUBLIC_R2_URL as string
-  let file: File | null | undefined
 
   const { mutate: getSignedUrl } = api.files.getSignedUrl.useMutation({
     onSuccess(url, newData) {
@@ -48,10 +46,13 @@ export default function ImageUpload({ folder, onImageUploaded }: ImageUploadProp
     setUploading(true)
 
     const files = event.currentTarget.files
-    file = files?.item(0)
-    if (files === null || files.length === 0 || !file) return
+    const newFile = files?.item(0)
+    setFile(newFile)
+    if (files === null || files.length === 0 || !newFile) {
+      throw new Error("startUpload: file is null or undefined")
+    }
 
-    const originalFilename = file.name
+    const originalFilename = newFile.name
     if (!originalFilename) return
 
     const extension = originalFilename.split(".").pop() ?? "jpg"
@@ -60,7 +61,9 @@ export default function ImageUpload({ folder, onImageUploaded }: ImageUploadProp
   }
 
   async function uploadImage(signedUrl: string) {
-    if (!file) return
+    if (!file) {
+      throw new Error("uploadImage: file is null or undefined")
+    }
 
     const res = await fetch(signedUrl, {
       method: "PUT",
