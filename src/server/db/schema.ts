@@ -18,10 +18,10 @@ import { z } from "zod"
  */
 export const companies = mysqlTable("companies", {
   id: serial("id").primaryKey(),
-  createdAt: timestamp("created_at", { mode: "string" })
+  createdAt: timestamp("created_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: timestamp("updated_at", { mode: "string" })
+  updatedAt: timestamp("updated_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   nameEn: varchar("name_en", { length: 50 }).notNull(),
@@ -48,15 +48,15 @@ export const artists = mysqlTable(
   "artists",
   {
     id: serial("id").primaryKey(),
-    createdAt: timestamp("created_at", { mode: "string" })
+    createdAt: timestamp("created_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp("updated_at", { mode: "string" })
+    updatedAt: timestamp("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
     nameEn: varchar("name_en", { length: 50 }).notNull(),
     nameKr: varchar("name_kr", { length: 50 }).notNull(),
-    debut: date("debut", { mode: "string" }).notNull(),
+    debut: date("debut").notNull(),
     companyId: int("company_id").notNull(),
     isGroup: boolean("is_group").notNull().default(true),
     image: varchar("image", { length: 255 }).notNull(),
@@ -86,10 +86,10 @@ export type DeleteArtistSchema = z.infer<typeof deleteArtistSchema>
  */
 export const members = mysqlTable("members", {
   id: serial("id").primaryKey(),
-  createdAt: timestamp("created_at", { mode: "string" })
+  createdAt: timestamp("created_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: timestamp("updated_at", { mode: "string" })
+  updatedAt: timestamp("updated_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   nameEn: varchar("name_en", { length: 50 }).notNull(),
@@ -139,16 +139,16 @@ export const albums = mysqlTable(
   "albums",
   {
     id: serial("id").primaryKey(),
-    createdAt: timestamp("created_at", { mode: "string" })
+    createdAt: timestamp("created_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp("updated_at", { mode: "string" })
+    updatedAt: timestamp("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
     artistId: int("artist_id").notNull(),
     name: varchar("name", { length: 50 }).notNull(),
     region: mysqlEnum("region", ["en", "kr", "jp", "other"]).notNull(),
-    releaseDate: date("release_date", { mode: "string" }).notNull(),
+    releaseDate: date("release_date").notNull(),
     image: varchar("image", { length: 255 }).notNull(),
     spotifyId: varchar("spotify_id", { length: 32 }),
   },
@@ -175,10 +175,10 @@ export const albumVersions = mysqlTable(
   "album_versions",
   {
     id: serial("id").primaryKey(),
-    createdAt: timestamp("created_at", { mode: "string" })
+    createdAt: timestamp("created_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp("updated_at", { mode: "string" })
+    updatedAt: timestamp("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
     name: varchar("name", { length: 50 }).notNull(),
@@ -210,10 +210,10 @@ export const photocardSets = mysqlTable(
   "photocard_sets",
   {
     id: serial("id").primaryKey(),
-    createdAt: timestamp("created_at", { mode: "string" })
+    createdAt: timestamp("created_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp("updated_at", { mode: "string" })
+    updatedAt: timestamp("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP`),
     name: varchar("name", { length: 50 }).notNull(),
@@ -267,10 +267,10 @@ export type PhotocardSetToAlbumVersions = InferModel<typeof photocardSetToAlbumV
  */
 export const photocards = mysqlTable("photocards", {
   id: serial("id").primaryKey(),
-  createdAt: timestamp("created_at", { mode: "string" })
+  createdAt: timestamp("created_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: timestamp("updated_at", { mode: "string" })
+  updatedAt: timestamp("updated_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
   name: varchar("name", { length: 50 }).notNull(),

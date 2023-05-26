@@ -51,7 +51,6 @@ export default function MemberTableActions({ row, artist }: Props) {
         artist={artist}
         open={openEditForm}
         setOpen={setOpenEditForm}
-        data-superjson
       />
       <DeleteMember member={row.original} open={openDeleteForm} setOpen={setOpenDeleteForm} />
     </>

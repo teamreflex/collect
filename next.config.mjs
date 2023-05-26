@@ -9,7 +9,6 @@ const config = {
   reactStrictMode: true,
   experimental: {
     typedRoutes: true,
-    swcPlugins: [["next-superjson-plugin", {}]],
   },
   images: {
     unoptimized: true, // disable in prod maybe

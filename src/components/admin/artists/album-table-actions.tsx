@@ -51,12 +51,7 @@ export default function AlbumTableActions({ row }: Props) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <UpdateAlbum
-        album={row.original}
-        open={openEditForm}
-        setOpen={setOpenEditForm}
-        data-superjson
-      />
+      <UpdateAlbum album={row.original} open={openEditForm} setOpen={setOpenEditForm} />
       <DeleteAlbum album={row.original} open={openDeleteForm} setOpen={setOpenDeleteForm} />
     </>
   )

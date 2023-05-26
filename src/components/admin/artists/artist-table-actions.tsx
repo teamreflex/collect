@@ -57,7 +57,6 @@ export default function ArtistTableActions({ row, companies }: Props) {
         companies={companies}
         open={openEditForm}
         setOpen={setOpenEditForm}
-        data-superjson
       />
       <DeleteArtist artist={row.original} open={openDeleteForm} setOpen={setOpenDeleteForm} />
     </>
