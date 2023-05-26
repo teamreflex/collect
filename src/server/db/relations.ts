@@ -5,10 +5,14 @@ import {
   albums,
   artists,
   artistsToMembers,
+  collectionAlbumVersions,
+  collectionPhotocards,
   companies,
   members,
   photocardSetToAlbumVersions,
   photocardSets,
+  photocards,
+  photocardsToMembers,
 } from "./schema"
 
 export const companyRelations = relations(companies, ({ many }) => ({
@@ -36,6 +40,7 @@ export const albumRelations = relations(albums, ({ one, many }) => ({
 
 export const memberRelations = relations(members, ({ many }) => ({
   artists: many(artistsToMembers),
+  photocards: many(photocardsToMembers),
 }))
 
 export const artistsToMembersRelations = relations(artistsToMembers, ({ one }) => ({
@@ -82,3 +87,40 @@ export const photocardSetToAlbumVersionsRelations = relations(
     }),
   }),
 )
+
+export const photocardRelations = relations(photocards, ({ one, many }) => ({
+  photocardSet: one(photocardSets, {
+    fields: [photocards.photocardSetId],
+    references: [photocardSets.id],
+  }),
+  artist: one(artists, {
+    fields: [photocards.artistId],
+    references: [artists.id],
+  }),
+  photocards: many(photocardsToMembers),
+}))
+
+export const photocardToMemberRelations = relations(photocardsToMembers, ({ one }) => ({
+  photocard: one(photocards, {
+    fields: [photocardsToMembers.photocardId],
+    references: [photocards.id],
+  }),
+  member: one(members, {
+    fields: [photocardsToMembers.memberId],
+    references: [members.id],
+  }),
+}))
+
+export const albumCollectionRelations = relations(collectionAlbumVersions, ({ one }) => ({
+  albumVersion: one(albumVersions, {
+    fields: [collectionAlbumVersions.albumVersionId],
+    references: [albumVersions.id],
+  }),
+}))
+
+export const photocardCollectionRelations = relations(collectionPhotocards, ({ one }) => ({
+  photocard: one(photocards, {
+    fields: [collectionPhotocards.photocardId],
+    references: [photocards.id],
+  }),
+}))

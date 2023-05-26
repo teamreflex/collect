@@ -276,7 +276,6 @@ export const photocards = mysqlTable("photocards", {
   name: varchar("name", { length: 50 }).notNull(),
   photocardSetId: int("photocard_set_id").notNull(),
   artistId: int("artist_id").notNull(),
-  memberId: int("member_id").notNull(),
   image: varchar("image", { length: 255 }).notNull(),
 })
 export type Photocard = InferModel<typeof photocards>
