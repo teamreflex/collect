@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs/app-beta"
 import { type User } from "@clerk/nextjs/dist/api"
-import { ArrowBigLeft, Building2, Disc, Home, Lock, Users } from "lucide-react"
+import { ArrowBigLeft, Building2, Disc, FileImage, Home, Lock, Users } from "lucide-react"
 import AdminNavLink from "~/components/admin/nav-link"
 
 const navigation = [
@@ -8,6 +8,7 @@ const navigation = [
   { name: "Companies", href: "/admin/companies", segment: "companies", icon: Building2 },
   { name: "Artists", href: "/admin/artists", segment: "artists", icon: Users },
   { name: "Albums", href: "/admin/albums", segment: "albums", icon: Disc },
+  { name: "Photocards", href: "/admin/photocards", segment: "photocards", icon: FileImage },
 ]
 
 export default async function AdminLayout({ children }: PropsWithChildren) {

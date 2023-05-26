@@ -23,25 +23,27 @@ export const photocardSetsRouter = createTRPCRouter({
   create: adminProcedure
     .input(createPhotocardSetSchema)
     .mutation(async ({ input, ctx: { db } }) => {
-      const set = await db.insert(photocardSets).values({
-        name: input.name,
-        type: input.type,
-        image: input.image,
-        artistId: input.artistId,
-        albumId: input.albumId,
+      return await db.transaction(async (tx) => {
+        const set = await tx.insert(photocardSets).values({
+          name: input.name,
+          type: input.type,
+          image: input.image,
+          artistId: input.artistId,
+          albumId: input.albumId,
+        })
+
+        // link set to album versions
+        const pivot = input.albumVersionIds.map((albumVersionId) => ({
+          photocardSetId: Number(set.insertId),
+          albumVersionId,
+        }))
+
+        if (pivot.length) {
+          await tx.insert(photocardSetToAlbumVersions).values(pivot)
+        }
+
+        return set
       })
-
-      // link set to album versions
-      const pivot = input.albumVersionIds.map((albumVersionId) => ({
-        photocardSetId: Number(set.insertId),
-        albumVersionId,
-      }))
-
-      if (pivot.length) {
-        await db.insert(photocardSetToAlbumVersions).values(pivot)
-      }
-
-      return set
     }),
 
   update: adminProcedure

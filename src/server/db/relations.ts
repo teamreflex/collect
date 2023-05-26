@@ -97,7 +97,7 @@ export const photocardRelations = relations(photocards, ({ one, many }) => ({
     fields: [photocards.artistId],
     references: [artists.id],
   }),
-  photocards: many(photocardsToMembers),
+  members: many(photocardsToMembers),
 }))
 
 export const photocardToMemberRelations = relations(photocardsToMembers, ({ one }) => ({

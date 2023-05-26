@@ -279,6 +279,20 @@ export const photocards = mysqlTable("photocards", {
   image: varchar("image", { length: 255 }).notNull(),
 })
 export type Photocard = InferModel<typeof photocards>
+export const selectPhotocardSchema = createSelectSchema(photocards)
+export const createPhotocardSchema = createInsertSchema(photocards).extend({
+  memberIds: z.array(z.number().positive()),
+})
+export type CreatePhotocardSchema = z.infer<typeof createPhotocardSchema>
+export const updatePhotocardSchema = createPhotocardSchema
+  .partial()
+  .omit({ createdAt: true })
+  .required({
+    id: true,
+  })
+export type UpdatePhotocardSchema = z.infer<typeof updatePhotocardSchema>
+export const deletePhotocardSchema = updatePhotocardSchema.pick({ id: true })
+export type DeletePhotocardSchema = z.infer<typeof deletePhotocardSchema>
 
 /*
  * Photocard to Member pivot table
@@ -299,6 +313,7 @@ export const photocardsToMembers = mysqlTable(
     ),
   }),
 )
+export type PhotocardToMembers = InferModel<typeof photocardsToMembers>
 
 /*
  * User album version collection

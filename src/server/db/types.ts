@@ -2,8 +2,11 @@ import {
   type Album,
   type AlbumVersion,
   type Artist,
+  type Member,
+  type Photocard,
   type PhotocardSet,
   type PhotocardSetToAlbumVersions,
+  type PhotocardToMembers,
 } from "./schema"
 
 export type AlbumVersionWithPhotocardSets = Prettify<
@@ -27,5 +30,18 @@ export type AlbumWithContent = Prettify<
     artist: Artist
     versions: AlbumVersionWithPhotocardSets[]
     photocardSets: PhotocardSetWithVersion[]
+  }
+>
+
+export type PhotocardWithContent = Prettify<
+  Photocard & {
+    artist: Artist
+    photocardSet: PhotocardSet & {
+      album: Album
+    }
+    members: PhotocardToMembers &
+      {
+        member: Member
+      }[]
   }
 >

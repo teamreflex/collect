@@ -21,6 +21,9 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      aspectRatio: {
+        photocard: "11 / 17",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

@@ -18,13 +18,13 @@ import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
 import { updateCompanySchema, type Company, type UpdateCompanySchema } from "~/server/db/schema"
 
-type UpdateCompanyProps = {
+type UpdateArtistProps = {
   company: Company
   open: boolean
   setOpen: (open: boolean) => void
 }
 
-export default function UpdateCompany({ company, open, setOpen }: UpdateCompanyProps) {
+export default function UpdateCompany({ company, open, setOpen }: UpdateArtistProps) {
   const { toast } = useToast()
 
   const {
