@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Image from "next/image"
 import {
-  createColumnHelper,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -14,10 +13,7 @@ import { DataTable } from "~/components/ui/data-table"
 import { Input } from "~/components/ui/input"
 import { type PhotocardWithContent } from "~/server/db/types"
 
-import CreatePhotocard from "./create-photocard"
 import PhotocardTableActions from "./photocard-table-actions"
-
-const columnHelper = createColumnHelper<PhotocardWithContent>()
 
 function buildColumns(): ColumnDef<PhotocardWithContent>[] {
   return [
@@ -95,8 +91,6 @@ export default function PhotocardTable({ data }: PhotocardTableProps) {
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
-
-        <CreatePhotocard />
       </div>
 
       {/* table */}

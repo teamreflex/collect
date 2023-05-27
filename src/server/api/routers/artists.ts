@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { eq, like } from "drizzle-orm"
 import { z } from "zod"
 import { adminProcedure, createTRPCRouter, publicProcedure } from "~/server/api/trpc"
 import {
@@ -30,4 +30,14 @@ export const artistsRouter = createTRPCRouter({
   delete: adminProcedure.input(deleteArtistSchema).mutation(async ({ input, ctx: { db } }) => {
     return await db.delete(artists).where(eq(artists.id, input.id))
   }),
+
+  search: adminProcedure
+    .input(z.string().min(1))
+    .output(z.array(selectArtistSchema))
+    .query(async ({ input, ctx: { db } }) => {
+      return db
+        .select()
+        .from(artists)
+        .where(like(artists.nameEn, `${input}%`))
+    }),
 })

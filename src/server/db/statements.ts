@@ -44,3 +44,9 @@ export const fetchAlbumWithContent = db.query.albums
     },
   })
   .prepare()
+
+export const fetchPhotocardSet = db.query.photocardSets
+  .findFirst({
+    where: (photocardSets, { eq }) => eq(photocardSets.id, placeholder("id")),
+  })
+  .prepare()

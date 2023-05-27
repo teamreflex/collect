@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import Image from "next/image"
 import { Check, ChevronsUpDown, ImagePlus, Loader2 } from "lucide-react"
@@ -12,7 +10,7 @@ import { api } from "~/lib/api/client"
 import { type SpotifyOption } from "~/lib/spotify"
 import { cn } from "~/lib/utils"
 
-import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 type Props = {
   searchType: "album" | "artist"

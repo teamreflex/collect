@@ -17,6 +17,7 @@ import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover"
+import { SpotifySearch } from "~/components/ui/search/spotify-search"
 import {
   Select,
   SelectContent,
@@ -24,7 +25,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select"
-import { SpotifySearch } from "~/components/ui/spotify-search"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
 import { cn } from "~/lib/utils"

@@ -45,7 +45,7 @@ export default function PhotocardTableActions({ row }: Props) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* <UpdatePhotocard photocard={row.original} open={openEditForm} setOpen={setOpenEditForm} /> */}
+      <UpdatePhotocard photocard={row.original} open={openEditForm} setOpen={setOpenEditForm} />
       <DeletePhotocard
         id={row.original.id}
         name={row.original.name}

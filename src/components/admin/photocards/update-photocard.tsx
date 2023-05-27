@@ -2,6 +2,8 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
+import { ArtistSearch } from "~/components/search/artist-search"
+import { PhotocardSetSearch } from "~/components/search/photocard-set-search"
 import { Button } from "~/components/ui/button"
 import {
   Dialog,
@@ -16,15 +18,16 @@ import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { useToast } from "~/hooks/use-toast"
 import { api } from "~/lib/api/client"
-import { updateCompanySchema, type Company, type UpdateCompanySchema } from "~/server/db/schema"
+import { updatePhotocardSchema, type UpdatePhotocardSchema } from "~/server/db/schema"
+import { type PhotocardWithContent } from "~/server/db/types"
 
-type UpdateArtistProps = {
-  company: Company
+type UpdatePhotocardProps = {
+  photocard: PhotocardWithContent
   open: boolean
   setOpen: (open: boolean) => void
 }
 
-export default function UpdateCompany({ company, open, setOpen }: UpdateArtistProps) {
+export default function UpdatePhotocard({ photocard, open, setOpen }: UpdatePhotocardProps) {
   const { toast } = useToast()
 
   const {
@@ -33,15 +36,16 @@ export default function UpdateCompany({ company, open, setOpen }: UpdateArtistPr
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<UpdateCompanySchema>({
-    resolver: zodResolver(updateCompanySchema),
+  } = useForm<UpdatePhotocardSchema>({
+    resolver: zodResolver(updatePhotocardSchema),
     defaultValues: {
-      ...company,
+      ...photocard,
+      memberIds: photocard.members.map((pivot) => pivot.member.id),
     },
   })
 
   const router = useRouter()
-  const { mutate: updateCompany, isLoading } = api.companies.update.useMutation({
+  const { mutate: updatePhotocard, isLoading } = api.photocards.update.useMutation({
     onSuccess(_, newData) {
       router.refresh()
       setOpen(false)
@@ -49,15 +53,15 @@ export default function UpdateCompany({ company, open, setOpen }: UpdateArtistPr
       toast({
         description: (
           <p>
-            Company <span className="font-semibold">{newData.nameEn}</span> updated
+            Photocard <span className="font-semibold">{newData.name}</span> updated
           </p>
         ),
       })
     },
   })
 
-  function onSubmit(data: UpdateCompanySchema) {
-    updateCompany(data)
+  function onSubmit(data: UpdatePhotocardSchema) {
+    updatePhotocard(data)
   }
 
   return (
@@ -65,28 +69,46 @@ export default function UpdateCompany({ company, open, setOpen }: UpdateArtistPr
       <DialogContent className="sm:max-w-2xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Update Company</DialogTitle>
-            <DialogDescription>Update an existing company.</DialogDescription>
+            <DialogTitle>Update Photocard</DialogTitle>
+            <DialogDescription>Update an existing photocard.</DialogDescription>
           </DialogHeader>
 
           <div className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
-            {/* English name */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="nameEn">Name (EN)</Label>
-              <Input
-                type="text"
-                id="nameEn"
-                placeholder="English name..."
-                {...register("nameEn")}
-              />
-              {errors.nameEn && <p className="text-xs text-red-500">{errors.nameEn?.message}</p>}
+            {/* Name */}
+            <div className="col-span-2 flex flex-col gap-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input type="text" id="name" placeholder="Name..." {...register("name")} />
+              {errors.name && <p className="text-xs text-red-500">{errors.name?.message}</p>}
             </div>
 
-            {/* Korean name */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="nameKr">Name (KR)</Label>
-              <Input type="text" id="nameKr" placeholder="Korean name..." {...register("nameKr")} />
-              {errors.nameKr && <p className="text-xs text-red-500">{errors.nameKr?.message}</p>}
+            {/* Artist */}
+            <div className="col-span-2 flex flex-col gap-1.5">
+              <Label htmlFor="artistId">Artist</Label>
+              <Controller
+                control={control}
+                name="artistId"
+                render={({ field: { onChange, value } }) => (
+                  <ArtistSearch onSelected={onChange} value={value} />
+                )}
+              />
+              {errors.artistId && (
+                <p className="text-xs text-red-500">{errors.artistId?.message}</p>
+              )}
+            </div>
+
+            {/* PhotocardSet */}
+            <div className="col-span-2 flex flex-col gap-1.5">
+              <Label htmlFor="photocardSetId">Photocard Set</Label>
+              <Controller
+                control={control}
+                name="photocardSetId"
+                render={({ field: { onChange, value } }) => (
+                  <PhotocardSetSearch onSelected={onChange} value={value} />
+                )}
+              />
+              {errors.photocardSetId && (
+                <p className="text-xs text-red-500">{errors.photocardSetId?.message}</p>
+              )}
             </div>
 
             <div className="col-span-2 flex flex-col gap-1.5">
