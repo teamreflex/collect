@@ -321,7 +321,7 @@ export type PhotocardToMembers = InferModel<typeof photocardsToMembers>
 export const collectionAlbumVersions = mysqlTable(
   "collection_album_versions",
   {
-    clerkId: varchar("clerk_id", { length: 16 }).notNull().primaryKey(),
+    clerkId: varchar("clerk_id", { length: 32 }).notNull().primaryKey(),
     albumVersionId: int("album_version_id").notNull(),
   },
   (table) => ({
@@ -342,15 +342,38 @@ export const collectionAlbumVersions = mysqlTable(
 export const collectionPhotocards = mysqlTable(
   "collection_photocards",
   {
-    clerkId: varchar("clerk_id", { length: 16 }).notNull().primaryKey(),
+    clerkId: varchar("clerk_id", { length: 32 }).notNull().primaryKey(),
     photocardId: int("photocard_id").notNull(),
   },
   (table) => ({
-    clerkIndex: index("collection_album_versions__clerk_id__idx").on(table.clerkId),
-    photocardIndex: index("collection_album_versions__photocard_id__idx").on(table.photocardId),
-    clerkphotocardIndex: index("collection_album_versions__clerk_id__album_version_id__idx").on(
+    clerkIndex: index("collection_photocards__clerk_id__idx").on(table.clerkId),
+    photocardIndex: index("collection_photocards__photocard_id__idx").on(table.photocardId),
+    clerkphotocardIndex: index("collection_photocards__clerk_id__album_version_id__idx").on(
       table.clerkId,
       table.photocardId,
     ),
   }),
 )
+
+/*
+ * User likes
+ */
+export const likes = mysqlTable(
+  "likes",
+  {
+    clerkId: varchar("clerk_id", { length: 32 }).notNull().primaryKey(),
+    artistId: int("artist_id").notNull(),
+  },
+  (table) => ({
+    clerkIndex: index("likes__clerk_id__idx").on(table.clerkId),
+    artistIndex: index("likes__artist_id__idx").on(table.artistId),
+  }),
+)
+export const createLikeSchema = createInsertSchema(likes)
+  .pick({ artistId: true }).required({
+    artistId: true,
+  })
+export const deleteLikeSchema = createInsertSchema(likes)
+  .pick({ artistId: true }).required({
+    artistId: true,
+  })

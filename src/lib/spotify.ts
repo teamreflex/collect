@@ -118,7 +118,6 @@ async function performSearch<TResponse>(
       })
       .get()) as TResponse
   } catch (e) {
-    console.log(e)
     throw new Error("Error searching Spotify")
   }
 }

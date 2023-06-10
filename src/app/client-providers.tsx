@@ -6,8 +6,16 @@ import { ThemeProvider } from "next-themes"
 import { TooltipProvider } from "~/components/ui/tooltip"
 import { env } from "~/env.mjs"
 import { api } from "~/lib/api/client"
+import { useHydrateAtoms } from 'jotai/utils'
+import { likesAtom } from "~/hooks/use-likes"
 
-export function ClientProviders({ children }: PropsWithChildren) {
+type Props = PropsWithChildren & {
+  likes: number[]
+}
+
+export function ClientProviders({ children, likes }: Props) {
+  useHydrateAtoms([[likesAtom, likes]])
+
   return (
     <ThemeProvider defaultTheme="dark" attribute="class">
       <ClerkProvider

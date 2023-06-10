@@ -8,6 +8,8 @@ import { siteConfig } from "~/config/site"
 import { cn } from "~/lib/utils"
 
 import { ClientProviders } from "../client-providers"
+import { fetchLikes } from "~/lib/layout"
+import { currentUser } from "@clerk/nextjs"
 
 export * from "~/config/metadata"
 
@@ -16,7 +18,10 @@ const fontSans = Inter({
   subsets: ["latin"],
 })
 
-export default function CoreLayout({ children }: PropsWithChildren) {
+export default async function CoreLayout({ children }: PropsWithChildren) {
+  const user = await currentUser();
+  const likes = await fetchLikes(user?.id)
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -27,7 +32,7 @@ export default function CoreLayout({ children }: PropsWithChildren) {
           siteConfig.gradient,
         )}
       >
-        <ClientProviders>
+        <ClientProviders likes={likes}>
           {/* Navbar */}
           <Navbar />
 

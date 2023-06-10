@@ -69,4 +69,4 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   )
 }
 
-export const revalidate = 60
+export const revalidate = 0

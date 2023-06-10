@@ -1,7 +1,6 @@
 import type { GetServerSidePropsContext } from "next"
 import type { NextRequest } from "next/server"
-import type { SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/dist/api"
-import { getAuth } from "@clerk/nextjs/server"
+import { type SignedInAuthObject, type SignedOutAuthObject, getAuth } from "@clerk/nextjs/server"
 import type { inferAsyncReturnType } from "@trpc/server"
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next"
 import { db } from "~/server/db"
