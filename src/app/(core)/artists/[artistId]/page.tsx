@@ -42,7 +42,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
 
             {/* debut */}
             <div className="hidden justify-center gap-2 text-lg font-semibold lg:flex">
-              <Calendar /> {formatDate(artist.debut.getDate())}
+              <Calendar /> {formatDate(artist.debut.toString())}
             </div>
 
             {/* company */}
