@@ -10,6 +10,11 @@ const config = {
   experimental: {
     typedRoutes: true,
   },
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{ kebabCase member }}',
+    },
+  },
   images: {
     unoptimized: true, // disable in prod maybe
     domains: [

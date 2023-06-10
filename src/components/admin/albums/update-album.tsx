@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
-import { CalendarIcon, Loader2 } from "lucide-react"
+import { Calendar, Loader2 } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { Button } from "~/components/ui/button"
-import { Calendar } from "~/components/ui/calendar"
+import { Calendar as CalendarInput } from "~/components/ui/calendar"
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import ImageUpload from "~/components/ui/image-upload"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover"
-import { SpotifySearch } from "~/components/ui/search/spotify-search"
+import { SpotifySearch } from "~/components/search/spotify-search"
 import {
   Select,
   SelectContent,
@@ -136,12 +136,12 @@ export default function UpdateAlbum({ album, open, setOpen }: UpdateAlbumProps) 
                           !value && "text-muted-foreground",
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <Calendar className="mr-2 h-4 w-4" />
                         {value ? format(value, "yyyy-MM-dd") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={value} onSelect={onChange} initialFocus />
+                      <CalendarInput mode="single" selected={value} onSelect={onChange} initialFocus />
                     </PopoverContent>
                   </Popover>
                 )}
