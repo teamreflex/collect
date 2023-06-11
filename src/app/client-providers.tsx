@@ -23,8 +23,8 @@ export function ClientProviders({ children, likes }: Props) {
         appearance={{
           baseTheme: dark,
           elements: {
-            card: "bg-foreground/50 dark:bg-background/50 border-transparent",
-            formFieldInput: "bg-background/50",
+            card: "bg-foreground dark:bg-background border-transparent",
+            formFieldInput: "bg-foreground dark:bg-background",
             formButtonReset: "text-reflex-400 hover:text-white hover:bg-reflex-300",
             formButtonPrimary: "bg-reflex-400 hover:bg-reflex-300",
             footerActionLink: "text-reflex-400 hover:text-reflex-300",
