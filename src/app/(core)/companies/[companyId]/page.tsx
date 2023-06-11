@@ -38,7 +38,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
       </div>
 
       <div className="container">
-        <div className="flex flex-row flex-wrap gap-3">
+        <div className="flex flex-row flex-wrap justify-center gap-3">
           {company.artists.map((artist) => (
             <ArtistIcon key={artist.id} artist={artist} />
           ))}

@@ -24,10 +24,10 @@ export default function AlbumIcon({ album, size = "default" }: Props) {
         fill={true}
         className="absolute z-30 object-cover"
       />
-      <div className="invisible relative z-40 flex h-full items-center justify-center bg-transparent p-2 transition duration-300 ease-in-out group-hover:visible group-hover:bg-background/50">
+      <div className="invisible relative z-40 flex h-full items-center justify-center bg-transparent p-2 transition duration-300 ease-in-out group-hover:visible group-hover:bg-black/50">
         <p
           className={cn(
-            "text-center font-semibold drop-shadow",
+            "text-center font-semibold drop-shadow text-white",
             size === "default" ? "text-3xl" : "text-lg",
           )}
         >
