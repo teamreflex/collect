@@ -11,8 +11,9 @@ const config = {
     typedRoutes: true,
   },
   modularizeImports: {
-    'lucide-react': {
-      transform: 'lucide-react/dist/esm/icons/{{ kebabCase member }}',
+    "lucide-react": {
+      transform: "lucide-react/dist/esm/icons/{{ lowerCase kebabCase member }}",
+      skipDefaultConversion: true,
     },
   },
   images: {
